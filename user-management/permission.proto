@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "common/jsonapi.proto";
+
+message Permission {
+    PermissionData data = 1;
+    Links links = 2;
+}
+
+message PermissionCollection {
+    repeated PermissionData data = 1;
+    Links links = 2;
+}
+
+
+message PermissionData {
+    string type = 1;
+    int64 id = 2;
+    PermissionAttributes attributes = 3;
+    Links links = 4;
+}
+
+message PermissionAttributes {
+    string permission = 1;
+    string description = 2;
+}

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "common/jsonapi.proto";
+
+message User {
+    UserData data = 1;
+    Links links = 2;
+}
+
+message UserCollection {
+    repeated UserData data = 1;
+    Links links = 2; 
+}
+
+message UserData {
+    string type = 1;
+    int64 id = 2;
+    UserAttributes attributes = 3;
+    Links links = 4; 
+}
+

@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "common/jsonapi.proto";
+
+
+message Role {
+    RoleData data = 1;
+    Links links = 2;
+}
+
+message RoleCollection {
+    repeated RoleData data = 1;
+    Links links = 2;
+}
+
+message RoleData {
+    string type = 1;
+    int64 id = 2;
+    RoleAttributes attributes = 3;
+    Links links = 4;
+    RoleRelationships relationships = 5;
+}
+
+message RoleAttributes {
+    string role = 1;
+    string description = 2;
+}
+
+message RoleRelationships {
+    message Permissions {
+        Links links = 1;
+    }
+    message Users {
+        Links links = 1;
+    }
+    Permissions permissions = 1;
+    Users users = 2;
+}
+
