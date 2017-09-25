@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message Links {
+    string self = 1;
+    string related = 2;
+}
