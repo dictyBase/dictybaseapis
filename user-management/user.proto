@@ -17,5 +17,28 @@ message UserData {
     int64 id = 2;
     UserAttributes attributes = 3;
     Links links = 4; 
+    UserRelationships relationships = 5;
+}
+
+message UserAttributes {
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+    string organization = 4;
+    string group = 5;
+    string first_address = 6;
+    string second_address = 7;
+    string city = 8;
+    string state = 9;
+    string zip = 10;
+    string country = 11;
+    string phone = 12;
+}
+
+message UserRelationships {
+    message Roles {
+        Links links = 1;
+    }
+    Roles roles = 1;
 }
 
