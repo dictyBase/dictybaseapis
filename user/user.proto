@@ -10,7 +10,7 @@ message User {
 
 message UserCollection {
     repeated UserData data = 1;
-    jsonapi.Links links = 2; 
+    jsonapi.PaginationLinks links = 2; 
 }
 
 message UserData {
@@ -43,4 +43,6 @@ message UserRelationships {
     }
     Roles roles = 1;
 }
+
+message Meta
 

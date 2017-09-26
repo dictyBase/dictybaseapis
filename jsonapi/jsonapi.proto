@@ -6,3 +6,18 @@ message Links {
     string self = 1;
     string related = 2;
 }
+
+message PaginationLinks {
+    string self = 1;
+    string next = 2;
+    string prev = 3;
+    string last = 4;
+    string first = 5;
+}
+
+message Pagination {
+    int64 records = 1;
+    int64 total = 2;
+    int64 size = 3;
+    int64 number = 4;
+}
