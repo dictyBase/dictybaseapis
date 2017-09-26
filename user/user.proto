@@ -1,22 +1,23 @@
 syntax = "proto3";
 
-import "common/jsonapi.proto";
+package user;
+import "jsonapi/jsonapi.proto";
 
 message User {
     UserData data = 1;
-    Links links = 2;
+    jsonapi.Links links = 2;
 }
 
 message UserCollection {
     repeated UserData data = 1;
-    Links links = 2; 
+    jsonapi.Links links = 2; 
 }
 
 message UserData {
     string type = 1;
     int64 id = 2;
     UserAttributes attributes = 3;
-    Links links = 4; 
+    jsonapi.Links links = 4; 
     UserRelationships relationships = 5;
 }
 
@@ -33,11 +34,12 @@ message UserAttributes {
     string zip = 10;
     string country = 11;
     string phone = 12;
+    bool is_active = 13;
 }
 
 message UserRelationships {
     message Roles {
-        Links links = 1;
+        jsonapi.Links links = 1;
     }
     Roles roles = 1;
 }

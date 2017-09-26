@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package jsonapi;
+
 message Links {
     string self = 1;
     string related = 2;
