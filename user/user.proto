@@ -3,48 +3,71 @@ syntax = "proto3";
 package user;
 import "jsonapi/jsonapi.proto";
 
+// A user resource.
 message User {
     Data data = 1;
     jsonapi.Links links = 2;
 }
 
+// A user collection resource.
 message UserCollection {
     repeated Data data = 1;
     jsonapi.PaginationLinks links = 2; 
     Meta meta = 3;
 }
 
+// A top level container for user data.
 message Data {
+    // The resource name.
     string type = 1;
+    // Unique id.
     int64 id = 2;
     Attributes attributes = 3;
-    jsonapi.Links links = 4; 
+    jsonapi.Links links = 4;
     Relationships relationships = 5;
 }
 
+// A container for user fields.
 message Attributes {
+    // First name.
     string first_name = 1;
+    // Last name.
     string last_name = 2;
+    // Email.
     string email = 3;
+    // Organization in which the user belong.
     string organization = 4;
+    // Group in which the user belong.
     string group = 5;
+    // Address.
     string first_address = 6;
+    // More address.
     string second_address = 7;
+    // City.
     string city = 8;
+    // State.
     string state = 9;
+    // Zipcode.
     string zip = 10;
+    // Country.
     string country = 11;
+    // Phone no.
     string phone = 12;
+    // Current status of user.
     bool is_active = 13;
 }
 
+// The relationships of user with other resources.
 message Relationships {
+    // Relationships with role resource.
     message Roles {
+        // Http links with role resource. 
         jsonapi.Links links = 1;
     }
     Roles roles = 1;
 }
 
+// Top level meta container for user data.
 message Meta {
     jsonapi.Pagination pagination = 1;
 }
