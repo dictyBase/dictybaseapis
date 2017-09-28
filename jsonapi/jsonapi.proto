@@ -2,22 +2,36 @@ syntax = "proto3";
 
 package jsonapi;
 
+// A container for http links.
 message Links {
+    // A http link. It points to the resource itself.
     string self = 1;
+    // A http link. It points to a related resource.
     string related = 2;
 }
 
+// A container for pagination links.
 message PaginationLinks {
+    // A http link to the resource itself.
     string self = 1;
+    // A http link to the next page of data.
     string next = 2;
+    // A http link to the previous page of data.
     string prev = 3;
+    // A http link to the last page of data.
     string last = 4;
+    // A http link to the first page of data.
     string first = 5;
 }
 
+// A container for various pagination properties
 message Pagination {
+    // Total number of entries, regardless of pages.
     int64 records = 1;
+    // Total number of pages.
     int64 total = 2;
+    // Number of entries per page.
     int64 size = 3;
+    // Current page number.
     int64 number = 4;
 }
