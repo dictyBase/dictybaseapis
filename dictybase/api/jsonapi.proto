@@ -2,7 +2,8 @@ syntax = "proto3";
 
 package dictybase.api;
 
-option go_package = "github.com/dictyBase/genproto/dictybaseapis/api/jsonapi;jsonapi";
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/api/jsonapi;jsonapi";
 option java_multiple_files = true;
 option java_outer_classname = "JsonApiProto";
 option java_package = "org.dictybase.api";
@@ -40,4 +41,58 @@ message Pagination {
     int64 size = 3;
     // Current page number.
     int64 number = 4;
+}
+
+
+// A `GetRequest` defines various url and query parameters that could be passed
+// in a HTTP **GET** request to a singular resource. Majority of the request
+// parameters are identical or similar to [jsonapi](http://jsonapi.org).
+message GetRequest {
+    // An unique identifier for the user, for example:
+    // "/users/34"
+    int64 id = 1;
+    // include query parameter, here only "roles" relationship resource is allowed.
+    // For example, "/users/34?include=roles
+    string include = 2;
+    // fields query parameter, here all the user attributes in any
+    // combination(comma separated) is allowed.
+    string fields = 3;
+}
+
+// A `ListRequest` defines various url and query parameters that could be
+// passed in a HTTP **GET** request to a collection resource. All collection
+// resources are expected to support pagination. Majority of the request
+// parameters are identical or similar to [jsonapi](http://jsonapi.org).
+message ListRequest {
+    // Identical as `GetRequest`
+    string include = 1;
+    // Identical as `GetRequest`
+    string fields = 3;
+    // The page number to fetch
+    int64 pagenum = 4;
+    // Number of records per page
+    int64 pagesize = 5;
+    // The `filter` query parameter restricts the data return by the
+    // collection. To use it, supply an attribute to filter, followed by a
+    // filter expression. It uses the following syntax...
+    //        attribute operator expression
+    // attribute - Any one of the valid attribute of the resource.
+    // operator - Defines the type of filter match to use. It could be any of
+    // the following four and all of them should be URL-encoded.
+    //
+    //              ==  Equals (URL encoding is %3D%3D)
+    //              !=  Not equals
+    //              =@  Contains substring
+    //              !@  Not contains substring
+    //
+    // expression - The value that will be included or excluded from the
+    // result. URL-reserved characters must be URL-encoded.
+    // For example, the following filter returns all users with last name `Gag`.
+    //           /users?filter=last_name%3D%3Dgag
+    //
+    // Filter can be combined using OR or AND boolean logic.
+    //   * The OR is represented using a comma(,).
+    //   * The AND is represented using a semi-colon(;).
+    //   * AND and OR operators can be combined and AND takes precedence over OR.
+    string filter = 6;
 }
