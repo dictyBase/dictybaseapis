@@ -1,18 +1,48 @@
 syntax = "proto3";
 
-package user;
-import "jsonapi/jsonapi.proto";
+package dictybase.user;
+import "dictybase/api/jsonapi/jsonapi.proto";
+import "dictybase/api/jsonapi/request.proto";
+
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/user;user";
+option java_multiple_files = true;
+option java_outer_classname = "UserProto";
+option java_package = "org.dictybase.user";
+option objc_class_prefix = "DICTYAPI";
+
+// The user service definition
+service UserService {
+    // Gets the specified user
+    rpc GetUser (dictybase.api.jsonapi.GetRequest) returns (User) {
+        option (google.api.http).get = "/users/{id}";
+    }
+    // List all users
+    rpc ListUsers (dictybase.api.jsonapi.ListRequest) returns (UserCollection) {
+        option (google.api.http).get = "/users";
+    }
+
+    // Create an user
+    rpc CreateUser(CreateUserRequest) returns (User) {
+        // HTTP request body contains the resource.
+        option (google.api.http).post = {
+            post: "/users"
+            body: "*"
+        }
+    }
+}
 
 // A user resource.
 message User {
     Data data = 1;
-    jsonapi.Links links = 2;
+    dictybase.api.jsonapi.Links links = 2;
 }
 
 // A user collection resource.
 message UserCollection {
     repeated Data data = 1;
-    jsonapi.PaginationLinks links = 2; 
+    dictybase.api.jsonapi.PaginationLinks links = 2; 
     Meta meta = 3;
 }
 
@@ -23,7 +53,7 @@ message Data {
     // Unique id.
     int64 id = 2;
     Attributes attributes = 3;
-    jsonapi.Links links = 4;
+    dictybase.api.jsonapi.Links links = 4;
     Relationships relationships = 5;
 }
 
@@ -62,13 +92,13 @@ message Relationships {
     // Relationships with role resource.
     message Roles {
         // Http links with role resource. 
-        jsonapi.Links links = 1;
+        dictybase.api.jsonapi.Links links = 1;
     }
     Roles roles = 1;
 }
 
 // Top level meta container for user data.
 message Meta {
-    jsonapi.Pagination pagination = 1;
+    dictybase.api.jsonapi.Pagination pagination = 1;
 }
 
