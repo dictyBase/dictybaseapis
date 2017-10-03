@@ -1,6 +1,12 @@
 syntax = "proto3";
 
-package jsonapi;
+package dictybase.api;
+
+option go_package = "github.com/dictyBase/genproto/dictybaseapis/api/jsonapi;jsonapi";
+option java_multiple_files = true;
+option java_outer_classname = "JsonApiProto";
+option java_package = "org.dictybase.api";
+option objc_class_prefix = "DICTYAPI";
 
 // A container for http links.
 message Links {
