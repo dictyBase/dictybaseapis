@@ -149,7 +149,7 @@ message NewRelationships {
         // A role [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
         dictybase.api.jsonapi.Data data = 1;
     }
-    Roles roles = 1;
+    repeated Roles roles = 1;
 }
 
 
