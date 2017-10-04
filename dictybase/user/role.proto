@@ -1,49 +1,132 @@
 syntax = "proto3";
 
-package user;
-import "common/jsonapi.proto";
+package dictybase.user;
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/empty.proto";
+import "dictybase/api/jsonapi/jsonapi.proto";
+import "dictybase/api/jsonapi/request.proto";
 
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/user;user";
+option java_multiple_files = true;
+option java_outer_classname = "RoleProto";
+option java_package = "org.dictybase.user";
+option objc_class_prefix = "DICTYAPI";
+
+// The role service definition
+service RoleService {
+    // Gets the specified role
+    rpc GetRole (dictybase.api.jsonapi.GetRequest) returns (Role) {
+        // Resource id is mapped to the URL.
+        option (google.api.http).get = "/roles/{id}";
+    }
+    // List all roles
+    rpc ListRoles (dictybase.api.jsonapi.ListRequest) returns (RoleCollection) {
+        option (google.api.http).get = "/roles";
+    }
+
+    // Create an role
+    rpc CreateRole(CreateRoleRequest) returns (Role) {
+        // Resource is contained in the HTTP request body.
+        option (google.api.http) = {
+            post: "/roles"
+            body: "*"
+        }
+    }
+
+    // Update an role
+    rpc UpdateRole(UpdateRoleRequest) returns (Role) {
+        // Resource is contained in the HTTP request body.
+        option (google.api.http) = {
+            patch: "/roles"
+            body: "*"
+        }
+    }
+
+    // Delete an role
+    rpc DeleteRole(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/roles/{id}"
+        }
+    }
+}
+
+
+message UpdateRoleRequest {
+    message Data {
+        string type = 1;
+        // Unique id, required
+        int64 id = 2;
+        Attributes attributes = 3;
+        NewRelationships relationships = 4;
+    }
+    Data data = 1;
+    // An optional mask specifying which fields to update.
+    // Presence of this field allow partial updates.
+    google.protobuf.FieldMask update_mask = 2;
+}
+
+message CreateRoleRequest {
+    // The payload for new user
+    message Data {
+        string type = 1;
+        Attributes attributes = 2;
+        NewRelationships relationships = 3;
+    }
+    Data data = 1;
+}
 
 // A resource for managing user roles.
 message Role {
-    RoleData data = 1;
-    Links links = 2;
+    Data data = 1;
+    dictybase.api.jsonapi.Links links = 2;
 }
 
 // A role collection resource.
 message RoleCollection {
-    repeated RoleData data = 1;
-    Links links = 2;
+    repeated Data data = 1;
+    dictybase.api.jsonapi.Links links = 2;
 }
 
 // A top level container for role data.
-message RoleData {
+message Data {
     string type = 1;
     int64 id = 2;
-    RoleAttributes attributes = 3;
-    Links links = 4;
-    RoleRelationships relationships = 5;
+    Attributes attributes = 3;
+    dictybase.api.jsonapi.Links links = 4;
+    ExistingRelationships relationships = 5;
 }
 
 // A container for role fields.
-message RoleAttributes {
+message Attributes {
     string role = 1;
     string description = 2;
 }
 
-// The relationships of role with other resources.
-message RoleRelationships {
+
+// The relationship definition for existing roles.
+message ExistingRelationships {
     // Relationships with permission resource.
     message Permissions {
-        // Http links with role resource.
-        Links links = 1;
+        dictybase.api.jsonapi.Links links = 1;
     }
     // Relationships with user resource.
     message Users {
-        // Http links with role resource.
-        Links links = 1;
+        dictybase.api.jsonapi.Links links = 1;
     }
     Permissions permissions = 1;
     Users users = 2;
 }
 
+// The relationship definition for creating new roles.
+message NewRelationships {
+    message Permissions {
+        dictybase.api.jsonapi.Data data = 1;
+    }
+    message Users {
+        dictybase.api.jsonapi.Data data = 1;
+    }
+    Permissions permissions = 1;
+    Users users = 2;
+}
