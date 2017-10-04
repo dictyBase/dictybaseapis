@@ -52,3 +52,9 @@ message Pagination {
     // Current page number.
     int64 number = 4;
 }
+
+
+// Top level meta container.
+message Meta {
+    Pagination pagination = 1;
+}

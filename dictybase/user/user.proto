@@ -87,7 +87,7 @@ message User {
 message UserCollection {
     repeated Data data = 1;
     dictybase.api.jsonapi.PaginationLinks links = 2; 
-    Meta meta = 3;
+    dictybase.api.jsonapi.Meta meta = 3;
 }
 
 // A top level container for user data.
@@ -152,8 +152,4 @@ message NewRelationships {
     Roles roles = 1;
 }
 
-// Top level meta container for user data.
-message Meta {
-    dictybase.api.jsonapi.Pagination pagination = 1;
-}
 
