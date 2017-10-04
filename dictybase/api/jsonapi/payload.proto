@@ -10,6 +10,15 @@ option java_package = "org.dictybase.api.jsonapi";
 option objc_class_prefix = "DICTYAPI";
 
 
+// A [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
+message Data {
+    // The resource name.
+    string type = 1;
+    // Unique id.
+    int64 id = 2;
+}
+
+
 // A container for http links.
 message Links {
     // A http link. It points to the resource itself.

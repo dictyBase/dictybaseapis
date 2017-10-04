@@ -1,6 +1,9 @@
 syntax = "proto3";
 
 package dictybase.user;
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/empty.proto";
 import "dictybase/api/jsonapi/jsonapi.proto";
 import "dictybase/api/jsonapi/request.proto";
 
@@ -16,6 +19,7 @@ option objc_class_prefix = "DICTYAPI";
 service UserService {
     // Gets the specified user
     rpc GetUser (dictybase.api.jsonapi.GetRequest) returns (User) {
+        // Resource id is mapped to the URL.
         option (google.api.http).get = "/users/{id}";
     }
     // List all users
@@ -25,12 +29,52 @@ service UserService {
 
     // Create an user
     rpc CreateUser(CreateUserRequest) returns (User) {
-        // HTTP request body contains the resource.
-        option (google.api.http).post = {
+        // Resource is contained in the HTTP request body.
+        option (google.api.http) = {
             post: "/users"
             body: "*"
         }
     }
+
+    // Update an user
+    rpc UpdateUser(UpdateUserRequest) returns (User) {
+        // Resource is contained in the HTTP request body.
+        option (google.api.http) = {
+            patch: "/users"
+            body: "*"
+        }
+    }
+
+    // Delete an user
+    rpc DeleteUser(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/users/{id}"
+        }
+    }
+}
+
+message UpdateUserRequest {
+    message Data {
+        string type = 1;
+        // Unique id, required
+        int64 id = 2;
+        Attributes attributes = 3;
+        NewRelationships relationships = 4;
+    }
+    Data data = 1;
+    // An optional mask specifying which fields to update.
+    // Presence of this field allow partial updates.
+    google.protobuf.FieldMask update_mask = 2;
+}
+
+message CreateUserRequest {
+    // The payload for new user
+    message Data {
+        string type = 1;
+        Attributes attributes = 2;
+        NewRelationships relationships = 3;
+    }
+    Data data = 1;
 }
 
 // A user resource.
@@ -54,7 +98,7 @@ message Data {
     int64 id = 2;
     Attributes attributes = 3;
     dictybase.api.jsonapi.Links links = 4;
-    Relationships relationships = 5;
+    ExistingRelationships relationships = 5;
 }
 
 // A container for user fields.
@@ -87,12 +131,23 @@ message Attributes {
     bool is_active = 13;
 }
 
-// The relationships of user with other resources.
-message Relationships {
+// The relationship definition for existing users.
+message ExistingRelationships {
     // Relationships with role resource.
     message Roles {
-        // Http links with role resource. 
+        // Http links with role resource.
         dictybase.api.jsonapi.Links links = 1;
+    }
+    Roles roles = 1;
+}
+
+
+// The relationship definition for creating new users.
+message NewRelationships {
+    // Relationships with role resource.
+    message Roles {
+        // A role [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
+        dictybase.api.jsonapi.Data data = 1;
     }
     Roles roles = 1;
 }

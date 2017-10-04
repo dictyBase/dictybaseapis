@@ -14,7 +14,7 @@ option objc_class_prefix = "DICTYAPI";
 // in a HTTP **GET** request to a singular resource. Majority of the request
 // parameters are identical or similar to [jsonapi](http://jsonapi.org).
 message GetRequest {
-    // An unique identifier for the user, for example:
+    // An unique identifier, for example:
     // "/users/34"
     int64 id = 1;
     // include query parameter, here only "roles" relationship resource is allowed.
@@ -61,4 +61,13 @@ message ListRequest {
     //   * The AND is represented using a semi-colon(;).
     //   * AND and OR operators can be combined and AND takes precedence over OR.
     string filter = 6;
+}
+
+
+// A `DelteRequest` defines the url parameter that must be passed
+// in a HTTP **DELETE** request to remove a singular resource. 
+message DeleteRequest {
+    // An unique identifier, for example:
+    // "/users/34"
+    int64 id = 1;
 }
