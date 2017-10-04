@@ -1,34 +1,107 @@
 syntax = "proto3";
 
-package user;
-import "common/jsonapi.proto";
+package dictybase.user;
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/empty.proto";
+import "dictybase/api/jsonapi/jsonapi.proto";
+import "dictybase/api/jsonapi/request.proto";
+
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/user;user";
+option java_multiple_files = true;
+option java_outer_classname = "PermissionProto";
+option java_package = "org.dictybase.user";
+option objc_class_prefix = "DICTYAPI";
+
+
+// The permission service definition
+service PermissionService {
+    // Gets the specified permission
+    rpc GetPermission (dictybase.api.jsonapi.GetRequest) returns (Permission) {
+        // Resource id is mapped to the URL.
+        option (google.api.http).get = "/permissions/{id}";
+    }
+    // List all permissions
+    rpc ListPermissions (dictybase.api.jsonapi.ListRequest) returns (PermissionCollection) {
+        option (google.api.http).get = "/permissions";
+    }
+
+    // Create an permission
+    rpc CreatePermission(CreatePermissionRequest) returns (Permission) {
+        // Resource is contained in the HTTP request body.
+        option (google.api.http) = {
+            post: "/permissions"
+            body: "*"
+        }
+    }
+
+    // Update an permission
+    rpc UpdatePermission(UpdatePermissionRequest) returns (Permission) {
+        // Resource is contained in the HTTP request body.
+        option (google.api.http) = {
+            patch: "/permissions"
+            body: "*"
+        }
+    }
+
+    // Delete an permission
+    rpc DeletePermission(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/permissions/{id}"
+        }
+    }
+}
+
+
+message UpdatePermissionRequest {
+    message Data {
+        string type = 1;
+        // Unique id, required
+        int64 id = 2;
+        Attributes attributes = 3;
+    }
+    Data data = 1;
+    // An optional mask specifying which fields to update.
+    // Presence of this field allow partial updates.
+    google.protobuf.FieldMask update_mask = 2;
+}
+
+message CreatePermissionRequest {
+    // The payload for new user
+    message Data {
+        string type = 1;
+        Attributes attributes = 2;
+    }
+    Data data = 1;
+}
 
 // A resource for managing user permission.
 message Permission {
-    PermissionData data = 1;
-    Links links = 2;
+    Data data = 1;
+    dictybase.api.jsonapi.Links links = 2;
 }
 
 // A permission collection resource.
 message PermissionCollection {
-    repeated PermissionData data = 1;
-    Links links = 2;
+    repeated Data data = 1;
+    dictybase.api.jsonapi.Links links = 2;
 }
 
 
 // A top level container for permission data.
-message PermissionData {
+message Data {
     // The resource name.
     string type = 1;
     // Unique id.
     int64 id = 2;
-    PermissionAttributes attributes = 3;
-    Links links = 4;
+    Attributes attributes = 3;
+    dictybase.api.jsonapi.Links links = 4;
 }
 
-
 // A container for permission fields.
-message PermissionAttributes {
+message Attributes {
     // Kind of permission.
     string permission = 1;
     // Brief description of the type of permission.

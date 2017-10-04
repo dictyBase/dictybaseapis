@@ -86,7 +86,7 @@ message User {
 // A user collection resource.
 message UserCollection {
     repeated Data data = 1;
-    dictybase.api.jsonapi.PaginationLinks links = 2; 
+    dictybase.api.jsonapi.PaginationLinks links = 2;
     dictybase.api.jsonapi.Meta meta = 3;
 }
 
