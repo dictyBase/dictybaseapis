@@ -9,7 +9,7 @@ import "dictybase/api/jsonapi/request.proto";
 
 
 option cc_enable_arenas = true;
-option go_package = "github.com/dictyBase/genproto/dictybaseapis/user;user";
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/user;user";
 option java_multiple_files = true;
 option java_outer_classname = "PermissionProto";
 option java_package = "org.dictybase.user";
