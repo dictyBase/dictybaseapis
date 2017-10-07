@@ -4,7 +4,7 @@ package dictybase.user;
 import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/empty.proto";
-import "dictybase/api/jsonapi/jsonapi.proto";
+import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
 
 
@@ -34,7 +34,7 @@ service PermissionService {
         option (google.api.http) = {
             post: "/permissions"
             body: "*"
-        }
+        };
     }
 
     // Update an permission
@@ -43,14 +43,14 @@ service PermissionService {
         option (google.api.http) = {
             patch: "/permissions"
             body: "*"
-        }
+        };
     }
 
     // Delete an permission
     rpc DeletePermission(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             delete: "/permissions/{id}"
-        }
+        };
     }
 }
 
@@ -60,7 +60,7 @@ message UpdatePermissionRequest {
         string type = 1;
         // Unique id, required
         int64 id = 2;
-        Attributes attributes = 3;
+        PermissionAttributes attributes = 3;
     }
     Data data = 1;
     // An optional mask specifying which fields to update.
@@ -72,36 +72,36 @@ message CreatePermissionRequest {
     // The payload for new user
     message Data {
         string type = 1;
-        Attributes attributes = 2;
+        PermissionAttributes attributes = 2;
     }
     Data data = 1;
 }
 
 // A resource for managing user permission.
 message Permission {
-    Data data = 1;
+    PermissionData data = 1;
     dictybase.api.jsonapi.Links links = 2;
 }
 
 // A permission collection resource.
 message PermissionCollection {
-    repeated Data data = 1;
+    repeated PermissionData data = 1;
     dictybase.api.jsonapi.Links links = 2;
 }
 
 
 // A top level container for permission data.
-message Data {
+message PermissionData {
     // The resource name.
     string type = 1;
     // Unique id.
     int64 id = 2;
-    Attributes attributes = 3;
+    PermissionAttributes attributes = 3;
     dictybase.api.jsonapi.Links links = 4;
 }
 
 // A container for permission fields.
-message Attributes {
+message PermissionAttributes {
     // Kind of permission.
     string permission = 1;
     // Brief description of the type of permission.

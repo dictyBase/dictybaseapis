@@ -4,7 +4,7 @@ package dictybase.user;
 import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/empty.proto";
-import "dictybase/api/jsonapi/jsonapi.proto";
+import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
 
 option cc_enable_arenas = true;
@@ -32,7 +32,7 @@ service RoleService {
         option (google.api.http) = {
             post: "/roles"
             body: "*"
-        }
+        };
     }
 
     // Update an role
@@ -41,14 +41,14 @@ service RoleService {
         option (google.api.http) = {
             patch: "/roles"
             body: "*"
-        }
+        };
     }
 
     // Delete an role
     rpc DeleteRole(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             delete: "/roles/{id}"
-        }
+        };
     }
 }
 
@@ -58,8 +58,8 @@ message UpdateRoleRequest {
         string type = 1;
         // Unique id, required
         int64 id = 2;
-        Attributes attributes = 3;
-        NewRelationships relationships = 4;
+        RoleAttributes attributes = 3;
+        ExistingRoleRelationships relationships = 4;
     }
     Data data = 1;
     // An optional mask specifying which fields to update.
@@ -71,42 +71,42 @@ message CreateRoleRequest {
     // The payload for new user
     message Data {
         string type = 1;
-        Attributes attributes = 2;
-        NewRelationships relationships = 3;
+        RoleAttributes attributes = 2;
+        NewRoleRelationships relationships = 3;
     }
     Data data = 1;
 }
 
 // A resource for managing user roles.
 message Role {
-    Data data = 1;
+    RoleData data = 1;
     dictybase.api.jsonapi.Links links = 2;
 }
 
 // A role collection resource.
 message RoleCollection {
-    repeated Data data = 1;
+    repeated RoleData data = 1;
     dictybase.api.jsonapi.Links links = 2;
 }
 
 // A top level container for role data.
-message Data {
+message RoleData {
     string type = 1;
     int64 id = 2;
-    Attributes attributes = 3;
+    RoleAttributes attributes = 3;
     dictybase.api.jsonapi.Links links = 4;
-    ExistingRelationships relationships = 5;
+    ExistingRoleRelationships relationships = 5;
 }
 
 // A container for role fields.
-message Attributes {
+message RoleAttributes {
     string role = 1;
     string description = 2;
 }
 
 
 // The relationship definition for existing roles.
-message ExistingRelationships {
+message ExistingRoleRelationships {
     // Relationships with permission resource.
     message Permissions {
         dictybase.api.jsonapi.Links links = 1;
@@ -120,7 +120,7 @@ message ExistingRelationships {
 }
 
 // The relationship definition for creating new roles.
-message NewRelationships {
+message NewRoleRelationships {
     message Permissions {
         dictybase.api.jsonapi.Data data = 1;
     }

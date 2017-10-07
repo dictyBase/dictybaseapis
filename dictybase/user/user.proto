@@ -4,7 +4,7 @@ package dictybase.user;
 import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/empty.proto";
-import "dictybase/api/jsonapi/jsonapi.proto";
+import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
 
 
@@ -33,7 +33,7 @@ service UserService {
         option (google.api.http) = {
             post: "/users"
             body: "*"
-        }
+        };
     }
 
     // Update an user
@@ -42,14 +42,14 @@ service UserService {
         option (google.api.http) = {
             patch: "/users"
             body: "*"
-        }
+        };
     }
 
     // Delete an user
     rpc DeleteUser(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             delete: "/users/{id}"
-        }
+        };
     }
 }
 
@@ -58,8 +58,8 @@ message UpdateUserRequest {
         string type = 1;
         // Unique id, required
         int64 id = 2;
-        Attributes attributes = 3;
-        NewRelationships relationships = 4;
+        UserAttributes attributes = 3;
+        ExistingUserRelationships relationships = 4;
     }
     Data data = 1;
     // An optional mask specifying which fields to update.
@@ -71,38 +71,38 @@ message CreateUserRequest {
     // The payload for new user
     message Data {
         string type = 1;
-        Attributes attributes = 2;
-        NewRelationships relationships = 3;
+        UserAttributes attributes = 2;
+        NewUserRelationships relationships = 3;
     }
     Data data = 1;
 }
 
 // A user resource.
 message User {
-    Data data = 1;
+    UserData data = 1;
     dictybase.api.jsonapi.Links links = 2;
 }
 
 // A user collection resource.
 message UserCollection {
-    repeated Data data = 1;
+    repeated UserData data = 1;
     dictybase.api.jsonapi.PaginationLinks links = 2;
     dictybase.api.jsonapi.Meta meta = 3;
 }
 
 // A top level container for user data.
-message Data {
+message UserData {
     // The resource name.
     string type = 1;
     // Unique id.
     int64 id = 2;
-    Attributes attributes = 3;
+    UserAttributes attributes = 3;
     dictybase.api.jsonapi.Links links = 4;
-    ExistingRelationships relationships = 5;
+    ExistingUserRelationships relationships = 5;
 }
 
 // A container for user fields.
-message Attributes {
+message UserAttributes {
     // First name.
     string first_name = 1;
     // Last name.
@@ -132,7 +132,7 @@ message Attributes {
 }
 
 // The relationship definition for existing users.
-message ExistingRelationships {
+message ExistingUserRelationships {
     // Relationships with role resource.
     message Roles {
         // Http links with role resource.
@@ -143,7 +143,7 @@ message ExistingRelationships {
 
 
 // The relationship definition for creating new users.
-message NewRelationships {
+message NewUserRelationships {
     // Relationships with role resource.
     message Roles {
         // A role [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
