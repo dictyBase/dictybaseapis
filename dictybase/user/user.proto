@@ -113,7 +113,7 @@ message UserAttributes {
     // Organization in which the user belong.
     string organization = 4;
     // Group in which the user belong.
-    string group = 5;
+    string group_name = 5;
     // Address.
     string first_address = 6;
     // More address.
@@ -123,7 +123,7 @@ message UserAttributes {
     // State.
     string state = 9;
     // Zipcode.
-    string zip = 10;
+    string zipcode = 10;
     // Country.
     string country = 11;
     // Phone no.
