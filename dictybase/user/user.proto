@@ -3,6 +3,7 @@ syntax = "proto3";
 package dictybase.user;
 import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
@@ -129,6 +130,9 @@ message UserAttributes {
     string phone = 12;
     // Current status of user.
     bool is_active = 13;
+    // Timestamp for creation and update 
+    google.protobuf.Timestamp created_at = 14;
+    google.protobuf.Timestamp updated_at = 15;
 }
 
 // The relationship definition for existing users.
