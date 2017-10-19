@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package dictybase.user;
+import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/any.proto";
@@ -105,6 +106,9 @@ message RoleData {
 message RoleAttributes {
     string role = 1;
     string description = 2;
+    // Timestamp for creation and update 
+    google.protobuf.Timestamp created_at = 14;
+    google.protobuf.Timestamp updated_at = 15;
 }
 
 
