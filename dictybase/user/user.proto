@@ -82,6 +82,7 @@ message CreateUserRequest {
 message User {
     UserData data = 1;
     dictybase.api.jsonapi.Links links = 2;
+    repeated RoleData included = 3;
 }
 
 // A user collection resource.
@@ -89,6 +90,7 @@ message UserCollection {
     repeated UserData data = 1;
     dictybase.api.jsonapi.PaginationLinks links = 2;
     dictybase.api.jsonapi.Meta meta = 3;
+    repeated RoleData included = 4;
 }
 
 // A top level container for user data.
