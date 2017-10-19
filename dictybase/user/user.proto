@@ -5,6 +5,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
 import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
 
@@ -82,7 +83,7 @@ message CreateUserRequest {
 message User {
     UserData data = 1;
     dictybase.api.jsonapi.Links links = 2;
-    repeated RoleData included = 3;
+    repeated google.protobuf.Any included = 3;
 }
 
 // A user collection resource.
@@ -90,7 +91,7 @@ message UserCollection {
     repeated UserData data = 1;
     dictybase.api.jsonapi.PaginationLinks links = 2;
     dictybase.api.jsonapi.Meta meta = 3;
-    repeated RoleData included = 4;
+    repeated google.protobuf.Any included = 4;
 }
 
 // A top level container for user data.
@@ -144,7 +145,7 @@ message ExistingUserRelationships {
         // Http links with role resource.
         dictybase.api.jsonapi.Links links = 1;
         // A role [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
-        dictybase.api.jsonapi.Data data = 1;
+        dictybase.api.jsonapi.Data data = 2;
     }
     Roles roles = 1;
 }
