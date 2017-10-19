@@ -3,6 +3,7 @@ syntax = "proto3";
 package dictybase.user;
 import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/any.proto";
 import "google/protobuf/empty.proto";
 import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
@@ -81,12 +82,14 @@ message CreateRoleRequest {
 message Role {
     RoleData data = 1;
     dictybase.api.jsonapi.Links links = 2;
+    repeated google.protobuf.Any included = 3;
 }
 
 // A role collection resource.
 message RoleCollection {
     repeated RoleData data = 1;
     dictybase.api.jsonapi.Links links = 2;
+    repeated google.protobuf.Any included = 3;
 }
 
 // A top level container for role data.
