@@ -113,12 +113,12 @@ message ExistingRoleRelationships {
     // Relationships with permission resource.
     message Permissions {
         dictybase.api.jsonapi.Links links = 1;
-        dictybase.api.jsonapi.Data data = 1;
+        dictybase.api.jsonapi.Data data = 2;
     }
     // Relationships with user resource.
     message Users {
         dictybase.api.jsonapi.Links links = 1;
-        dictybase.api.jsonapi.Data data = 1;
+        dictybase.api.jsonapi.Data data = 2;
     }
     Permissions permissions = 1;
     Users users = 2;
