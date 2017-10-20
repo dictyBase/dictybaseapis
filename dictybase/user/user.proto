@@ -82,7 +82,6 @@ message CreateUserRequest {
 // A user resource.
 message User {
     UserData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
     repeated google.protobuf.Any included = 3;
 }
 

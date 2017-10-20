@@ -82,7 +82,6 @@ message CreateRoleRequest {
 // A resource for managing user roles.
 message Role {
     RoleData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
     repeated google.protobuf.Any included = 3;
 }
 

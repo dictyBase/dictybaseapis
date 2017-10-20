@@ -80,7 +80,6 @@ message CreatePermissionRequest {
 // A resource for managing user permission.
 message Permission {
     PermissionData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
 }
 
 // A permission collection resource.
