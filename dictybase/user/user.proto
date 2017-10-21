@@ -144,7 +144,7 @@ message ExistingUserRelationships {
         // Http links with role resource.
         dictybase.api.jsonapi.Links links = 1;
         // A role [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
-        dictybase.api.jsonapi.Data data = 2;
+        repeated dictybase.api.jsonapi.Data data = 2;
     }
     Roles roles = 1;
 }

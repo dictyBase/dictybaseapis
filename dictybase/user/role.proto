@@ -79,13 +79,13 @@ message CreateRoleRequest {
     Data data = 1;
 }
 
-// A resource for managing user roles.
+// A definition for managing user roles.
 message Role {
     RoleData data = 1;
     repeated google.protobuf.Any included = 3;
 }
 
-// A role collection resource.
+// A role collection definition.
 message RoleCollection {
     repeated RoleData data = 1;
     dictybase.api.jsonapi.Links links = 2;
@@ -113,15 +113,15 @@ message RoleAttributes {
 
 // The relationship definition for existing roles.
 message ExistingRoleRelationships {
-    // Relationships with permission resource.
+    // Relationships with permission definition.
     message Permissions {
         dictybase.api.jsonapi.Links links = 1;
         dictybase.api.jsonapi.Data data = 2;
     }
-    // Relationships with user resource.
+    // Relationships with user definition.
     message Users {
         dictybase.api.jsonapi.Links links = 1;
-        dictybase.api.jsonapi.Data data = 2;
+        repeated dictybase.api.jsonapi.Data data = 2;
     }
     Permissions permissions = 1;
     Users users = 2;
