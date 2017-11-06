@@ -61,7 +61,7 @@ message UpdateUserRequest {
         // Unique id, required
         int64 id = 2;
         UserAttributes attributes = 3;
-        ExistingUserRelationships relationships = 4;
+        NewUserRelationships relationships = 4;
     }
     Data data = 1;
     // An optional mask specifying which fields to update.
