@@ -6,6 +6,7 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/empty.proto";
 import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
+import "google/protobuf/timestamp.proto";
 
 
 option cc_enable_arenas = true;
@@ -105,4 +106,7 @@ message PermissionAttributes {
     string permission = 1;
     // Brief description of the type of permission.
     string description = 2;
+    // Timestamp for creation and update 
+    google.protobuf.Timestamp created_at = 3;
+    google.protobuf.Timestamp updated_at = 4;
 }
