@@ -25,6 +25,15 @@ message GetRequest {
     string fields = 3;
 }
 
+// A `RelationshipRequest` defines the url parameter for relationship resources
+// that are given in the links field of relationship object
+message RelationshipRequest {
+    // An unique identifier, for example:
+    // "/users/45/roles" or "/users/45/relationships/roles"
+    int64 id = 1;
+}
+
+
 // A `ListRequest` defines various url and query parameters that could be
 // passed in a HTTP **GET** request to a collection resource. All collection
 // resources are expected to support pagination. Majority of the request
