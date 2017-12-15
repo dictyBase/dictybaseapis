@@ -33,7 +33,6 @@ message RelationshipRequest {
     int64 id = 1;
 }
 
-
 // A `ListRequest` defines various url and query parameters that could be
 // passed in a HTTP **GET** request to a collection resource. All collection
 // resources are expected to support pagination. Majority of the request

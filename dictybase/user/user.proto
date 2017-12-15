@@ -24,6 +24,12 @@ service UserService {
         // Resource id is mapped to the URL.
         option (google.api.http).get = "/users/{id}";
     }
+
+    // Gets all related roles
+    rpc GetRelatedRoles (dictybase.api.jsonapi.RelationshipRequest) returns (RoleCollection) {
+        option (google.api.http).get = "/users/{id}/roles"
+    }
+
     // List all users
     rpc ListUsers (dictybase.api.jsonapi.ListRequest) returns (UserCollection) {
         option (google.api.http).get = "/users";
@@ -38,6 +44,14 @@ service UserService {
         };
     }
 
+    // Create relationship links with roles
+    rpc CreateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/users/{id}/relationships/roles"
+            body: "*"
+        };
+    }
+
     // Update an user
     rpc UpdateUser(UpdateUserRequest) returns (User) {
         // Resource is contained in the HTTP request body.
@@ -47,10 +61,27 @@ service UserService {
         };
     }
 
+    // Update relationship links with roles
+    rpc UpdateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            patch: "/users/{id}/relationships/roles"
+            body: "*"
+        };
+    }
+
     // Delete an user
     rpc DeleteUser(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             delete: "/users/{id}"
+        };
+    }
+
+
+    // Delete relationship links with roles
+    rpc DeleteRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/users/{id}/relationships/roles"
+            body: "*"
         };
     }
 }

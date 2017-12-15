@@ -19,6 +19,13 @@ message Data {
 }
 
 
+// Definition for resource identifier collection objects.
+message DataCollection {
+    repeated Data data = 1;
+}
+
+
+
 // A container for http links.
 message Links {
     // A http link. It points to the resource itself.

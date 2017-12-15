@@ -70,7 +70,7 @@ message UpdateRoleRequest {
 }
 
 message CreateRoleRequest {
-    // The payload for new user
+    // The payload for new role
     message Data {
         string type = 1;
         RoleAttributes attributes = 2;
