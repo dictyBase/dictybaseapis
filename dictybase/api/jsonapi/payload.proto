@@ -21,6 +21,7 @@ message Data {
 
 // Definition for resource identifier collection objects.
 message DataCollection {
+    int64 id = 2;
     repeated Data data = 1;
 }
 
