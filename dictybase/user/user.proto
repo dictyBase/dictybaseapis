@@ -348,7 +348,7 @@ message ExistingRoleRelationships {
     // Relationships with permission definition.
     message Permissions {
         dictybase.api.jsonapi.Links links = 1;
-        dictybase.api.jsonapi.Data data = 2;
+        repeated dictybase.api.jsonapi.Data data = 2;
     }
     // Relationships with user definition.
     message Users {
@@ -362,10 +362,10 @@ message ExistingRoleRelationships {
 // The relationship definition for creating new roles.
 message NewRoleRelationships {
     message Permissions {
-        dictybase.api.jsonapi.Data data = 1;
+        repeated dictybase.api.jsonapi.Data data = 1;
     }
     message Users {
-        dictybase.api.jsonapi.Data data = 1;
+        repeated dictybase.api.jsonapi.Data data = 1;
     }
     Permissions permissions = 1;
     Users users = 2;
