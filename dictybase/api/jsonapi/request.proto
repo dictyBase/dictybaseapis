@@ -72,6 +72,15 @@ message ListRequest {
 }
 
 
+// A `SimpleListRequest` is identical to `ListRequest` except it does not support
+// pagination. The rest of the parameters are identical to `ListRequest` definition.
+message SimpleListRequest {
+    string include = 1;
+    string fields = 2;
+    string filter = 3;
+}
+
+
 // A `DelteRequest` defines the url parameter that must be passed
 // in a HTTP **DELETE** request to remove a singular resource. 
 message DeleteRequest {

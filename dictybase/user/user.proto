@@ -211,7 +211,7 @@ service RoleService {
     }
 
     // List all roles
-    rpc ListRoles (dictybase.api.jsonapi.ListRequest) returns (RoleCollection) {
+    rpc ListRoles (dictybase.api.jsonapi.SimpleListRequest) returns (RoleCollection) {
         option (google.api.http).get = "/roles";
     }
 
@@ -380,7 +380,7 @@ service PermissionService {
         option (google.api.http).get = "/permissions/{id}";
     }
     // List all permissions
-    rpc ListPermissions (dictybase.api.jsonapi.ListRequest) returns (PermissionCollection) {
+    rpc ListPermissions (dictybase.api.jsonapi.SimpleListRequest) returns (PermissionCollection) {
         option (google.api.http).get = "/permissions";
     }
 
