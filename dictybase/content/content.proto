@@ -1,0 +1,182 @@
+syntax = "proto3";
+
+package dictybase.content;
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
+import "dictybase/api/jsonapi/payload.proto";
+import "dictybase/api/jsonapi/request.proto";
+
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/content;content";
+option java_multiple_files = true;
+option java_outer_classname = "ContentProto";
+option java_package = "org.dictybase.content";
+option objc_class_prefix = "DICTYAPI";
+
+// The content service definition
+service ContentService {
+    // Gets the content of specified page(slug)
+    // Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
+    rpc GetContent (ContentRequest) returns (Content) {
+        option (google.api.http).get = "/contents/{slug}";
+    }
+    rpc GetContentById (ContentIdRequest) returns (Content) {
+        option (google.api.http).get = "/contents/{id}";
+    }
+
+    // Store the content of a new page(slug)
+    rpc StoreContent (StoreContentRequest) returns (Content) {
+        // HTTP request body contain all the information.
+        option (google.api.http) = {
+            post: "/contents"
+            body: "*"
+        };
+    }
+
+    // Update the content of an existing page(slug)
+    rpc UpdateContent (UpdateContentRequest) returns (Content) {
+        option (google.api.http) = {
+            patch: "/contents/{slug}",
+            body: "*"
+        };
+    }
+    rpc UpdateContentById (UpdateContentIdRequest) returns (Content) {
+        option (google.api.http) = {
+            patch: "/contents/{id}",
+            body: "*"
+        };
+    }
+
+    // Delete an existing page(slug) along with its content
+    rpc DeleteContent (ContentRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/contents/{slug}"
+        };
+    }
+    rpc DeleteContentById (ContentIdRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/contents/{id}"
+        };
+    }
+}
+
+message Content {
+    ContentData data = 1;
+}
+
+message ContentData {
+    // The resource name
+    string type = 1;
+    // Unique id
+    int64 id = 2;
+    ContentAttributes attributes = 3;
+    dictybase.api.jsonapi.Links links = 4;
+}
+
+// Definition for various content fields
+message ContentAttributes {
+    // page name
+    string name = 1;
+    // page slug
+    string slug = 2;
+    // id of the user who created the content
+    int64 created_by = 3;
+    // id of the user who updated the content
+    int64 updated_by = 4;
+    // Timestamp for creation and update 
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+    // serialized page content
+    string content = 7;
+    // namespace for the page
+    string namespace = 8;
+}
+
+message ContentRequest {
+    // Url slug
+    // Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
+    // The slug name should be unique
+    string slug = 1;
+}
+
+message ContentIdRequest {
+    // Unique id to identify content
+    int64 id = 1;
+}
+
+// Definition for storing new content
+message StoreContentRequest {
+    message Data {
+        // Definition for fields that are needed for storing the content
+        message NewContentAttributes {
+            // page name
+            string name = 1;
+            // user id who is creating this content
+            // The existence of user will be verified(not implemented yet) 
+            // using the `user` microservice backend.
+            int64 created_by = 2;
+            // page content, expected to be serialized `JSON` string.
+            string content = 3;
+            // namespace for the page, it is prepended to the
+            // name to generate an unique slug.
+            string namespace = 4;
+        }
+        // resource name
+        string type = 1;
+        NewContentAttributes attributes = 2;
+    }
+    Data data = 1;
+}
+
+
+// Fields that can be updated
+// Changing either or both of name and namespace
+// attributes alter the slug for the page
+message ExistingContentAttributes {
+    // page name
+    string name = 1;
+    // user id who is updating this content
+    // The existence of user will be verified(not implemented yet) 
+    // using the `user` microservice backend.
+    int64 updated_by = 2;
+    // content
+    string content = 3;
+    // namespace
+    string namespace = 4;
+}
+
+// Definition for updating any existing content
+message UpdateContentRequest {
+    message Data {
+        // resource name
+        string type = 1;
+        // unique id
+        int64 id = 2;
+        ExistingContentAttributes attributes = 3;
+    }
+    Data data = 1;
+    string slug = 2;
+    // An optional mask specifying which fields to update.
+    // Presence of this field allow partial updates.
+    google.protobuf.FieldMask update_mask = 3;
+}
+
+message UpdateContentIdRequest {
+    message Data {
+        // resource name
+        string type = 1;
+        // unique id
+        int64 id = 2;
+        ExistingContentAttributes attributes = 3;
+    }
+    Data data = 1;
+    int64 id = 2;
+    // An optional mask specifying which fields to update.
+    // Presence of this field allow partial updates.
+    google.protobuf.FieldMask update_mask = 3;
+}
+
