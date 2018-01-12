@@ -56,7 +56,7 @@ service UserService {
     rpc UpdateUser(UpdateUserRequest) returns (User) {
         // Resource is contained in the HTTP request body.
         option (google.api.http) = {
-            patch: "/users"
+            patch: "/users/{id}"
             body: "*"
         };
     }
@@ -89,15 +89,16 @@ service UserService {
 message UpdateUserRequest {
     message Data {
         string type = 1;
-        // Unique id, required
         int64 id = 2;
         UserAttributes attributes = 3;
         NewUserRelationships relationships = 4;
     }
     Data data = 1;
+    // Unique id, required
+    int64 id = 2;
     // An optional mask specifying which fields to update.
     // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 2;
+    google.protobuf.FieldMask update_mask = 3;
 }
 
 message CreateUserRequest {
@@ -244,7 +245,7 @@ service RoleService {
     rpc UpdateRole(UpdateRoleRequest) returns (Role) {
         // Resource is contained in the HTTP request body.
         option (google.api.http) = {
-            patch: "/roles"
+            patch: "/roles/{id}"
             body: "*"
         };
     }
@@ -290,15 +291,16 @@ service RoleService {
 message UpdateRoleRequest {
     message Data {
         string type = 1;
-        // Unique id, required
         int64 id = 2;
         RoleAttributes attributes = 3;
         ExistingRoleRelationships relationships = 4;
     }
     Data data = 1;
+    // Unique id, required
+    int64 id = 2;
     // An optional mask specifying which fields to update.
     // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 2;
+    google.protobuf.FieldMask update_mask = 3;
 }
 
 message CreateRoleRequest {
@@ -397,7 +399,7 @@ service PermissionService {
     rpc UpdatePermission(UpdatePermissionRequest) returns (Permission) {
         // Resource is contained in the HTTP request body.
         option (google.api.http) = {
-            patch: "/permissions"
+            patch: "/permissions/{id}"
             body: "*"
         };
     }
@@ -414,14 +416,15 @@ service PermissionService {
 message UpdatePermissionRequest {
     message Data {
         string type = 1;
-        // Unique id, required
         int64 id = 2;
         PermissionAttributes attributes = 3;
     }
     Data data = 1;
+    // Unique id, required
+    int64 id = 2;
     // An optional mask specifying which fields to update.
     // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 2;
+    google.protobuf.FieldMask update_mask = 3;
 }
 
 message CreatePermissionRequest {
