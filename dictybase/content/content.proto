@@ -66,6 +66,7 @@ service ContentService {
 
 message Content {
     ContentData data = 1;
+    dictybase.api.jsonapi.Links links = 2;
 }
 
 message ContentData {

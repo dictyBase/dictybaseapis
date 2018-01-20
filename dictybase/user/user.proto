@@ -114,6 +114,7 @@ message CreateUserRequest {
 // A user resource.
 message User {
     UserData data = 1;
+    dictybase.api.jsonapi.Links links = 2;
     repeated google.protobuf.Any included = 3;
 }
 
@@ -316,6 +317,7 @@ message CreateRoleRequest {
 // A definition for managing user roles.
 message Role {
     RoleData data = 1;
+    dictybase.api.jsonapi.Links links = 2;
     repeated google.protobuf.Any included = 3;
 }
 
@@ -439,6 +441,7 @@ message CreatePermissionRequest {
 // A resource for managing user permission.
 message Permission {
     PermissionData data = 1;
+    dictybase.api.jsonapi.Links links = 2;
 }
 
 // A permission collection resource.
