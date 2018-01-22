@@ -33,6 +33,14 @@ message RelationshipRequest {
     int64 id = 1;
 }
 
+// A `RelationshipRequestWithPagination` is a `RelationshipRequest` with pagination
+message RelationshipRequestWithPagination {
+    int64 id = 1;
+    int64 pagenum = 4;
+    int64 pagesize = 3;
+}
+
+
 // A `ListRequest` defines various url and query parameters that could be
 // passed in a HTTP **GET** request to a collection resource. All collection
 // resources are expected to support pagination. Majority of the request
