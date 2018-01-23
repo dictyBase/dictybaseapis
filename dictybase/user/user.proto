@@ -94,9 +94,11 @@ message UpdateUserRequest {
         NewUserRelationships relationships = 4;
     }
     Data data = 1;
+    // Unique id, required
+    int64 id = 2;
     // An optional mask specifying which fields to update.
     // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 2;
+    google.protobuf.FieldMask update_mask = 3;
 }
 
 message CreateUserRequest {
@@ -295,9 +297,11 @@ message UpdateRoleRequest {
         ExistingRoleRelationships relationships = 4;
     }
     Data data = 1;
+    // Unique id, required
+    int64 id = 2;
     // An optional mask specifying which fields to update.
     // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 2;
+    google.protobuf.FieldMask update_mask = 3;
 }
 
 message CreateRoleRequest {
@@ -418,9 +422,11 @@ message UpdatePermissionRequest {
         PermissionAttributes attributes = 3;
     }
     Data data = 1;
+    // Unique id, required
+    int64 id = 2;
     // An optional mask specifying which fields to update.
     // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 2;
+    google.protobuf.FieldMask update_mask = 3;
 }
 
 message CreatePermissionRequest {
