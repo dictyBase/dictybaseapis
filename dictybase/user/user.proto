@@ -203,7 +203,7 @@ service RoleService {
     }
 
     // Gets all related users
-    rpc GetRelatedUsers (dictybase.api.jsonapi.RelationshipRequest) returns (UserCollection) {
+    rpc GetRelatedUsers (dictybase.api.jsonapi.RelationshipRequestWithPagination) returns (UserCollection) {
         option (google.api.http).get = "/roles/{id}/users";
     }
 
