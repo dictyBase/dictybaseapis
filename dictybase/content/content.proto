@@ -137,9 +137,9 @@ message ExistingContentAttributes {
     // user id who is updating this content
     // The existence of user will be verified(not implemented yet) 
     // using the `user` microservice backend.
-    int64 updated_by = 1;
+    int64 updated_by = 1 [(validator.field) = {int_gt: 0}];
     // serialized page content(for example serialized draft js object)
-    string content = 2;
+    string content = 2 [(validator.field) = {string_not_empty: true}];
 }
 
 message UpdateContentRequest {
