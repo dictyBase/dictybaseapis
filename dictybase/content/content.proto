@@ -21,7 +21,6 @@ option objc_class_prefix = "DICTYAPI";
 // The content service definition
 service ContentService {
     // Gets the content of specified page(slug)
-    // Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
     rpc GetContent (ContentRequest) returns (Content) {
         option (google.api.http).get = "/contents/{slug}";
     }
@@ -38,6 +37,7 @@ service ContentService {
         };
     }
 
+    // Update the content of an existing page
     rpc UpdateContent (UpdateContentRequest) returns (Content) {
         option (google.api.http) = {
             patch: "/contents/{id}",
@@ -45,13 +45,8 @@ service ContentService {
         };
     }
 
-    // Delete an existing page(slug) along with its content
-    rpc DeleteContent (ContentRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/contents/{slug}"
-        };
-    }
-    rpc DeleteContentById (ContentIdRequest) returns (google.protobuf.Empty) {
+    // Delete an existing page along with its content
+    rpc DeleteContent (ContentIdRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             delete: "/contents/{id}"
         };
@@ -76,7 +71,7 @@ message ContentData {
 message ContentAttributes {
     // page name
     string name = 1;
-    // page slug
+    // page slug. Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
     string slug = 2;
     // id of the user who created the content
     int64 created_by = 3;
