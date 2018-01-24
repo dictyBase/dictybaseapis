@@ -38,14 +38,7 @@ service ContentService {
         };
     }
 
-    // Update the content of an existing page(slug)
     rpc UpdateContent (UpdateContentRequest) returns (Content) {
-        option (google.api.http) = {
-            patch: "/contents/{slug}",
-            body: "*"
-        };
-    }
-    rpc UpdateContentById (UpdateContentIdRequest) returns (Content) {
         option (google.api.http) = {
             patch: "/contents/{id}",
             body: "*"
@@ -92,7 +85,7 @@ message ContentAttributes {
     // Timestamp for creation and update 
     google.protobuf.Timestamp created_at = 5;
     google.protobuf.Timestamp updated_at = 6;
-    // serialized page content
+    // serialized page content(for example serialized draft js object)
     string content = 7;
     // namespace for the page
     string namespace = 8;
@@ -141,35 +134,15 @@ message StoreContentRequest {
 // Changing either or both of name and namespace
 // attributes alter the slug for the page
 message ExistingContentAttributes {
-    // page name
-    string name = 1;
     // user id who is updating this content
     // The existence of user will be verified(not implemented yet) 
     // using the `user` microservice backend.
-    int64 updated_by = 2;
-    // content
-    string content = 3;
-    // namespace
-    string namespace = 4;
+    int64 updated_by = 1;
+    // serialized page content(for example serialized draft js object)
+    string content = 2;
 }
 
-// Definition for updating any existing content
 message UpdateContentRequest {
-    message Data {
-        // resource name
-        string type = 1;
-        // unique id
-        int64 id = 2;
-        ExistingContentAttributes attributes = 3;
-    }
-    Data data = 1;
-    string slug = 2;
-    // An optional mask specifying which fields to update.
-    // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 3;
-}
-
-message UpdateContentIdRequest {
     message Data {
         // resource name
         string type = 1;
