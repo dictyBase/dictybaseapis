@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package dictybase.api.jsonapi;
+import "github.com/mwitkow/go-proto-validators/validator.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/api/jsonapi;jsonapi";
@@ -95,4 +96,8 @@ message DeleteRequest {
     // An unique identifier, for example:
     // "/users/34"
     int64 id = 1;
+}
+
+message HealthzIdRequest {
+    int64 id = 1 [(validator.field) = {int_gt: 0, int_lt: 2}];
 }

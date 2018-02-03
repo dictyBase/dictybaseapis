@@ -51,6 +51,11 @@ service ContentService {
             delete: "/contents/{id}"
         };
     }
+
+    // Basic health check that always return success
+    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {
+        option (google.api.http).get = "/healtz";
+    }
 }
 
 message Content {
