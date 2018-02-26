@@ -379,7 +379,7 @@ message NewRoleRelationships {
 // The permission service definition
 service PermissionService {
     // Gets the specified permission
-    rpc GetPermission (dictybase.api.jsonapi.GetRequest) returns (Permission) {
+    rpc GetPermission (dictybase.api.jsonapi.GetRequestWithFields) returns (Permission) {
         // Resource id is mapped to the URL.
         option (google.api.http).get = "/permissions/{id}";
     }
