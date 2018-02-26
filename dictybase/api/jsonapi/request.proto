@@ -18,12 +18,36 @@ message GetRequest {
     // An unique identifier, for example:
     // "/users/34"
     int64 id = 1;
-    // include query parameter, here only "roles" relationship resource is allowed.
-    // For example, "/users/34?include=roles
+    // include query parameter to retrieve any particular or particular
+    // combination of relationships. Multiple include values are delimited by
+    // comma(,).
+    //
+    // For example, 
+    // /{resource_name}/13?include=baz
+    // /{resource_name}/13?include=baz,bot
     string include = 2;
-    // fields query parameter, here all the user attributes in any
-    // combination(comma separated) is allowed.
+    // fields query parameter to retrieve any particular or any particular
+    // combination of attributes. Multiple fields values are delimited by comma(,).
+    //
+    // For example 
+    // /{resource_name}/29?fields=foo
+    // /{resource_name}/?fields=foo,bar
     string fields = 3;
+}
+
+
+// A `GetRequestWithFields` is a subset of GetRequest which only allow the fields parameter.
+message GetRequestWithFields {
+    // An unique identifier, for example:
+    // "/users/34"
+    int64 id = 1;
+    // fields query parameter to retrieve any particular or any particular
+    // combination of attributes. Multiple fields values are delimited by comma(,).
+    //
+    // For example 
+    // /{resource_name}/29?fields=foo
+    // /{resource_name}/?fields=foo,bar
+    string fields = 2;
 }
 
 // A `RelationshipRequest` defines the url parameter for relationship resources
