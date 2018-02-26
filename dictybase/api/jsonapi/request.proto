@@ -71,9 +71,20 @@ message RelationshipRequestWithPagination {
 // resources are expected to support pagination. Majority of the request
 // parameters are identical or similar to [jsonapi](http://jsonapi.org).
 message ListRequest {
-    // Identical as `GetRequest`
+    // include query parameter to retrieve any particular or particular
+    // combination of relationships. Multiple include values are delimited by
+    // comma(,).
+    //
+    // For example, 
+    // /{resource_name}/13?include=baz
+    // /{resource_name}/13?include=baz,bot
     string include = 1;
-    // Identical as `GetRequest`
+    // fields query parameter to retrieve any particular or any particular
+    // combination of attributes. Multiple fields values are delimited by comma(,).
+    //
+    // For example 
+    // /{resource_name}/29?fields=foo
+    // /{resource_name}/?fields=foo,bar
     string fields = 3;
     // The page number to fetch
     int64 pagenum = 4;
