@@ -119,8 +119,43 @@ message ListRequest {
 // A `SimpleListRequest` is identical to `ListRequest` except it does not support
 // pagination. The rest of the parameters are identical to `ListRequest` definition.
 message SimpleListRequest {
+    // include query parameter to retrieve any particular or particular
+    // combination of relationships. Multiple include values are delimited by
+    // comma(,).
+    //
+    // For example, 
+    // /{resource_name}/13?include=baz
+    // /{resource_name}/13?include=baz,bot
     string include = 1;
+    // fields query parameter to retrieve any particular or any particular
+    // combination of attributes. Multiple fields values are delimited by comma(,).
+    //
+    // For example 
+    // /{resource_name}/29?fields=foo
+    // /{resource_name}/?fields=foo,bar
     string fields = 2;
+    // The `filter` query parameter restricts the data return by the
+    // collection. To use it, supply an attribute to filter, followed by a
+    // filter expression. It uses the following syntax...
+    //        attribute operator expression
+    // attribute - Any one of the valid attribute of the resource.
+    // operator - Defines the type of filter match to use. It could be any of
+    // the following four and all of them should be URL-encoded.
+    //
+    //              ==  Equals (URL encoding is %3D%3D)
+    //              !=  Not equals
+    //              =@  Contains substring
+    //              !@  Not contains substring
+    //
+    // expression - The value that will be included or excluded from the
+    // result. URL-reserved characters must be URL-encoded.
+    // For example, the following filter returns all users with last name `Gag`.
+    //           /users?filter=last_name%3D%3Dgag
+    //
+    // Filter can be combined using OR or AND boolean logic.
+    //   * The OR is represented using a comma(,).
+    //   * The AND is represented using a semi-colon(;).
+    //   * AND and OR operators can be combined and AND takes precedence over OR.
     string filter = 3;
 }
 
