@@ -30,7 +30,7 @@ service UserService {
         option (google.api.http).get = "/users/{id}/roles";
     }
 
-    // List all users
+    // List all users. Only *roles* relationship is allowed for inclusion.
     rpc ListUsers (dictybase.api.jsonapi.ListRequest) returns (UserCollection) {
         option (google.api.http).get = "/users";
     }
@@ -212,7 +212,7 @@ service RoleService {
         option (google.api.http).get = "/roles/{id}/permissions";
     }
 
-    // List all roles
+    // List all roles. Both *users* and *permissions* relationships are allowed in the include parameter.
     rpc ListRoles (dictybase.api.jsonapi.SimpleListRequest) returns (RoleCollection) {
         option (google.api.http).get = "/roles";
     }
@@ -226,6 +226,7 @@ service RoleService {
         };
     }
 
+    // Create user relationship with role
     rpc CreateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             post: "/roles/{id}/relationships/users"
@@ -234,6 +235,7 @@ service RoleService {
     }
 
 
+    // Create permission relationship with role
     rpc CreatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             post: "/roles/{id}/permissions/permissions"
@@ -251,7 +253,7 @@ service RoleService {
         };
     }
 
-
+    // Update existing user relationship with role
     rpc UpdateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             patch: "/roles/{id}/relationships/users"
@@ -259,6 +261,7 @@ service RoleService {
         };
     }
 
+    // Update existing permission relationship with role
     rpc UpdatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             patch: "/roles/{id}/relationships/permissions"
@@ -273,6 +276,7 @@ service RoleService {
         };
     }
 
+    // Delete existing user relationship with role
     rpc DeleteUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             delete: "/roles/{id}/relationships/users"
@@ -280,6 +284,7 @@ service RoleService {
         };
     }
 
+    // Delete existing permission relationship with role
     rpc DeletePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             delete: "/roles/{id}/relationships/permissions"
