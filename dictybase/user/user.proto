@@ -91,7 +91,7 @@ message UpdateUserRequest {
         string type = 1;
         int64 id = 2;
         UserAttributes attributes = 3;
-        NewUserRelationships relationships = 4;
+        ExistingUserRelationships relationships = 4;
     }
     Data data = 1;
     // Unique id, required
