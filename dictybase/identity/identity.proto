@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package dictybase.identity;
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "dictybase/api/jsonapi/payload.proto";
+import "dictybase/api/jsonapi/request.proto";
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/identity;identity";
+option java_multiple_files = true;
+option java_outer_classname = "IdentityProto";
+option java_package = "org.dictybase.identity";
+option objc_class_prefix = "DICTYAPI";
+
+
+// The content service definition
+service IdentityService {
+    // Gets the specified identity
+    rpc GetIdentity (IdentityReq) returns (Identity) {
+        option (google.api.http).get = "/identities/{identifier}";
+    }
+
+    // Create a new identity
+    rpc CreateIdentity (CreateIdentityReq) returns (Identity) {
+        option (google.api.http) = {
+            post: "/identities"
+            body: "*"
+        };
+    }
+
+    // Delete an existing identity
+    rpc DeleteIdentity (IdentityReq) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/identities/{identifier}"
+        };
+    }
+
+    // Basic health check that always return success
+    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {
+        option (google.api.http).get = "/healthz";
+    }
+}
+
+// Definition for various fields
+message IdentityAttributes {
+    // An unique identifier provided by the third party.
+    // Generally it's an email id, however it could be something else specifically
+    // provided by an provider.
+    string identifier = 1;
+    // Name of the provider, for example, orcid, google, facebook etc.
+    string provider = 2;
+    // The id of the user to which this identity is connected.
+    // This id could be used to fetch a complete user response from the user service
+    int64 user_id = 3;
+    // Timestamp for creation and update 
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+
+}
+
+message IdentityData {
+    // The resource name
+    string type = 1;
+    // Unique id
+    int64 id = 2;
+    IdentityAttributes attributes = 3;
+    dictybase.api.jsonapi.Links links = 4;
+}
+
+message Identity {
+    IdentityData data = 1;
+    dictybase.api.jsonapi.Links links = 4;
+}
+
+message IdentityReq {
+    // An unique identifier provided by the third party.
+    // Generally it's an email id, however it could be something else specifically
+    // provided by an provider.
+    string identifier = 1;
+}
+
+message CreateIdentityReq {
+    message Data {
+        // resource name
+        string type = 1;
+        NewIdentityAttributes attributes = 2;
+    }
+    Data data = 1;
+}
+
+message NewIdentityAttributes {
+    // An unique identifier provided by the third party.
+    // Generally it's an email id, however it could be something else specifically
+    // provided by an provider.
+    string identifier = 1;
+    // Name of the provider, for example, orcid, google, facebook etc.
+    string provider = 2;
+    // The id of the user to which this identity is connected.
+    // This id could be used to fetch a complete user response from the user service
+    int64 user_id = 3;
+}
