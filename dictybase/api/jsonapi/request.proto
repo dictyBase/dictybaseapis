@@ -23,18 +23,40 @@ message GetRequest {
     // comma(,).
     //
     // For example, 
-    // /{resource_name}/13?include=baz
-    // /{resource_name}/13?include=baz,bot
+    //      /{resource_name}/13?include=baz
+    //      /{resource_name}/13?include=baz,bot
     string include = 2;
     // fields query parameter to retrieve any particular or any particular
     // combination of attributes. Multiple fields values are delimited by comma(,).
     //
     // For example 
-    // /{resource_name}/29?fields=foo
-    // /{resource_name}/?fields=foo,bar
+    //      /{resource_name}/29?fields=foo
+    //      /{resource_name}/?fields=foo,bar
     string fields = 3;
 }
 
+
+// A `GetEmailRequest` is identical to GetRequest except `email` id used as unique identifier.
+message GetEmailRequest {
+    // Email id 
+    // "/users/newman@seinfeld.org"
+    string email = 1;
+    // include query parameter to retrieve any particular or particular
+    // combination of relationships. Multiple include values are delimited by
+    // comma(,).
+    //
+    // For example,
+    //          /{resource_name}/13?include=baz
+    //          /{resource_name}/13?include=baz,bot
+    string include = 2;
+    // fields query parameter to retrieve any particular or any particular
+    // combination of attributes. Multiple fields values are delimited by comma(,).
+    //
+    // For example,
+    //          /{resource_name}/29?fields=foo
+    //          /{resource_name}/?fields=foo,bar
+    string fields = 3;
+}
 
 // A `GetRequestWithFields` is a subset of GetRequest which only allow the fields parameter.
 message GetRequestWithFields {

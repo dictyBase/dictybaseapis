@@ -25,6 +25,11 @@ service UserService {
         option (google.api.http).get = "/users/{id}";
     }
 
+    // Gets the specified user by their email id
+    rpc GetUserByEmail (dictybase.api.jsonapi.GetEmailRequest) returns (User) {
+        option (google.api.http).get = "/users/email/{email}";
+    }
+
     // Gets all related roles
     rpc GetRelatedRoles (dictybase.api.jsonapi.RelationshipRequest) returns (RoleCollection) {
         option (google.api.http).get = "/users/{id}/roles";
