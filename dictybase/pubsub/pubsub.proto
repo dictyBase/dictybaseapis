@@ -14,7 +14,7 @@ option objc_class_prefix = "DICTYAPI";
 * Definition for communicating the existence of a resource
 * and if there's any error during the communication
 */
-message Resource {
+message Reply {
     // Flag to indicate the presence of resource
     bool exist = 1;
     // Status error model, look here 
