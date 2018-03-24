@@ -18,8 +18,12 @@ option objc_class_prefix = "DICTYAPI";
 // The content service definition
 service IdentityService {
     // Gets the specified identity
-    rpc GetIdentity (IdentityReq) returns (Identity) {
-        option (google.api.http).get = "/identities/{identifier}";
+    rpc GetIdentityFromProvider(IdentityProviderReq) returns (Identity) {
+        option (google.api.http).get = "/identities/{provider}/{identifier}";
+    }
+
+    rpc GetIdentity(dictybase.api.jsonapi.IdRequest) returns (Identity) {
+        option (google.api.http).get = "/identities/{id}";
     }
 
     // Create a new identity
@@ -31,9 +35,9 @@ service IdentityService {
     }
 
     // Delete an existing identity
-    rpc DeleteIdentity (IdentityReq) returns (google.protobuf.Empty) {
+    rpc DeleteIdentity (dictybase.api.jsonapi.IdRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
-            delete: "/identities/{identifier}"
+            delete: "/identities/{id}"
         };
     }
 
@@ -74,11 +78,14 @@ message Identity {
     dictybase.api.jsonapi.Links links = 4;
 }
 
-message IdentityReq {
+message IdentityProviderReq {
     // An unique identifier provided by the third party.
     // Generally it's an email id, however it could be something else specifically
     // provided by an provider.
     string identifier = 1;
+    // Name of the provider, for example, orcid, google, facebook etc.
+    string provider = 2;
+
 }
 
 message CreateIdentityReq {
