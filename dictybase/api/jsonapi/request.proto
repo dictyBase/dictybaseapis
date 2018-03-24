@@ -182,11 +182,16 @@ message SimpleListRequest {
 }
 
 
-// A `DelteRequest` defines the url parameter that must be passed
-// in a HTTP **DELETE** request to remove a singular resource. 
+// A `DeleteRequest` defines the url parameter that must be passed
+// to remove a singular resource. 
 message DeleteRequest {
     // An unique identifier, for example:
     // "/users/34"
+    int64 id = 1;
+}
+
+message IdRequest {
+    // An unique identifier
     int64 id = 1;
 }
 
