@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package dictybase.pubsub;
+import "google/rpc/status.proto";
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/pubsub;pubsub";
+option java_multiple_files = true;
+option java_outer_classname = "PubSubProto";
+option java_package = "org.dictybase.pubsub";
+option objc_class_prefix = "DICTYAPI";
+
+/*
+* Definition for communicating the existence of a resource
+* and if there's any error during the communication
+*/
+message Resource {
+    // Flag to indicate the presence of resource
+    bool exist = 1;
+    // Status error model, look here 
+    // for detail https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto
+    google.rpc.Status status = 2;
+}
