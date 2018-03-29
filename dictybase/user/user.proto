@@ -19,6 +19,9 @@ option objc_class_prefix = "DICTYAPI";
 
 // The user service definition
 service UserService {
+    // Check the existence of user
+    rpc ExistUser (dictybase.api.jsonapi.IdRequest) returns (dictybase.api.jsonapi.ExistResponse) {
+    }
     // Gets the specified user
     rpc GetUser (dictybase.api.jsonapi.GetRequest) returns (User) {
         // Resource id is mapped to the URL.

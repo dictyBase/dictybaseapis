@@ -198,3 +198,9 @@ message IdRequest {
 message HealthzIdRequest {
     int64 id = 1 [(validator.field) = {int_gt: 0, int_lt: 2}];
 }
+
+// ExistResponse wraps a boolean response
+message ExistResponse {
+    // exist or non-existant
+    bool exist = 1;
+}
