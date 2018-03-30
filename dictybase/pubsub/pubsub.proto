@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package dictybase.pubsub;
 import "google/rpc/status.proto";
+import "dictybase/user/user.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/pubsub;pubsub";
@@ -21,3 +22,13 @@ message Reply {
     // for detail https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto
     google.rpc.Status status = 2;
 }
+
+/*
+* Definition for communicating various user definition 
+*/
+message UserReply {
+    dictybase.user.User user = 1;  
+    dictybase.user.UserCollection users = 2;  
+    google.rpc.Status status = 3;
+}
+
