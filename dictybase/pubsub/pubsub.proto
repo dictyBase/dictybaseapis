@@ -27,9 +27,15 @@ message Reply {
 * Definition for communicating various user definition 
 */
 message UserReply {
+    // single user
     dictybase.user.User user = 1;  
+    // user collection(list of users)
     dictybase.user.UserCollection users = 2;  
+    // Status error model, look here 
+    // for detail https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto
     google.rpc.Status status = 3;
+    // Flag to indicate the presence of resource
+    bool exist = 4;
 }
 
 // Defintion for communicating an identifer
