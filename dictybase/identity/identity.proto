@@ -26,6 +26,9 @@ service IdentityService {
         option (google.api.http).get = "/identities/{id}";
     }
 
+    rpc ExistProviderIdentity(IdentityProviderReq) returns (dictybase.api.jsonapi.ExistResponse) {
+    }
+
     // Create a new identity
     rpc CreateIdentity (CreateIdentityReq) returns (Identity) {
         option (google.api.http) = {
