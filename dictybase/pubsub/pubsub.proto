@@ -3,6 +3,7 @@ syntax = "proto3";
 package dictybase.pubsub;
 import "google/rpc/status.proto";
 import "dictybase/user/user.proto";
+import "dictybase/identity/identity.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/pubsub;pubsub";
@@ -21,6 +22,20 @@ message Reply {
     // Status error model, look here 
     // for detail https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto
     google.rpc.Status status = 2;
+}
+
+
+/*
+* Definition for communicating various identity definition 
+*/
+message IdentityReply {
+    // single user
+    dictybase.identity.Identity identity = 1;  
+    // Status error model, look here 
+    // for detail https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto
+    google.rpc.Status status = 2;
+    // Flag to indicate the presence of resource
+    bool exist = 4;
 }
 
 /*
