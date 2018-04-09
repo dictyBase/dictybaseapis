@@ -26,7 +26,7 @@ message Reply {
 
 
 /*
-* Definition for communicating various identity definition 
+* Definition for replying various identity definition 
 */
 message IdentityReply {
     // single user
@@ -38,8 +38,23 @@ message IdentityReply {
     bool exist = 4;
 }
 
+
 /*
-* Definition for communicating various user definition 
+* Definition for requesting identity information 
+*/
+message IdentityReq {
+    // Unique id
+    int64 id = 2;
+    // An unique identifier provided by the third party.
+    // Generally it's an email id, however it could be something else specifically
+    // provided by an provider.
+    string identifier = 2;
+    // Name of the provider, for example, orcid, google, facebook etc.
+    string provider = 3;
+}
+
+/*
+* Definition for replying various user definition 
 */
 message UserReply {
     // single user
