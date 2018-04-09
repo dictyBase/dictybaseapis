@@ -44,7 +44,7 @@ message IdentityReply {
 */
 message IdentityReq {
     // Unique id
-    int64 id = 2;
+    int64 id = 1;
     // An unique identifier provided by the third party.
     // Generally it's an email id, however it could be something else specifically
     // provided by an provider.
