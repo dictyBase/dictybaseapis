@@ -92,6 +92,11 @@ service UserService {
             body: "*"
         };
     }
+
+    // Basic health check that always return success
+    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {
+        option (google.api.http).get = "/healthz";
+    }
 }
 
 message UpdateUserRequest {
