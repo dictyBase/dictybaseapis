@@ -481,11 +481,13 @@ message PermissionData {
 
 // A container for permission fields.
 message PermissionAttributes {
-    // Kind of permission.
+    // Kind of permission, for example read, write, admin etc.
     string permission = 1;
     // Brief description of the type of permission.
     string description = 2;
     // Timestamp for creation and update 
     google.protobuf.Timestamp created_at = 3;
     google.protobuf.Timestamp updated_at = 4;
+    // Resource(object) on which this permission is granted
+    string resource = 5;
 }
