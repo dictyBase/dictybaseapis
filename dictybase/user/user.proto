@@ -240,7 +240,7 @@ service RoleService {
     }
 
     // Create user relationship with role
-    rpc CreateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (dictybase.api.jsonapi.IdResponse) {
+    rpc CreateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
         option (google.api.http) = {
             post: "/roles/{id}/relationships/users"
             body: "*"
