@@ -251,7 +251,7 @@ service RoleService {
     // Create permission relationship with role
     rpc CreatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
         option (google.api.http) = {
-            post: "/roles/{id}/permissions/permissions"
+            post: "/roles/{id}/relationships/permissions"
             body: "*"
         };
     }
