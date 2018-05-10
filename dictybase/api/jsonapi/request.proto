@@ -195,6 +195,11 @@ message IdRequest {
     int64 id = 1;
 }
 
+message IdResponse {
+    // An unique identifier
+    int64 id = 1;
+}
+
 message HealthzIdRequest {
     int64 id = 1 [(validator.field) = {int_gt: 0, int_lt: 2}];
 }
