@@ -72,7 +72,7 @@ message ContentData {
     dictybase.api.jsonapi.Links links = 4;
 }
 
-// Definition for various content fields
+// Definition of various content fields
 message ContentAttributes {
     // page name
     string name = 1;

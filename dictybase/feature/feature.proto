@@ -1,0 +1,539 @@
+syntax = "proto3";
+
+package dictybase.feature;
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "dictybase/api/jsonapi/payload.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/feature;feature";
+option java_multiple_files = true;
+option java_outer_classname = "FeatureProto";
+option java_package = "org.dictybase.feature";
+option objc_class_prefix = "DICTYAPI";
+
+// The feature service specification
+service FeatureService {
+    // Retrieves the specified feature
+    rpc GetFeature(FeatureId) returns (Feature) {
+        option (google.api.http).get = "/features/{id}";
+    }
+    // Retrieves all the biological parents features
+    rpc GetParents(FeatureRelationFilter) returns (FeatureCollection) {
+        option (google.api.http).get = "/features/{id}/parents";
+    }
+    // Retrieves all biological children features
+    rpc GetChildren(FeatureRelationFilter) returns (FeatureCollection) {
+        option (google.api.http).get = "/features/{id}/children";
+    }
+    /* Retrieves the feature(called reference or source feature) under whose
+     * coordinate system the current feature is located. By default rank 0 is
+     * assumed*/
+    rpc GetReferenceFeature(ReferenceFeatureFilter) returns (Feature) {
+        option (google.api.http).get = "/features/{id}/reference";
+    }
+    // Retrieves all reference features
+    rpc GetReferenceFeatures(FeatureId) returns (FeatureCollection) {
+        option (google.api.http).get = "/features/{id}/references";
+    }
+    /* Retrieves all features that are located within the bounds of
+    * referernce feature */
+    rpc GetLocatedFeatures(LocatedFeatureFilter) returns (PaginatedFeatureCollection) {
+        option (google.api.http).get = "/features/{id}/locatedfeatures";
+    }
+    // List all features
+    rpc ListFeatures(ListRequest) returns (PaginatedFeatureCollection) {
+        option (google.api.http).get = "/features";
+    }
+    // Create a new feature
+    rpc CreateFeature(NewFeature) returns (Feature) {
+        option (google.api.http) = {
+            post: "/features"
+            body: "*"
+        };
+    }
+    // Update an existing feature
+    rpc UpdateFeature(FeatureUpdate) returns (Feature) {
+        option (google.api.http) = {
+            patch: "/features/{id}",
+            body: "*"
+        };
+    }
+    // Add a new parental relation with an existing feature. In case of an
+    // existing parent(s), it will be appended to the list.
+    rpc AddParentalRelationship(FeatureConnection) returns (Feature) {
+        option (google.api.http) = {
+            post: "/features/{id}/parents"
+            body: "*"
+        };
+    }
+    // Add a new child relation with an existing feature. In case of an
+    // existing child, it will be appended to the list.
+    rpc AddChildRelationship(FeatureConnection) returns (Feature) {
+        option (google.api.http) = {
+            post: "/features/{id}/children"
+            body: "*"
+        };
+    }
+    // Attach a new location entry to connect to a referernce
+    // feature. In case of any existing location(s), it will be
+    // appended to the list. The reference feature referred in
+    // the location needs to exist.
+    rpc AttachLocation(NewFeatureLocation) returns (Feature) {
+        option (google.api.http) = {
+            post: "/features/{id}/locations"
+            body: "*"
+        };
+    }
+    // Add a new synonym.In case of existing synonym(s),
+    // it will be appended to the list
+    rpc AddSynonym(FeatureSynonym) returns (Feature) {
+        option (google.api.http) = {
+            post: "/features/{id}/synonyms"
+            body: "*"
+        };
+    }
+    // Add a new publication.In case of existing publication(s),
+    // it will append it to the list
+    rpc AddPublication(FeaturePublication) returns (Feature) {
+        option (google.api.http) = {
+            post: "/features/{id}/publications"
+            body: "*"
+        };
+    }
+    // Sets the previous feature in the feature history.
+    rpc SetPrevFeatureHistory(FeatureHistory) returns (Feature) {
+        option (google.api.http) = {
+            post: "/features/{id}/prevfeature"
+            body: "*"
+        };
+    }
+    // Sets the next feature in the feature history.
+    rpc SetNextFeatureHistory(FeatureHistory) returns (Feature) {
+        option (google.api.http) = {
+            post: "/features/{id}/nextfeature"
+            body: "*"
+        };
+    }
+    // Add a new dbxref. In case of existing dbxref it will
+    // append it to the list.
+    rpc AddDbxref(FeatureDbxref) returns (Feature) {
+        option (google.api.http) = {
+            post: "/features/{id}/dbxrefs"
+            body: "*"
+        };
+    }
+    // Create a new organism entry
+    rpc CreateOrganism(Organism) returns (Organism) {}
+
+    // Delete an existing feature
+    rpc DeleteFeature(FeatureId) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/features/{id}"
+        };
+    }
+    // Delete a parental relationship with a feature
+    rpc DeleteParentalRelationship(FeatureConnection) returns (google.protobuf.Empty) {
+        option(google.api.http) = {
+            delete: "/features/{id}/parents"
+        };
+    }
+    // Delete a child relationship with a feature
+    rpc DeleteChildRelationship(FeatureConnection) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/features/{id}/children"
+        };
+    }
+    // Detach an existing location from reference feature
+    rpc DetachLocation(ReferenceFeatureFilter) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/features/{id}/locations"
+        };
+    }
+    // Delete a synonym from the feature.
+    rpc DeleteSynonym(FeatureSynonym) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/features/{id}/synonyms"
+        };
+    }
+    // Delete a publication from the feature.
+    rpc DeletePublication(FeaturePublication) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/features/{id}/publications"
+        };
+    }
+    // Remove the previous feature from the feature history.
+    rpc RemovePrevFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/features/{id}/prevfeature"
+        };
+    }
+    // Remove the next feature from the feature history.
+    rpc RemoveNextFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/features/{id}/nextfeature"
+        };
+    }
+    // Delete dbxref from a feature. 
+    rpc DeleteDbxref(FeatureDbxref) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            delete: "/features/{id}/dbxrefs"
+        };
+    }
+}
+
+message FeatureId {
+    // Unique feature identifier
+    string id = 1;
+}
+
+message FeatureRelationFilter {
+    string id = 1;
+    // Type of relationship, generally a sequence ontology term
+    string relation = 2;
+}
+
+message ReferenceFeatureFilter {
+    string id = 1;
+    // Used for feature with multiple locations, 0 is used as default.
+    int64 rank = 2;
+}
+
+message LocatedFeatureFilter {
+    // unique id of the reference feature
+    string id = 1;
+    // The biological type of feature, generally a sequence ontology term.
+    string type = 2;
+}
+
+message FeatureAnnotationFilter {
+    string id = 1;
+    // An identifiable tagname for the annotation, primarily
+    // restricted to an ontology term.
+    string tag = 2;
+}
+
+// Definition for creating new feature
+message NewFeature {
+    message Data {
+        // The biological type of feature, generally a sequence ontology term
+        string type = 1 [(validator.field) = {string_not_empty: true}];
+        NewFeatureAttributes attributes = 2;
+    }
+    Data data = 1;
+}
+
+// Definition of various feature fields for creating new feature
+message NewFeatureAttributes {
+    // Short human readable textual name
+    string name = 1;
+    // Identifier of the user who created the feature
+    int64 created_by = 2 [(validator.field) = {int_gt: 0}];
+    // Identifier of the user who updated the feature
+    int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
+    repeated Dbxref dbxrefs = 4;
+    Organism organism = 5;
+    // Toggle the obsolete status
+    bool is_obsolete = 6;
+    // List of biological parent features
+    repeated FeatureRelationship parents = 7;
+    // List of biological children feature
+    repeated FeatureRelationship children = 8;
+    repeated FeatureLocation location = 9;
+    // Alternate list of names
+    repeated string synonyms = 10;
+    repeated Publication publications = 11;
+    // Indicates if the feature is generated(annotated) from the
+    // result of an automated analysis
+    bool is_analysis = 12;
+    // Version of this feature, it increase by 1 for the replacement
+    int64 version = 13;
+    // Earlier instance of the feature that this one has replaced
+    string previous = 14;
+    //  Next instance of the feature that this one got replaced with
+    string next = 15;
+}
+
+
+// List of features with pagination
+message PaginatedFeatureCollection {
+    repeated FeatureData data = 1;
+    dictybase.api.jsonapi.PaginationLinks links = 2;
+    dictybase.api.jsonapi.Pagination pagination = 3;
+}
+
+// List of features
+message FeatureCollection {
+    repeated FeatureData data = 1;
+    dictybase.api.jsonapi.Links links = 2;
+}
+
+
+// Definition of a biological entity
+message Feature {
+    FeatureData data = 1;
+    dictybase.api.jsonapi.Links links = 2;
+}
+
+message FeatureData {
+    // The biological type of feature, generally a sequence ontology term
+    string type = 1;
+    // Unique id
+    string id = 2;
+    FeatureAttributes attributes = 3;
+}
+
+// Definition of various feature fields 
+message FeatureAttributes {
+    // Short human readable textual name
+    string name = 1;
+    string id = 2;
+    // Identifier of the user who created the feature
+    int64 created_by = 3 [(validator.field) = {int_gt: 0}];
+    // Identifier of the user who updated the feature
+    int64 updated_by = 4 [(validator.field) = {int_gt: 0}];
+    // Timestamp for creation and update 
+    google.protobuf.Timestamp created_at = 5 [(validator.field) = {msg_exists: true}];
+    google.protobuf.Timestamp updated_at = 6 [(validator.field) = {msg_exists: true}];
+    repeated FeatureDbxref dbxref = 7;
+    Organism organism = 8;
+    // Toggle the obsolete status
+    bool is_obsolete = 9;
+    // List of biological parent features
+    repeated FeatureRelationship parents = 10;
+    // List of biological children feature
+    repeated FeatureRelationship children = 11;
+    repeated FeatureLocation location = 12;
+    // aLTERNATe list of names
+    repeated string synonyms = 13;
+    repeated Publication publications = 14;
+    // Indicates if the feature is generated(annotated) from the
+    // result of an automated analysis
+    bool is_analysis = 15;
+    // Version of this feature, it increase by 1 for the replacement
+    int64 version = 16 [(validator.field) = {int_gt: 0}];
+    // Earlier instance of the feature that this one has replaced
+    string previous = 17 [(validator.field) = {int_gt: 0}];
+    //  Next instance of the feature that this one got replaced with
+    string next = 18 [(validator.field) = {int_gt: 0}];
+    repeated Dbxref dbxrefs = 19;
+}
+
+// Definition for updating a feature
+message FeatureUpdate {
+    message Data {
+        // The biological type of feature, generally a sequence ontology term
+        string type = 1 [(validator.field) = {string_not_empty: true}];
+        FeatureUpdateAttributes attributes = 2;
+        string id = 3 [(validator.field) = {string_not_empty: true}];
+    }
+    Data data = 1;
+    // An optional mask specifying which fields to update.
+    // Presence of this field allow partial updates.
+    google.protobuf.FieldMask update_mask = 2;
+    string id = 3;
+}
+
+// Definition of feature fields for updating a feature
+message FeatureUpdateAttributes {
+    // Short human readable textual name
+    string name = 1;
+    string id = 2;
+    // Identifier of the user who updated the feature
+    int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
+    repeated FeatureDbxref dbxref = 4;
+    Organism organism = 5;
+    // List of biological parent features
+    repeated FeatureRelationship parents = 6;
+    // List of biological children feature
+    repeated FeatureRelationship children = 7;
+    repeated FeatureLocation location = 8;
+    // aLTERNATe list of names
+    repeated string synonyms = 9;
+    repeated Publication publications = 10;
+    // Indicates if the feature is generated(annotated) from the
+    // result of an automated analysis
+    bool is_analysis = 11;
+    // Earlier instance of the feature that this one has replaced
+    string previous = 12;
+    //  Next instance of the feature that this one got replaced with
+    string next = 13;
+    repeated Dbxref dbxrefs = 14;
+}
+
+// Defintion for managing synonym of a feature
+message FeatureSynonym {
+    string id = 1;
+    string synonym = 2;
+}
+
+// Definition for managing a previous or next feature in the feature
+// history
+message FeatureHistory {
+    string id = 1;
+    string linked_feature = 2;
+}
+
+// Container for linked publications
+message Publication {
+    // An identifier that refers to a publication
+    string publication_id = 1;
+    // Source of this publication identifier
+    string source = 2 [(validator.field) = {string_not_empty: true}];
+}
+
+// Definition for managing publication with a feature
+message FeaturePublication {
+    string id = 1;
+    FeaturePublication publication = 2;
+}
+
+
+// Definition for connecting two biologically related(parent or
+// children) features
+message FeatureConnection {
+    string id = 1;
+    FeatureRelationship relationship = 2;
+}
+
+// Definition for a related feature
+message FeatureRelationship {
+    // Type of relationship, generally a sequence ontology term
+    string relation = 1;
+    // Related feature
+    string feature = 2;
+}
+
+// Definition for managing dbxref with a feature
+message FeatureDbxref {
+    string id = 1;
+    Dbxref dbxref = 2;
+}
+
+// An identifier typically from a bioinformatics database(NCBI,Uniprot,Ensembl etc.)
+message Dbxref {
+    // Identifier
+    string identifier = 1 [(validator.field) = {string_not_empty: true}];
+    int64 version = 2;
+    // Source database
+    string database = 3 [(validator.field) = {string_not_empty: true}];
+}
+
+
+// Definition for attaching a new location to a feature
+message NewFeatureLocation {
+    string id = 1;
+    FeatureLocation location = 2;
+}
+
+// The location of a feature relative to another feature using space-based(interbase) coordinates.
+message FeatureLocation {
+    // Source or reference feature(identifier) which this location is relative to
+    string source_feature = 1;
+    // start/leftmost boundary of this location in linear range based on
+    // interbase coordinates. To convert it to base-oriented system, add 1 to
+    // this value.
+    int64 start = 2;
+    // End/rightmost boundary of this location in linear range based on
+    // interbase coordinates. No conversion is needed to convert it to a base
+    // oriented system.
+    int64 end = 3;
+    // Orientation of this location, should be one of 0,1, or -1
+    int64 strand = 4;
+    // Phase of translation with respect to source feature, should be one of 0,1,or 2.
+    int64 phase = 5;
+    // Alternate residues which differ from feature residues
+    string residue = 6;
+    // Represents derivable extra location of a feature. The default value 0 is
+    // used for direct location. Any other derived location gets values greater
+    // than 0. For example, the position of an exon on a BAC and in a global
+    // chromosomal coordinates.
+    int64 group = 7;
+    // Used for feature with multiple locations, 0 is used as default. For
+    // example, a blast HSP has two locations, one on the query and one on the
+    // subject.
+    int64 rank = 8;
+}
+
+// Defintion of an organism entry
+message Organism {
+    // Taxon identifier
+    string taxon_id = 1;
+    // Organism genus 
+    string genus = 2;
+    // Organism species 
+    string species = 3;
+    string common_name = 4;
+    // Taxonomic rank
+    string rank = 5;
+    // Scientific name
+    string scientific_name = 6;
+    // Strain name
+    string strain = 7;
+}
+
+
+// Container for feature annotation
+/*message Annotation {*/
+    /*// annotation in plain text format*/
+    /*string text = 1;*/
+    /*// serialized text content in a format recognized by frontend rich text*/
+    /*// editor*/
+    /*string editable_text = 2;*/
+    /*// Identifier of the user who created the annotation*/
+    /*int64 created_by = 3;*/
+    /*// Timestamp for creation*/
+    /*google.protobuf.Timestamp created_at = 4;*/
+    /*// An identifiable tagname for the annotation, primarily*/
+    /*// restricted to an ontology term.*/
+    /*string tag = 5;*/
+    /*// rank is to order multiple annotations with identical tag name.*/
+    /*// By default it is set to 0.*/
+    /*int64 rank = 6;*/
+    /*// version refers to the current version no*/
+    /*int64 version = 7;*/
+    /*// previous refers to parent annotation*/
+    /*int64 previous = 8;*/
+    /*// next refers to child annotation*/
+    /*int64 next = 9;*/
+    /*// associated feature*/
+    /*string id = 10;*/
+/*}*/
+
+
+// `ListRequest` contains parameters for manipulating query for returning
+// collection.
+message ListRequest {
+    // The page number to fetch
+    int64 pagenum = 1;
+    // Number of records per page
+    int64 pagesize = 2;
+    // The `filter` query parameter restricts the data return by the
+    // collection. To use it, supply an attribute to filter, followed by a
+    // filter expression. It uses the following syntax...
+    //        attribute operator expression
+    // attribute - Any one of the valid attribute of the resource.
+    // operator - Defines the type of filter match to use. It could be any of
+    // the following four and all of them should be URL-encoded.
+    //
+    //              ==  Equals (URL encoding is %3D%3D)
+    //              !=  Not equals
+    //              =@  Contains substring
+    //              !@  Not contains substring
+    //
+    // expression - The value that will be included or excluded from the
+    // result. URL-reserved characters must be URL-encoded.
+    // For example, the following filter returns all users with last name `Gag`.
+    //
+    //           filter: "last_name==Gag"
+    //
+    // Filter can be combined using OR or AND boolean logic.
+    //   * The OR is represented using a comma(,).
+    //   * The AND is represented using a semi-colon(;).
+    //   * AND and OR operators can be combined and AND takes precedence over OR.
+    string filter = 3;
+}
