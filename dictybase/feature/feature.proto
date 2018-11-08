@@ -45,8 +45,8 @@ service FeatureService {
     rpc GetLocatedFeatures(LocatedFeatureFilter) returns (PaginatedFeatureCollection) {
         option (google.api.http).get = "/features/{id}/locatedfeatures";
     }
-    // List all features
-    rpc ListFeatures(ListRequest) returns (PaginatedFeatureCollection) {
+    // Retrieves all features
+    rpc ListFeatures(ListParameters) returns (PaginatedFeatureCollection) {
         option (google.api.http).get = "/features";
     }
     // Create a new feature
@@ -208,13 +208,39 @@ message LocatedFeatureFilter {
     string id = 1;
     // The biological type of feature, generally a sequence ontology term.
     string type = 2;
-}
-
-message FeatureAnnotationFilter {
-    string id = 1;
-    // An identifiable tagname for the annotation, primarily
-    // restricted to an ontology term.
-    string tag = 2;
+    // The `filter` field restricts no of features in the collection by using a
+    // combination of custom start and end coordinates of reference feature. To
+    // use it, supply the field name followed by the filter expression. It uses
+    // the following syntax...
+    //        field_name operator value
+    //
+    // field_name - Any one of the allowed field name that are given below.
+    //
+    //   * start - leftmost boundary of location (number).
+    //   * end   - rightmost boundary of location (number).
+    //
+    // operator - Defines the type of filter match to use. It could be any of
+    // the following and all of them should be URL-encoded for http request.
+    //
+    //              >   Greater than
+    //              <   Less than
+    //              =<  Less than equal to
+    //              >=  Greater than equal to
+    //
+    // value - The value must be a number here. If only one of the value is
+    // given, the coordinate of reference feature is for the other by default.
+    // URL-reserved
+    // characters must be URL-encoded for http request.
+    //
+    //           filter: "start>=100"
+    //           filter: "end<789"
+    //
+    // Filter can be combined using AND boolean logic. The AND is represented
+    // using a semi-colon(;).
+    //
+    //           filter: "start>=89;end<=7430"
+    //
+    string filter = 3;
 }
 
 // Definition for creating new feature
@@ -307,8 +333,9 @@ message FeatureAttributes {
     repeated FeatureRelationship parents = 10;
     // List of biological children feature
     repeated FeatureRelationship children = 11;
+    // List of feature locations in the reference backend
     repeated FeatureLocation location = 12;
-    // aLTERNATe list of names
+    // Alternate list of names
     repeated string synonyms = 13;
     repeated Publication publications = 14;
     // Indicates if the feature is generated(annotated) from the
@@ -476,64 +503,57 @@ message Organism {
     string strain = 7;
 }
 
-
-// Container for feature annotation
-/*message Annotation {*/
-    /*// annotation in plain text format*/
-    /*string text = 1;*/
-    /*// serialized text content in a format recognized by frontend rich text*/
-    /*// editor*/
-    /*string editable_text = 2;*/
-    /*// Identifier of the user who created the annotation*/
-    /*int64 created_by = 3;*/
-    /*// Timestamp for creation*/
-    /*google.protobuf.Timestamp created_at = 4;*/
-    /*// An identifiable tagname for the annotation, primarily*/
-    /*// restricted to an ontology term.*/
-    /*string tag = 5;*/
-    /*// rank is to order multiple annotations with identical tag name.*/
-    /*// By default it is set to 0.*/
-    /*int64 rank = 6;*/
-    /*// version refers to the current version no*/
-    /*int64 version = 7;*/
-    /*// previous refers to parent annotation*/
-    /*int64 previous = 8;*/
-    /*// next refers to child annotation*/
-    /*int64 next = 9;*/
-    /*// associated feature*/
-    /*string id = 10;*/
-/*}*/
-
-
-// `ListRequest` contains parameters for manipulating query for returning
-// collection.
-message ListRequest {
+// ListParameters defines fields for manipulating output of PaginatedFeatureCollection
+message ListParameters {
     // The page number to fetch
     int64 pagenum = 1;
     // Number of records per page
     int64 pagesize = 2;
-    // The `filter` query parameter restricts the data return by the
-    // collection. To use it, supply an attribute to filter, followed by a
-    // filter expression. It uses the following syntax...
-    //        attribute operator expression
-    // attribute - Any one of the valid attribute of the resource.
+    // The `filter` field restricts the data return by the collection. To use
+    // it, supply an allowed field to filter, followed
+    // by a filter expression. It uses the following syntax...
+    //        field_name operator value
+    //
+    // field_name - Any one of the allowed field name that are given below.
+    //
+    //   * name      - feature name (string).
+    //   * type      - The biological type of feature, generally a sequence ontology term (string)
+    //   * species   - Organism species (string)
+    //   * genus     - Organism genus (string)
+    //   * strain    - Strain name of the organism (string)
+    //   * taxon_id  - Taxon identifier (string)
+    //   * obsolete  - Live or retired feature (bool)
+    //   * analysis  - Feature as a result of analysis (bool)
+    //
     // operator - Defines the type of filter match to use. It could be any of
-    // the following four and all of them should be URL-encoded.
+    // the following four and all of them should be URL-encoded for http request.
     //
     //              ==  Equals (URL encoding is %3D%3D)
     //              !=  Not equals
-    //              =@  Contains substring
-    //              !@  Not contains substring
+    //              ~  Contains/matches substring (case insensitive)
+    //              !~  Not contains substring (case insensitive)
+    //              >   Greater than
+    //              <   Less than
+    //              =<  Less than equal to
+    //              >=  Greater than equal to
     //
-    // expression - The value that will be included or excluded from the
-    // result. URL-reserved characters must be URL-encoded.
-    // For example, the following filter returns all users with last name `Gag`.
+    // value - The value must be a string, a number or a boolean. URL-reserved
+    // characters must be URL-encoded for http request.
     //
-    //           filter: "last_name==Gag"
+    //           filter: "name==pcA"
+    //           filter: "name~scr"
+    //           filter: "obsolete==true"
     //
     // Filter can be combined using OR or AND boolean logic.
     //   * The OR is represented using a comma(,).
     //   * The AND is represented using a semi-colon(;).
     //   * AND and OR operators can be combined and AND takes precedence over OR.
+    //
+    //           filter: "name==pcA;obsolete==true;type=exon"
+    //           filter: "name==transcription,name==gtx"
+    //
     string filter = 3;
+    // The sort field allow to sort the data return by the collection based on
+    // allowed fields. To use it, supply a comma separated one
+    // or more allowed fields.
 }
