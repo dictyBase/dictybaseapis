@@ -510,7 +510,7 @@ message ListParameters {
     // Number of records per page
     int64 pagesize = 2;
     // The `filter` field restricts the data return by the collection. To use
-    // it, supply an allowed field to filter, followed
+    // it, supply one or multiple allowed fields to filter followed
     // by a filter expression. It uses the following syntax...
     //        field_name operator value
     //

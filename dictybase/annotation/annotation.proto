@@ -1,0 +1,216 @@
+syntax = "proto3";
+
+package dictybase.annotation;
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "dictybase/api/jsonapi/payload.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/annotation;annotation";
+option java_multiple_files = true;
+option java_outer_classname = "AnnotationProto";
+option java_package = "org.dictybase.annotation";
+option objc_class_prefix = "DICTYAPI";
+
+// The tagged annotation service specification
+service TaggedAnnotationService {
+    // Retrieves the specified tagged annotation
+    rpc GetAnnotation(AnnotationId) returns (TaggedAnnotation) {}
+    // Retrieves a single tagged annotation associated with an entry
+    rpc GetEntryAnnotation(EntryAnnotationRequest) returns (TaggedAnnotation) {}
+    // Retrieves all tagged annotations
+    rpc ListAnnotations(ListParameters) returns (TaggedAnnotationCollection) {}
+    // Create a tagged annotation
+    rpc CreateAnnotation(NewTaggedAnnotation) returns (TaggedAnnotation) {}
+    // Update an existing annotation
+    rpc UpdateAnnotation(TaggedAnnotationUpdate) returns (TaggedAnnotation) {}
+    // Delete an existing annotation
+    rpc DeleteAnnotation(AnnotationId) returns (google.protobuf.Empty) {}
+}
+
+message AnnotationId {
+    // unique identifier for the annotation
+    string id = 1 [(validator.field) = {string_not_empty : true}];
+}
+
+
+// Definition for various fields that are needed for fetching annotation for an
+// entry
+message EntryAnnotationRequest {
+    // Unique identifier(generally email) of the user who created the annotation
+    string created_by = 1 ;
+    // An identifiable tagname for the annotation, primarily
+    // a structured tag, generally an ontology term.
+    string tag = 2 [(validator.field) = {string_not_empty : true}];
+    // version refers to the current version no
+    int64 version = 3;
+    // unique identifier of a biological entity that is being annotated
+    string entry_id = 4 [(validator.field) = {string_not_empty : true}];
+    // Name of ontology in which the tag name is taken
+    string ontology = 5 [(validator.field) = {string_not_empty : true}];
+}
+
+// List of paginated tagged annotations
+message TaggedAnnotationCollection {
+    message Data {
+        // resource name, by default should be annotation
+        string type = 1;
+        // unique identifier for the annotation
+        string id = 2;
+        TaggedAnnotationAttributes attributes = 3;
+    }
+    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    dictybase.api.jsonapi.PaginationLinks links = 2;
+    dictybase.api.jsonapi.Pagination pagination = 3 [(validator.field) = {msg_exists : true}];
+}
+
+
+// Definition of an tag value based biological annotation where the tag always
+// represents a term from ontology.
+message TaggedAnnotation {
+    message Data {
+        // resource name, by default should be annotation
+        string type = 1;
+        // unique identifier for the annotation
+        string id = 2;
+        TaggedAnnotationAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Definition of various tagged annotation attributes
+message TaggedAnnotationAttributes {
+    // annotation in plain text format
+    string value = 1 [(validator.field) = {string_not_empty : true}];
+    // serialized text content in a format recognized by frontend rich text
+    // editor
+    string editable_value = 2 [(validator.field) = {string_not_empty : true}];
+    // Unique identifier(generally email) of the user who created the annotation
+    string created_by = 3 [(validator.field) = {string_not_empty : true}];
+    // Timestamp for creation
+    google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists : true}];
+    // An identifiable tagname for the annotation, primarily
+    // a structured tag, generally an ontology term.
+    string tag = 5 [(validator.field) = {string_not_empty : true}];
+    // version refers to the current version no
+    int64 version = 6 [(validator.field) = {int_gt : 0}];
+    // previous refers to unique identifier of parent annotation
+    int64 previous = 7;
+    // next refers to unique identifier child annotation
+    int64 next = 8;
+    // unique identifier of a biological entity that is being annotated
+    string entry_id = 9 [(validator.field) = {string_not_empty : true}];
+    // Name of ontology in which the tag name is taken
+    string ontology = 10 [(validator.field) = {string_not_empty : true}];
+}
+
+
+// Definition for creating a new tagged annotation
+message NewTaggedAnnotation {
+    message Data {
+        // resource name, by default should be annotation
+        string type = 1;
+        NewTaggedAnnotationAttributes attributes = 2;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// NewTaggedAnnotation defines attributes for creating a new annotation
+message NewTaggedAnnotationAttributes {
+    // annotation in plain text format
+    string value = 1 [(validator.field) = {string_not_empty : true}];
+    // serialized text content in a format recognized by frontend rich text
+    // editor
+    string editable_value = 2 [(validator.field) = {string_not_empty : true}];
+    // Unique identifier(generally email) of the user who created the annotation
+    string created_by = 3 [(validator.field) = {string_not_empty : true}];
+    // An identifiable tagname for the annotation, primarily
+    // a structured tag, generally an ontology term.
+    string tag = 4 [(validator.field) = {string_not_empty : true}];
+    // unique identifier of a biological entity that is being annotated
+    string entry_id = 5 [(validator.field) = {string_not_empty : true}];
+    // Name of ontology from which the tag name is taken
+    string ontology = 6 [(validator.field) = {string_not_empty : true}];
+}
+
+
+// Definition for updating an existing annotation
+message TaggedAnnotationUpdate {
+    message Data {
+        // resource name, by default should be annotation
+        string type = 1;
+        // unique identifier for the annotation
+        string id = 2 [(validator.field) = {string_not_empty : true}];
+        TaggedAnnotationUpdateAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+
+// TaggedUpdateAnnotation defines attributes for updating an existing annotation
+message TaggedAnnotationUpdateAttributes {
+    // annotation in plain text format
+    string value = 1 [(validator.field) = {string_not_empty : true}];
+    // serialized text content in a format recognized by frontend rich text
+    // editor
+    string editable_value = 2 [(validator.field) = {string_not_empty : true}];
+    // Unique identifier(generally email) of the user who created the annotation
+    string created_by = 3 [(validator.field) = {string_not_empty : true}];
+}
+
+
+// ListParameters defines fields for manipulating output of TaggedAnnotation collection
+message ListParameters {
+    // The page number to fetch
+    int64 pagenum = 1;
+    // Number of records per page
+    int64 pagesize = 2;
+    // The `filter` field restricts the data return by the collection. To use
+    // it, supply one or multiple allowed fields to filter followed
+    // by a filter expression. It uses the following syntax...
+    //        field_name operator expression
+    //
+    // The following fields of `AnnotationAttributes` definition are allowed to
+    // be used for filtering
+    //   * entry_id    - The entry that is being annotated (string)
+    //   * value       - The annotation in plain text format (string) 
+    //   * created_by  - Email id of the user (string)
+    //   * tag         - Tag name, a term from an ontology (string).
+    //   * ontology    - Ontology that provides the tag names (string).
+    //   * version     - Version no (number).
+    //
+    // field_name - Any one of the allowed field_name of the `AnnotationAttributes` definition.
+    // operator - Defines the type of filter match to use. It could be any of
+    // the following four and all of them should be URL-encoded for http request.
+    //
+    //              ==  Equals (URL encoding is %3D%3D)
+    //              !=  Not equals
+    //              ~  Contains substring
+    //              !~  Not contains substring
+    //              >   Greater than
+    //              <   Less than
+    //              =<  Less than equal to
+    //              >=  Greater than equal to
+    //
+    // expression - The value that will be included or excluded from the
+    // result. URL-reserved characters must be URL-encoded for http request.
+    //
+    //           filter: "created_by==caboose@abc.com"
+    //           filter: "entry_id==DDB_G4839483"
+    //           filter: "value~actin"
+    //
+    // Filter can be combined using OR or AND boolean logic.
+    //   * The OR is represented using a comma(,).
+    //   * The AND is represented using a semi-colon(;).
+    //   * AND and OR operators can be combined and AND takes precedence over OR.
+    //
+    //           filter: "value~cytoskeletion;tag==cell membrane;ontology==cellular"
+    //
+    string filter = 3;
+    // The sort field allow to sort the data return by the collection based on
+    // fields of `AnnotationAttributes. To use it, supply a comma separated one
+    // or more allowed field from the definition of `AnnotationAttributes`.
+}
