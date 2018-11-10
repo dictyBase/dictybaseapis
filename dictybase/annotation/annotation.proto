@@ -38,19 +38,23 @@ message AnnotationId {
 
 
 // Definition for various fields that are needed for fetching annotation for an
-// entry
+// entry. The tag, ontology and entry_id must be provided, version and rank are
+// optional and their default values are used.
 message EntryAnnotationRequest {
     // Unique identifier(generally email) of the user who created the annotation
     string created_by = 1 ;
     // An identifiable tagname for the annotation, primarily
     // a structured tag, generally an ontology term.
     string tag = 2 [(validator.field) = {string_not_empty : true}];
-    // version refers to the current version no
+    // Version no. of the annotation, current version no. is assumed by default
     int64 version = 3;
     // unique identifier of a biological entity that is being annotated
     string entry_id = 4 [(validator.field) = {string_not_empty : true}];
     // Name of ontology in which the tag name is taken
     string ontology = 5 [(validator.field) = {string_not_empty : true}];
+    // Ordering of annotation when an entry has multiple annotations with
+    // identical tag from the same ontology. By default, rank 0 is assumed.
+    int64 rank = 6;
 }
 
 // List of paginated tagged annotations
@@ -105,6 +109,9 @@ message TaggedAnnotationAttributes {
     string entry_id = 9 [(validator.field) = {string_not_empty : true}];
     // Name of ontology in which the tag name is taken
     string ontology = 10 [(validator.field) = {string_not_empty : true}];
+    // Ordering of annotation when an entry has multiple annotations with
+    // identical tag from the same ontology.
+    int64 rank = 11;
 }
 
 
@@ -134,6 +141,9 @@ message NewTaggedAnnotationAttributes {
     string entry_id = 5 [(validator.field) = {string_not_empty : true}];
     // Name of ontology from which the tag name is taken
     string ontology = 6 [(validator.field) = {string_not_empty : true}];
+    // Ordering of annotation when an entry has multiple annotations with
+    // identical tag from the same ontology. By default, rank 0 is used.
+    int64 rank = 7;
 }
 
 
