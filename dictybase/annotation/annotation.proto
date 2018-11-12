@@ -55,6 +55,8 @@ message EntryAnnotationRequest {
     // Ordering of annotation when an entry has multiple annotations with
     // identical tag from the same ontology. By default, rank 0 is assumed.
     int64 rank = 6;
+    // Status for active or retired annotation. Active annotation is chosen by default.
+    bool is_obsolete = 7;
 }
 
 // List of paginated tagged annotations
@@ -112,6 +114,8 @@ message TaggedAnnotationAttributes {
     // Ordering of annotation when an entry has multiple annotations with
     // identical tag from the same ontology.
     int64 rank = 11;
+    // Status for active or retired annotation
+    bool is_obsolete = 12;
 }
 
 
