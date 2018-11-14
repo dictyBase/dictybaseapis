@@ -4,7 +4,6 @@ package dictybase.annotation;
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
-import "dictybase/api/jsonapi/payload.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 
 
@@ -69,8 +68,7 @@ message TaggedAnnotationCollection {
         TaggedAnnotationAttributes attributes = 3;
     }
     repeated Data data = 1 [(validator.field) = {msg_exists : true}];
-    dictybase.api.jsonapi.PaginationLinks links = 2;
-    dictybase.api.jsonapi.Pagination pagination = 3 [(validator.field) = {msg_exists : true}];
+    Meta meta = 3 [(validator.field) = {msg_exists : true}];
 }
 
 
@@ -178,10 +176,10 @@ message TaggedAnnotationUpdateAttributes {
 
 // ListParameters defines fields for manipulating output of TaggedAnnotation collection
 message ListParameters {
-    // The page number to fetch
-    int64 pagenum = 1;
-    // Number of records per page
-    int64 pagesize = 2;
+    // A unique pointer to the next set of result in the list
+    int64 next_cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
     // The `filter` field restricts the data return by the collection. To use
     // it, supply one or multiple allowed fields to filter followed
     // by a filter expression. It uses the following syntax...
@@ -227,4 +225,14 @@ message ListParameters {
     // The sort field allow to sort the data return by the collection based on
     // fields of `AnnotationAttributes. To use it, supply a comma separated one
     // or more allowed field from the definition of `AnnotationAttributes`.
+}
+
+// Metadata definition for traversing the collection
+message Meta {
+    // A unique pointer to the next set of result in the collection
+    int64 next_cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
+    // Total number of records in the collection.
+    int64 total = 3;
 }
