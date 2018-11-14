@@ -198,10 +198,15 @@ message ListParameters {
     // operator - Defines the type of filter match to use. It could be any of
     // the following four and all of them should be URL-encoded for http request.
     //
-    //              ==  Equals (URL encoding is %3D%3D)
+    //        Operators for strings
+    //              =~    Contains substring
+    //              !~   Not contains substring
+    //              ===  Equals
+    //              !==  Not equals
+    //
+    //        Operators for numbers
+    //              ==  Equals
     //              !=  Not equals
-    //              ~  Contains substring
-    //              !~  Not contains substring
     //              >   Greater than
     //              <   Less than
     //              =<  Less than equal to
