@@ -24,7 +24,8 @@ service TaggedAnnotationService {
     rpc ListAnnotations(ListParameters) returns (TaggedAnnotationCollection) {}
     // Create a tagged annotation
     rpc CreateAnnotation(NewTaggedAnnotation) returns (TaggedAnnotation) {}
-    // Update an existing annotation
+    // Update an existing annotation, in this case a new annotation entry is
+    // created with a link to the previous annotation(copy on write).
     rpc UpdateAnnotation(TaggedAnnotationUpdate) returns (TaggedAnnotation) {}
     // Delete an existing annotation
     rpc DeleteAnnotation(AnnotationId) returns (google.protobuf.Empty) {}
@@ -101,19 +102,15 @@ message TaggedAnnotationAttributes {
     string tag = 5 [(validator.field) = {string_not_empty : true}];
     // version refers to the current version no
     int64 version = 6 [(validator.field) = {int_gt : 0}];
-    // previous refers to unique identifier of parent annotation
-    int64 previous = 7;
-    // next refers to unique identifier child annotation
-    int64 next = 8;
     // unique identifier of a biological entity that is being annotated
-    string entry_id = 9 [(validator.field) = {string_not_empty : true}];
+    string entry_id = 7 [(validator.field) = {string_not_empty : true}];
     // Name of ontology in which the tag name is taken
-    string ontology = 10 [(validator.field) = {string_not_empty : true}];
+    string ontology = 8 [(validator.field) = {string_not_empty : true}];
     // Ordering of annotation when an entry has multiple annotations with
     // identical tag from the same ontology.
-    int64 rank = 11;
+    int64 rank = 9;
     // Status for active or retired annotation
-    bool is_obsolete = 12;
+    bool is_obsolete = 10;
 }
 
 
