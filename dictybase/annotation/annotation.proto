@@ -227,8 +227,10 @@ message ListParameters {
 
 // Metadata definition for traversing the collection
 message Meta {
-    // A unique pointer to the next set of result in the collection
-    int64 next_cursor = 1;
+    // A unique pointer to the next set of result in the collection. Set the
+    // cursor value parameter to the value of next_cursor to retrieve the next
+    // set of collection using the same method
+    string next_cursor = 1;
     // Maximum number of records that can be fetch per request
     int64 limit = 2;
     // Total number of records in the collection.
