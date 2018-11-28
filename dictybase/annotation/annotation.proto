@@ -170,7 +170,7 @@ message TaggedAnnotationUpdateAttributes {
 // ListParameters defines fields for manipulating output of TaggedAnnotation collection
 message ListParameters {
     // A unique pointer to the next set of result in the list
-    string next_cursor = 1;
+    string cursor = 1;
     // Maximum number of records that can be fetch per request
     int64 limit = 2;
     // The `filter` field restricts the data return by the collection. To use
