@@ -165,11 +165,13 @@ message ListParameters {
     //
     // The following fields of `OrderAttributes` definition are allowed to
     // be used for filtering
+    //   * item               - Items that are part of order (string).
     //   * courier            - The courier used for delivery (string)
-    //   * courier_account    - Account identification used for courier service
-    //   * payment            - Type of payment being used
-    //   * purchase_order_num - Order number for purchase
+    //   * payment            - Type of payment being used (string)
     //   * status             - The status of the order (string)
+    //   * created_at         - When the items are ordered (number), a numeric
+    //                          timestamp indicating the number of milliseconds elapsed since the UNIX
+    //                          epoch.
     //
     // field_name - Any one of the allowed field_name of the `OrderAttributes` definition.
     // operator - Defines the type of filter match to use. It could be any of
@@ -181,9 +183,8 @@ message ListParameters {
     //              ===  Equals
     //              !==  Not equals
     //
-    //        Operators for numbers
+    //        Operators for number
     //              ==  Equals
-    //              !=  Not equals
     //              >   Greater than
     //              <   Less than
     //              =<  Less than equal to
