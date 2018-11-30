@@ -68,8 +68,9 @@ message OrderAttributes {
     string payer = 10;
     // Person who is ordering (logged in user)
     string purchaser = 11;
-    // List of stocks being purchased
-    repeated string stocks = 12;
+    // List of items in the order, in this case it will be mostly biological
+    // stocks such as plasmids and strains
+    repeated string items = 12;
 }
 
 // Definition for creating a new order
