@@ -134,6 +134,9 @@ message UpdateOrderAttributes {
     string purchase_order_num = 5;
     // Status of order
     string status = 6;
+    // List of items in the order, in this case it will be mostly biological
+    // stocks such as plasmids and strains
+    repeated string items = 7;
 }
 
 // List of orders
