@@ -1,0 +1,396 @@
+syntax = "proto3";
+
+package dictybase.publication;
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/publication;publication";
+option java_multiple_files = true;
+option java_outer_classname = "PublicationProto";
+option java_package = "org.dictybase.publication";
+option objc_class_prefix = "DICTYAPI";
+
+// The publication service specification
+service PublicationService {
+    // Retrieves publication by ID
+    rpc GetPublication(PublicationId) returns (Publication) {}
+    // Create new publication
+    rpc CreatePublication(NewPublication) returns (Publication) {}
+    // Update an existing publication
+    rpc UpdatePublication(UpdatePublication) returns (Publication) {}
+    // Delete an existing publication
+    rpc DeletePublication(PublicationId) returns (google.protobuf.Empty) {}
+    // List all publications
+    rpc ListPublications(ListPublicationParameters) returns (PublicationCollection) {}
+    // Retrieves author by ID
+    rpc GetAuthor(AuthorId) returns (Author) {}
+    // Create new author for a publication
+    rpc CreateAuthor(NewAuthor) returns (Author) {}
+    // Update a specific author
+    rpc UpdateAuthor(UpdateAuthor) returns (Author) {}
+    // Delete a specific author
+    rpc DeleteAuthor(DeleteId) returns (google.protobuf.Empty) {}
+    // List all authors for a publication
+    rpc ListAuthors(ListAuthorParameters) returns (AuthorCollection) {}
+}
+
+message PublicationId {
+    // Unique identifier for the publication
+    string id = 1 [(validator.field) = {string_not_empty : true}];
+}
+
+// Definition of an individual publication
+message Publication {
+    message Data {
+        // Resource name, by default should be publication
+        string type = 1;
+        // Unique identifier for the publication
+        string id = 2;
+        PublicationAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Definition of various publication attributes
+message PublicationAttributes {
+    // Digital object identifier for publication
+    string doi = 1;
+    // Title of publication
+    string title = 2;
+    // Abstract of publication
+    string abstract = 3;
+    // Journal where the publication was published
+    string journal = 4;
+    // Year publication was published
+    string year = 5;
+    // Volume of the publication
+    string volume = 6;
+    // Pages containing the publication
+    string pages = 7;
+    // Month publication was published
+    string month = 8;
+    // International Standard Serial Number of publication
+    string issn = 9;
+    // Type of publication (i.e. "journal_article")
+    string pub_type = 10;
+    // Source of the publication (i.e. "pubmed")
+    string source = 11;
+    // Issue of the publication
+    string issue = 12;
+    // Status of the publication
+    string status = 13;
+    // List of authors of the publication
+    repeated string authors = 14;
+}
+
+// Definition for creating a new publication
+message NewPublication {
+    message Data {
+        // Resource name, by default should be publication
+        string type = 1;
+        NewPublicationAttributes attributes = 2;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines attributes for creating a new publication
+message NewPublicationAttributes {
+    // Digital object identifier for publication
+    string doi = 1 [(validator.field) = {string_not_empty : true}];
+    // Title of publication
+    string title = 2 [(validator.field) = {string_not_empty : true}];
+    // Abstract of publication
+    string abstract = 3 [(validator.field) = {string_not_empty : true}];
+    // Journal where the publication was published
+    string journal = 4 [(validator.field) = {string_not_empty : true}];
+    // Year publication was published
+    string year = 5 [(validator.field) = {string_not_empty : true}];
+    // Volume of the publication
+    string volume = 6 [(validator.field) = {string_not_empty : true}];
+    // Pages containing the publication
+    string pages = 7 [(validator.field) = {string_not_empty : true}];
+    // Month publication was published
+    string month = 8 [(validator.field) = {string_not_empty : true}];
+    // International Standard Serial Number of publication
+    string issn = 9 [(validator.field) = {string_not_empty : true}];
+    // Type of publication (i.e. "journal_article")
+    string pub_type = 10 [(validator.field) = {string_not_empty : true}];
+    // Source of the publication (i.e. "pubmed")
+    string source = 11 [(validator.field) = {string_not_empty : true}];
+    // Issue of the publication
+    string issue = 12 [(validator.field) = {string_not_empty : true}];
+    // Status of the publication
+    string status = 13 [(validator.field) = {string_not_empty : true}];
+    // List of authors of the publication
+    repeated string authors = 14 [(validator.field) = {string_not_empty : true}];
+}
+
+// Definition for updating an existing publication
+message UpdatePublication {
+    message Data {
+        // Resource name, by default should be publication
+        string type = 1;
+        // Unique identifier for the publication
+        string id = 2 [(validator.field) = {string_not_empty : true}];
+        UpdatePublicationAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines attributes for updating an existing publication
+message UpdatePublicationAttributes {
+    // Digital object identifier for publication
+    string doi = 1;
+    // Title of publication
+    string title = 2;
+    // Abstract of publication
+    string abstract = 3;
+    // Journal where the publication was published
+    string journal = 4;
+    // Year publication was published
+    string year = 5;
+    // Volume of the publication
+    string volume = 6;
+    // Pages containing the publication
+    string pages = 7;
+    // Month publication was published
+    string month = 8;
+    // International Standard Serial Number of publication
+    string issn = 9;
+    // Type of publication (i.e. "journal_article")
+    string pub_type = 10;
+    // Source of the publication (i.e. "pubmed")
+    string source = 11;
+    // Issue of the publication
+    string issue = 12;
+    // Status of the publication
+    string status = 13;
+    // List of authors of the publication
+    repeated string authors = 14;
+}
+
+// List of publications
+message PublicationCollection {
+    message Data {
+        // Resource name, by default should be publication
+        string type = 1;
+        // Unique identifier for the publication
+        string id = 2;
+        PublicationAttributes attributes = 3;
+    }
+    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    Meta meta = 3 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines fields for manipulating output of Publication collection
+message ListPublicationParameters {
+    // A unique pointer to the next set of result in the list
+    int64 cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
+    // The `filter` field restricts the data return by the collection. To use
+    // it, supply one or multiple allowed fields to filter followed
+    // by a filter expression. It uses the following syntax...
+    //        field_name operator expression
+    //
+    // The following fields of `PublicationAttributes` definition are allowed to
+    // be used for filtering
+    //   * journal            - Journal where the publication was published (string)
+    //   * year               - Year publication was published (string)
+    //   * pub_type           - Type of publication (string)
+    //   * source             - Source of the publication (string)
+    //   * issue              - Issue of the publication (string)
+    //   * status             - Status of the publication (string)
+    //   * author             - Authors of the publication (string)
+    //
+    // field_name - Any one of the allowed field_name of the `PublicationAttributes` definition.
+    // operator - Defines the type of filter match to use. It could be any of
+    // the following four and all of them should be URL-encoded for http request.
+    //
+    //        Operators for strings
+    //              =~   Contains substring
+    //              !~   Not contains substring
+    //              ===  Equals
+    //              !==  Not equals
+    //
+    //        Operators for number
+    //              ==  Equals
+    //              >   Greater than
+    //              <   Less than
+    //              =<  Less than equal to
+    //              >=  Greater than equal to
+    //
+    // expression - The value that will be included or excluded from the
+    // result. URL-reserved characters must be URL-encoded for http request.
+    //
+    //           filter: "pub_type===journal_article"
+    //           filter: "source===pubmed"
+    //
+    // Filter can be combined using OR or AND boolean logic.
+    //   * The OR is represented using a comma(,).
+    //   * The AND is represented using a semi-colon(;).
+    //   * AND and OR operators can be combined and AND takes precedence over OR.
+    //
+    //           filter: "year==2008;journal===Genesis"
+    //
+    string filter = 3;
+    // The sort field allow to sort the data return by the collection based on
+    // fields of `PublicationAttributes. To use it, supply a comma separated one
+    // or more allowed field from the definition of `PublicationAttributes`.
+}
+
+message AuthorId {
+    // Unique identifier for the author
+    string id = 1 [(validator.field) = {string_not_empty : true}];
+}
+
+// Definition of an individual author
+message Author {
+    message Data {
+        // Resource name, by default should be author
+        string type = 1;
+        // Unique identifier for the author
+        string id = 2;
+        AuthorAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Definition of various author attributes
+message AuthorAttributes {
+    // Last name of author
+    string last_name = 1;
+    // Any given names of the author
+    string given_names = 2;
+    // Ranking for the author
+    string rank = 3;
+    // List of publications featuring the author
+    repeated string publications = 4;
+}
+
+// Definition for creating a new author
+message NewAuthor {
+    message Data {
+        // Resource name, by default should be author
+        string type = 1;
+        NewAuthorAttributes attributes = 2;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines attributes for creating a new author
+message NewAuthorAttributes {
+    // Last name of author
+    string last_name = 1 [(validator.field) = {string_not_empty : true}];
+    // Any given names of the author
+    string given_names = 2 [(validator.field) = {string_not_empty : true}];
+    // Ranking for the author
+    string rank = 3 [(validator.field) = {string_not_empty : true}];
+    // List of publications featuring the author
+    repeated string publications = 4 [(validator.field) = {string_not_empty : true}];
+}
+
+// Definition for updating an existing author
+message UpdateAuthor {
+    message Data {
+        // Resource name, by default should be author
+        string type = 1;
+        // Unique identifier for the author
+        string id = 2 [(validator.field) = {string_not_empty : true}];
+        UpdateAuthorAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines attributes for updating an existing author
+message UpdateAuthorAttributes {
+    // Last name of author
+    string last_name = 1;
+    // Any given names of the author
+    string given_names = 2;
+    // Ranking for the author
+    string rank = 3;
+    // List of publications featuring the author
+    repeated string publications = 4;
+}
+
+// List of authors
+message AuthorCollection {
+    message Data {
+        // Resource name, by default should be author
+        string type = 1;
+        // Unique identifier for the author
+        string id = 2;
+        AuthorAttributes attributes = 3;
+    }
+    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    Meta meta = 3 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines fields for manipulating output of Author collection
+message ListAuthorParameters {
+    // A unique pointer to the next set of result in the list
+    int64 cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
+    // The `filter` field restricts the data return by the collection. To use
+    // it, supply one or multiple allowed fields to filter followed
+    // by a filter expression. It uses the following syntax...
+    //        field_name operator expression
+    //
+    // The following fields of `AuthorAttributes` definition are allowed to
+    // be used for filtering
+    //   * last_name            - Last name of author (string)
+    //   * publication          - Publications featuring the author (string)
+    //
+    // field_name - Any one of the allowed field_name of the `AuthorAttributes` definition.
+    // operator - Defines the type of filter match to use. It could be any of
+    // the following four and all of them should be URL-encoded for http request.
+    //
+    //        Operators for strings
+    //              =~   Contains substring
+    //              !~   Not contains substring
+    //              ===  Equals
+    //              !==  Not equals
+    //
+    //        Operators for number
+    //              ==  Equals
+    //              >   Greater than
+    //              <   Less than
+    //              =<  Less than equal to
+    //              >=  Greater than equal to
+    //
+    // expression - The value that will be included or excluded from the
+    // result. URL-reserved characters must be URL-encoded for http request.
+    //
+    //           filter: "last_name===Wardroper"
+    //
+    // Filter can be combined using OR or AND boolean logic.
+    //   * The OR is represented using a comma(,).
+    //   * The AND is represented using a semi-colon(;).
+    //   * AND and OR operators can be combined and AND takes precedence over OR.
+    //
+    //           filter: "last_name===Wardroper;publication===483493"
+    //
+    string filter = 3;
+    // The sort field allow to sort the data return by the collection based on
+    // fields of `AuthorAttributes. To use it, supply a comma separated one
+    // or more allowed field from the definition of `AuthorAttributes`.
+}
+
+// Metadata definition for traversing the collection
+message Meta {
+    // A unique pointer to the next set of result in the collection. Set the
+    // cursor value parameter to the value of next_cursor to retrieve the next
+    // set of collection using the same method
+    int64 next_cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
+    // Total number of records in the collection.
+    int64 total = 3;
+}
