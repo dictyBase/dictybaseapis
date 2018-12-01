@@ -2,9 +2,7 @@ syntax = "proto3";
 
 package dictybase.order;
 import "google/api/annotations.proto";
-import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 
 
