@@ -104,7 +104,7 @@ message NewOrderAttributes {
     // Order number for purchase
     string purchase_order_num = 5 [(validator.field) = {string_not_empty : true}];
     // Status of order
-    OrderStatus status = 6 [(validator.field) = {string_not_empty : true}];
+    OrderStatus status = 6 [(validator.field) = {msg_exists : true}];
     // Person (user) who is receiving the stocks in mail
     string consumer = 7 [(validator.field) = {string_not_empty : true}];
     // Person (user) who is paying for the stocks
