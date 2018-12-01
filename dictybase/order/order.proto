@@ -20,7 +20,7 @@ service OrderService {
     // Create a new order
     rpc CreateOrder(NewOrder) returns (Order) {}
     // Update an existing order
-    rpc UpdateOrder(UpdateOrder) returns (Order) {}
+    rpc UpdateOrder(OrderUpdate) returns (Order) {}
     // List all orders
     rpc ListOrders(ListParameters) returns (OrderCollection) {}
 }
@@ -115,19 +115,19 @@ message NewOrderAttributes {
 }
 
 // Definition for updating an existing order
-message UpdateOrder {
+message OrderUpdate {
     message Data {
         // Resource name, by default should be order
         string type = 1;
         // Unique identifier for the order
         string id = 2 [(validator.field) = {string_not_empty : true}];
-        UpdateOrderAttributes attributes = 3;
+        OrderUpdateAttributes attributes = 3;
     }
     Data data = 1 [(validator.field) = {msg_exists : true}];
 }
 
 // Defines attributes for updating an existing order
-message UpdateOrderAttributes {
+message OrderUpdateAttributes {
     // Name of courier for delivery
     string courier = 1;
     // Account identification used for courier service
