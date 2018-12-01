@@ -44,6 +44,14 @@ message Order {
     Data data = 1 [(validator.field) = {msg_exists : true}];
 }
 
+// The pre-defined labels for order status
+enum OrderStatus {
+    In_preparation = 0;
+    Growing = 1;
+    Cancelled = 2;
+    Shipped = 3;
+}
+
 // Definition of various order attributes
 message OrderAttributes {
     // Timestamp for creation
@@ -61,7 +69,7 @@ message OrderAttributes {
     // Order number for purchase
     string purchase_order_num = 7;
     // Status of order
-    string status = 8;
+    OrderStatus status = 8;
     // Person (user) who is receiving the stocks in mail
     string consumer = 9;
     // Person (user) who is paying for the stocks
@@ -96,7 +104,7 @@ message NewOrderAttributes {
     // Order number for purchase
     string purchase_order_num = 5 [(validator.field) = {string_not_empty : true}];
     // Status of order
-    string status = 6 [(validator.field) = {string_not_empty : true}];
+    OrderStatus status = 6 [(validator.field) = {string_not_empty : true}];
     // Person (user) who is receiving the stocks in mail
     string consumer = 7 [(validator.field) = {string_not_empty : true}];
     // Person (user) who is paying for the stocks
@@ -133,7 +141,7 @@ message UpdateOrderAttributes {
     // Order number for purchase
     string purchase_order_num = 5;
     // Status of order
-    string status = 6;
+    OrderStatus status = 6;
     // List of items in the order, in this case it will be mostly biological
     // stocks such as plasmids and strains
     repeated string items = 7;
