@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package dictybase.publication;
 import "google/api/annotations.proto";
-import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
@@ -22,7 +21,7 @@ service PublicationService {
     // Create new publication
     rpc CreatePublication(NewPublication) returns (Publication) {}
     // Update an existing publication
-    rpc UpdatePublication(UpdatePublication) returns (Publication) {}
+    rpc UpdatePublication(PublicationUpdate) returns (Publication) {}
     // Delete an existing publication
     rpc DeletePublication(PublicationId) returns (google.protobuf.Empty) {}
     // List all publications
@@ -81,55 +80,25 @@ message NewPublication {
     message Data {
         // Resource name, by default should be publication
         string type = 1;
-        NewPublicationAttributes attributes = 2;
+        PublicationAttributes attributes = 2;
     }
     Data data = 1 [(validator.field) = {msg_exists : true}];
 }
 
-// Defines attributes for creating a new publication
-message NewPublicationAttributes {
-    // Digital object identifier for publication
-    string doi = 1;
-    // Title of publication
-    string title = 2 [(validator.field) = {string_not_empty : true}];
-    // Abstract of publication
-    string abstract = 3;
-    // Journal where the publication was published
-    string journal = 4;
-    // Date of publication
-    google.protobuf.Timestamp pub_date = 5 [(validator.field) = {msg_exists : true}];
-    // Volume of the publication
-    string volume = 6;
-    // Pages containing the publication
-    string pages = 7;
-    // International Standard Serial Number of publication
-    string issn = 8;
-    // Type of publication (i.e. "journal_article")
-    string pub_type = 9 [(validator.field) = {string_not_empty : true}];
-    // Source of the publication (i.e. "pubmed")
-    string source = 10 [(validator.field) = {string_not_empty : true}];
-    // Issue of the publication
-    string issue = 11;
-    // Status of the publication
-    string status = 12 [(validator.field) = {string_not_empty : true}];
-    // List of authors of the publication
-    repeated Author authors = 13;
-}
-
 // Definition for updating an existing publication
-message UpdatePublication {
+message PublicationUpdate {
     message Data {
         // Resource name, by default should be publication
         string type = 1;
         // Unique identifier for the publication
         string id = 2 [(validator.field) = {string_not_empty : true}];
-        UpdatePublicationAttributes attributes = 3;
+        PublicationUpdateAttributes attributes = 3;
     }
     Data data = 1 [(validator.field) = {msg_exists : true}];
 }
 
 // Defines attributes for updating an existing publication
-message UpdatePublicationAttributes {
+message PublicationUpdateAttributes {
     // Date of publication
     google.protobuf.Timestamp pub_date = 1;
     // Volume of the publication
@@ -229,7 +198,7 @@ message Author {
     // Any initials of the author
     string initials = 3;
     // Ranking of the author
-    int rank = 4;
+    int64 rank = 4;
 }
 
 // Metadata definition for traversing the collection
