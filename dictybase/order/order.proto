@@ -175,8 +175,10 @@ message ListParameters {
     //   * courier            - The courier used for delivery (string)
     //   * payment            - Type of payment being used (string)
     //   * status             - The status of the order (string)
-    //   * created_at         - Date the items are ordered (number), expected
-    //                          to be in YYYYMMDD format.
+    //   * created_at         - Date the items are ordered (number), can be in the
+    //                          following formats:
+    //                          YYYY-MM-DD, YYYY-MM, YYYY
+    //                          YYYYMMDD, YYYYMM, YYYY
     //
     // field_name - Any one of the allowed field_name of the `OrderAttributes` definition.
     // operator - Defines the type of filter match to use. It could be any of
