@@ -1,0 +1,269 @@
+syntax = "proto3";
+
+package dictybase.stock;
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/stock;stock";
+option java_multiple_files = true;
+option java_outer_classname = "StockProto";
+option java_package = "org.dictybase.stock";
+option objc_class_prefix = "DICTYAPI";
+
+// The stock service specification
+service StockService {
+    // Retrieves stock by ID
+    rpc GetStock(StockId) returns (Stock) {}
+    // Create a new stock
+    rpc CreateStock(NewStock) returns (Stock) {}
+    // Update an existing stock
+    rpc UpdateStock(StockUpdate) returns (Stock) {}
+    // List all stocks
+    rpc ListStocks(ListParameters) returns (StockCollection) {}
+    // Delete an existing stock
+    rpc DeleteStock(StockId) returns (google.protobuf.Empty) {}
+}
+
+message StockId {
+    // Unique identifier for the stock
+    string id = 1 [(validator.field) = {string_not_empty : true}];
+}
+
+// Definition of an individual stock
+message Stock {
+    message Data {
+        // Resource name ("strain", "plasmid", etc)
+        string type = 1;
+        // Unique identifier for the stock
+        string id = 2;
+        StockAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Definition of various stock attributes
+message StockAttributes {
+    // Timestamp for creation
+    google.protobuf.Timestamp created_at = 1 [(validator.field) = {msg_exists : true}];
+    // Timestamp for update
+    google.protobuf.Timestamp updated_at = 2 [(validator.field) = {msg_exists : true}];
+    // User who created stock entry
+    string created_by = 3 [(validator.field) = {string_not_empty : true}];
+    // User who updated stock entry
+    string updated_by = 4 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 5 [(validator.field) = {string_not_empty : true}];
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 6 [(validator.field) = {string_not_empty : true}];
+    // Depositor of the stock
+    string depositor = 7;
+    // List of associated genes
+    repeated string genes = 8;
+    // List of database cross references
+    repeated string dbxrefs = 9;
+    // List of related publications
+    repeated string publications = 10;
+    StrainProperties strain_properties = 11;
+    PlasmidProperties plasmid_properties = 12;
+}
+
+message StrainProperties {
+    // Unambiguous name for the strain
+    string systematic_name = 1 [(validator.field) = {string_not_empty : true}];
+    // Descriptor for the strain, a quick overview of its key genetic modifications
+    string descriptor = 2 [(validator.field) = {string_not_empty : true}];
+    // Species of the strain
+    string species = 3;
+    // Related plasmid for the strain
+    string plasmid = 4;
+    // List of parents of the strain
+    repeated string parents = 5;
+    // List of names for the strain
+    repeated string names = 6;
+}
+
+message PlasmidProperties {
+    // Image map for the plasmid
+    string image_map = 1;
+    // Sequence for the plasmid
+    string sequence = 2;
+}
+
+// Definition for creating a new stock
+message NewStock {
+    message Data {
+        // Resource name, i.e. "strain"
+        string type = 1;
+        // Unique ID for stock
+        string id = 2;
+        NewStockAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines attributes for creating a new stock
+message NewStockAttributes {
+    // User who created stock entry
+    string created_by = 1 [(validator.field) = {string_not_empty : true}];
+    // User who updated stock entry
+    string updated_by = 2 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 3 [(validator.field) = {string_not_empty : true}];
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 4 [(validator.field) = {string_not_empty : true}];
+    // Depositor of the stock
+    string depositor = 5 [(validator.field) = {string_not_empty : true}];
+    // List of associated genes
+    repeated string genes = 6;
+    // List of database cross references
+    repeated string dbxrefs = 7;
+    // List of related publications
+    repeated string publications = 8;
+    StrainProperties strain_properties = 9;
+    PlasmidProperties plasmid_properties = 10;
+}
+
+// Definition for creating a new stock
+message StockUpdate {
+    message Data {
+        // Resource name, i.e. "strain"
+        string type = 1;
+        // Unique ID for stock
+        string id = 2 [(validator.field) = {string_not_empty : true}];
+        StockUpdateAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines attributes for updating a stock
+message StockUpdateAttributes {
+    // User who updated stock entry
+    string updated_by = 1 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 2;
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 3;
+    // Depositor of the stock
+    string depositor = 4;
+    // List of associated genes
+    repeated string genes = 5;
+    // List of database cross references
+    repeated string dbxrefs = 6;
+    // List of related publications
+    repeated string publications = 7;
+    StrainUpdateProperties strain_properties = 8;
+    PlasmidProperties plasmid_properties = 9;
+}
+
+message StrainUpdateProperties {
+    // Unambiguous name for the strain
+    string systematic_name = 1;
+    // Descriptor for the strain, a quick overview of its key genetic modifications
+    string descriptor = 2;
+    // Species of the strain
+    string species = 3;
+    // Related plasmid for the strain
+    string plasmid = 4;
+    // List of parents of the strain
+    repeated string parents = 5;
+    // List of names for the strain
+    repeated string names = 6;
+}
+
+// List of stocks
+message StockCollection {
+    message Data {
+        // Resource name
+        string type = 1;
+        // Unique identifier for the stock
+        string id = 2;
+        StockAttributes attributes = 3;
+    }
+    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    Meta meta = 3 [(validator.field) = {msg_exists : true}];
+}
+
+// ListParameters defines fields for manipulating output of Stock collection
+message ListParameters {
+    // A unique pointer to the next set of result in the list
+    int64 cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
+    // The `filter` field restricts the data return by the collection. To use
+    // it, supply one or multiple allowed fields to filter followed
+    // by a filter expression. It uses the following syntax...
+    //        field_name operator expression
+    //
+    // The following fields of `StockAttributes` definition are allowed to
+    // be used for filtering
+    //   * depositor          - Depositor of the stock (string).
+    //   * parent             - Parental strain (string)
+    //   * plasmid            - Related plasmid for the strain (string)
+    //   * species            - The species of the strain (string)
+    //   * systematic_name    - Unambiguous name for the strain (string)
+    //   * summary            - Summary of the stock (string)
+    //   * created_at         - Date the stock was created (number), can be in the
+    //                          following formats:
+    //                          YYYY-MM-DD, YYYY-MM, YYYY
+    //   * updated_at         - Date the stock was updated (number), can be in the
+    //                          following formats:
+    //                          YYYY-MM-DD, YYYY-MM, YYYY
+    //
+    // field_name - Any one of the allowed field_name of the `StockAttributes` definition.
+    // operator - Defines the type of filter match to use. It could be any of
+    // the following four and all of them should be URL-encoded for http request.
+    //
+    //        Operators for strings
+    //              =~   Contains substring
+    //              !~   Not contains substring
+    //              ===  Equals
+    //              !==  Not equals
+    //
+    //        Operators for number
+    //              ==  Equals
+    //              >   Greater than
+    //              <   Less than
+    //              <=  Less than equal to
+    //              >=  Greater than equal to
+    //
+    //        Operators for dates
+    //              $==  Equals
+    //              $>   Greater than
+    //              $<   Less than
+    //              $<=  Less than equal to
+    //              $>=  Greater than equal to
+    //
+    // expression - The value that will be included or excluded from the
+    // result. URL-reserved characters must be URL-encoded for http request.
+    //
+    //           filter: "systematic_name===DBS0235459"
+    //           filter: "plasmid===pDeltaAA,p?AA"
+    //
+    // Filter can be combined using OR or AND boolean logic.
+    //   * The OR is represented using a comma(,).
+    //   * The AND is represented using a semi-colon(;).
+    //   * AND and OR operators can be combined and AND takes precedence over OR.
+    //
+    //           filter: "systematic_name===DBS0235459;plasmid===pDeltaAA,p?AA"
+    //           filter: "created_at$>=2018-12-01"
+    //
+    string filter = 3;
+    // The sort field allow to sort the data return by the collection based on
+    // fields of `StockAttributes. To use it, supply a comma separated one
+    // or more allowed field from the definition of `StockAttributes`.
+}
+
+// Metadata definition for traversing the collection
+message Meta {
+    // A unique pointer to the next set of result in the collection. Set the
+    // cursor value parameter to the value of next_cursor to retrieve the next
+    // set of collection using the same method
+    int64 next_cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
+    // Total number of records in the collection.
+    int64 total = 3;
+}
