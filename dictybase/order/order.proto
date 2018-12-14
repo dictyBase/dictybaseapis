@@ -178,7 +178,6 @@ message ListParameters {
     //   * created_at         - Date the items are ordered (number), can be in the
     //                          following formats:
     //                          YYYY-MM-DD, YYYY-MM, YYYY
-    //                          YYYYMMDD, YYYYMM, YYYY
     //
     // field_name - Any one of the allowed field_name of the `OrderAttributes` definition.
     // operator - Defines the type of filter match to use. It could be any of
