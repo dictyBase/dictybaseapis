@@ -23,8 +23,8 @@ service StockService {
     rpc UpdateStock(StockUpdate) returns (Stock) {}
     // List all stocks
     rpc ListStocks(ListParameters) returns (StockCollection) {}
-    // Delete an existing stock
-    rpc DeleteStock(StockId) returns (google.protobuf.Empty) {}
+    // Remove an existing stock
+    rpc RemoveStock(StockId) returns (google.protobuf.Empty) {}
 }
 
 message StockId {
