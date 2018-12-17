@@ -94,6 +94,8 @@ message PlasmidProperties {
     string image_map = 1;
     // Sequence for the plasmid
     string sequence = 2;
+    // Keywords used for the plasmid
+    repeated string keywords = 3;
 }
 
 // Definition for creating a new stock
@@ -274,6 +276,7 @@ message StrainListParameters {
     //   * species            - The species of the strain (string)
     //   * systematic_name    - Unambiguous name for the strain (string)
     //   * summary            - Summary of the stock (string)
+    //   * name               - Name used for strain (string), searches in the "names" attribute
     //   * created_at         - Date the stock was created (number), can be in the
     //                          following formats:
     //                          YYYY-MM-DD, YYYY-MM, YYYY
@@ -339,6 +342,7 @@ message PlasmidListParameters {
     // be used for filtering
     //   * depositor          - Depositor of the plasmid (string).
     //   * summary            - Summary of the plasmid (string)
+    //   * keyword            - Keywords used for the plasmid (string), searches in the "keywords" attribute
     //   * created_at         - Date the stock was created (number), can be in the
     //                          following formats:
     //                          YYYY-MM-DD, YYYY-MM, YYYY
