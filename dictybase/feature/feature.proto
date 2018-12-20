@@ -298,7 +298,6 @@ message FeatureCollection {
 // Definition of a biological entity
 message Feature {
     FeatureData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
 }
 
 message FeatureData {
@@ -419,7 +418,7 @@ message FeatureRelationship {
     // Type of relationship, generally a sequence ontology term
     string relation = 1;
     // Related feature
-    string feature = 2;
+    Feature feature = 2;
 }
 
 // Definition for managing dbxref with a feature
