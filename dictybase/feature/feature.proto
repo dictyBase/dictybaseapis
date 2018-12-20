@@ -278,10 +278,6 @@ message NewFeatureAttributes {
     bool is_analysis = 12;
     // Version of this feature, it increase by 1 for the replacement
     int64 version = 13;
-    // Earlier instance of the feature that this one has replaced
-    string previous = 14;
-    //  Next instance of the feature that this one got replaced with
-    string next = 15;
 }
 
 
@@ -343,10 +339,7 @@ message FeatureAttributes {
     // Version of this feature, it increase by 1 for the replacement
     int64 version = 15 [(validator.field) = {int_gt: 0}];
     // Earlier instance of the feature that this one has replaced
-    string previous = 16 [(validator.field) = {int_gt: 0}];
-    //  Next instance of the feature that this one got replaced with
-    string next = 17 [(validator.field) = {int_gt: 0}];
-    repeated Dbxref dbxrefs = 18;
+    repeated Dbxref dbxrefs = 16;
 }
 
 // Definition for updating a feature
@@ -384,10 +377,6 @@ message FeatureUpdateAttributes {
     // Indicates if the feature is generated(annotated) from the
     // result of an automated analysis
     bool is_analysis = 11;
-    // Earlier instance of the feature that this one has replaced
-    string previous = 12;
-    //  Next instance of the feature that this one got replaced with
-    string next = 13;
 }
 
 // Defintion for managing synonym of a feature
