@@ -325,29 +325,28 @@ message FeatureAttributes {
     // Timestamp for creation and update 
     google.protobuf.Timestamp created_at = 5 [(validator.field) = {msg_exists: true}];
     google.protobuf.Timestamp updated_at = 6 [(validator.field) = {msg_exists: true}];
-    repeated FeatureDbxref dbxref = 7;
-    Organism organism = 8;
+    Organism organism = 7;
     // Toggle the obsolete status
-    bool is_obsolete = 9;
+    bool is_obsolete = 8;
     // List of biological parent features
-    repeated FeatureRelationship parents = 10;
+    repeated FeatureRelationship parents = 9;
     // List of biological children feature
-    repeated FeatureRelationship children = 11;
+    repeated FeatureRelationship children = 10;
     // List of feature locations in the reference backend
-    repeated FeatureLocation location = 12;
+    repeated FeatureLocation location = 11;
     // Alternate list of names
-    repeated string synonyms = 13;
-    repeated Publication publications = 14;
+    repeated string synonyms = 12;
+    repeated Publication publications = 13;
     // Indicates if the feature is generated(annotated) from the
     // result of an automated analysis
-    bool is_analysis = 15;
+    bool is_analysis = 14;
     // Version of this feature, it increase by 1 for the replacement
-    int64 version = 16 [(validator.field) = {int_gt: 0}];
+    int64 version = 15 [(validator.field) = {int_gt: 0}];
     // Earlier instance of the feature that this one has replaced
-    string previous = 17 [(validator.field) = {int_gt: 0}];
+    string previous = 16 [(validator.field) = {int_gt: 0}];
     //  Next instance of the feature that this one got replaced with
-    string next = 18 [(validator.field) = {int_gt: 0}];
-    repeated Dbxref dbxrefs = 19;
+    string next = 17 [(validator.field) = {int_gt: 0}];
+    repeated Dbxref dbxrefs = 18;
 }
 
 // Definition for updating a feature
@@ -372,7 +371,7 @@ message FeatureUpdateAttributes {
     string id = 2;
     // Identifier of the user who updated the feature
     int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
-    repeated FeatureDbxref dbxref = 4;
+    repeated Dbxref dbxrefs = 4;
     Organism organism = 5;
     // List of biological parent features
     repeated FeatureRelationship parents = 6;
@@ -389,7 +388,6 @@ message FeatureUpdateAttributes {
     string previous = 12;
     //  Next instance of the feature that this one got replaced with
     string next = 13;
-    repeated Dbxref dbxrefs = 14;
 }
 
 // Defintion for managing synonym of a feature
