@@ -18,171 +18,71 @@ option objc_class_prefix = "DICTYAPI";
 // The feature service specification
 service FeatureService {
     // Retrieves the specified feature
-    rpc GetFeature(FeatureId) returns (Feature) {
-        option (google.api.http).get = "/features/{id}";
-    }
+    rpc GetFeature(FeatureId) returns (Feature) {}
     // Retrieves all the biological parents features
-    rpc GetParents(FeatureRelationFilter) returns (FeatureCollection) {
-        option (google.api.http).get = "/features/{id}/parents";
-    }
+    rpc GetParents(FeatureRelationFilter) returns (FeatureCollection) {}
     // Retrieves all biological children features
-    rpc GetChildren(FeatureRelationFilter) returns (FeatureCollection) {
-        option (google.api.http).get = "/features/{id}/children";
-    }
+    rpc GetChildren(FeatureRelationFilter) returns (FeatureCollection) {}
     /* Retrieves the feature(called reference or source feature) under whose
      * coordinate system the current feature is located. By default rank 0 is
      * assumed*/
-    rpc GetReferenceFeature(ReferenceFeatureFilter) returns (Feature) {
-        option (google.api.http).get = "/features/{id}/reference";
-    }
+    rpc GetReferenceFeature(ReferenceFeatureFilter) returns (Feature) {}
     // Retrieves all reference features
-    rpc GetReferenceFeatures(FeatureId) returns (FeatureCollection) {
-        option (google.api.http).get = "/features/{id}/references";
-    }
+    rpc GetReferenceFeatures(FeatureId) returns (FeatureCollection) {}
     /* Retrieves all features that are located within the bounds of
     * referernce feature */
-    rpc GetLocatedFeatures(LocatedFeatureFilter) returns (PaginatedFeatureCollection) {
-        option (google.api.http).get = "/features/{id}/locatedfeatures";
-    }
+    rpc GetLocatedFeatures(LocatedFeatureFilter) returns (PaginatedFeatureCollection) {}
     // Retrieves all features
-    rpc ListFeatures(ListParameters) returns (PaginatedFeatureCollection) {
-        option (google.api.http).get = "/features";
-    }
+    rpc ListFeatures(ListParameters) returns (PaginatedFeatureCollection) {}
     // Create a new feature
-    rpc CreateFeature(NewFeature) returns (Feature) {
-        option (google.api.http) = {
-            post: "/features"
-            body: "*"
-        };
-    }
+    rpc CreateFeature(NewFeature) returns (Feature) {}
     // Update an existing feature
-    rpc UpdateFeature(FeatureUpdate) returns (Feature) {
-        option (google.api.http) = {
-            patch: "/features/{id}",
-            body: "*"
-        };
-    }
+    rpc UpdateFeature(FeatureUpdate) returns (Feature) {}
     // Add a new parental relation with an existing feature. In case of an
     // existing parent(s), it will be appended to the list.
-    rpc AddParentalRelationship(FeatureConnection) returns (Feature) {
-        option (google.api.http) = {
-            post: "/features/{id}/parents"
-            body: "*"
-        };
-    }
+    rpc AddParentalRelationship(FeatureConnection) returns (Feature) {}
     // Add a new child relation with an existing feature. In case of an
     // existing child, it will be appended to the list.
-    rpc AddChildRelationship(FeatureConnection) returns (Feature) {
-        option (google.api.http) = {
-            post: "/features/{id}/children"
-            body: "*"
-        };
-    }
+    rpc AddChildRelationship(FeatureConnection) returns (Feature) {}
     // Attach a new location entry to connect to a referernce
     // feature. In case of any existing location(s), it will be
     // appended to the list. The reference feature referred in
     // the location needs to exist.
-    rpc AttachLocation(NewFeatureLocation) returns (Feature) {
-        option (google.api.http) = {
-            post: "/features/{id}/locations"
-            body: "*"
-        };
-    }
+    rpc AttachLocation(NewFeatureLocation) returns (Feature) {}
     // Add a new synonym.In case of existing synonym(s),
     // it will be appended to the list
-    rpc AddSynonym(FeatureSynonym) returns (Feature) {
-        option (google.api.http) = {
-            post: "/features/{id}/synonyms"
-            body: "*"
-        };
-    }
+    rpc AddSynonym(FeatureSynonym) returns (Feature) {}
     // Add a new publication.In case of existing publication(s),
     // it will append it to the list
-    rpc AddPublication(FeaturePublication) returns (Feature) {
-        option (google.api.http) = {
-            post: "/features/{id}/publications"
-            body: "*"
-        };
-    }
+    rpc AddPublication(FeaturePublication) returns (Feature) {}
     // Sets the previous feature in the feature history.
-    rpc SetPrevFeatureHistory(FeatureHistory) returns (Feature) {
-        option (google.api.http) = {
-            post: "/features/{id}/prevfeature"
-            body: "*"
-        };
-    }
+    rpc SetPrevFeatureHistory(FeatureHistory) returns (Feature) {}
     // Sets the next feature in the feature history.
-    rpc SetNextFeatureHistory(FeatureHistory) returns (Feature) {
-        option (google.api.http) = {
-            post: "/features/{id}/nextfeature"
-            body: "*"
-        };
-    }
+    rpc SetNextFeatureHistory(FeatureHistory) returns (Feature) {}
     // Add a new dbxref. In case of existing dbxref it will
     // append it to the list.
-    rpc AddDbxref(FeatureDbxref) returns (Feature) {
-        option (google.api.http) = {
-            post: "/features/{id}/dbxrefs"
-            body: "*"
-        };
-    }
+    rpc AddDbxref(FeatureDbxref) returns (Feature) {}
     // Create a new organism entry
     rpc CreateOrganism(Organism) returns (Organism) {}
 
     // Delete an existing feature
-    rpc DeleteFeature(FeatureId) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/features/{id}"
-        };
-    }
+    rpc DeleteFeature(FeatureId) returns (google.protobuf.Empty) {}
     // Delete a parental relationship with a feature
-    rpc DeleteParentalRelationship(FeatureConnection) returns (google.protobuf.Empty) {
-        option(google.api.http) = {
-            delete: "/features/{id}/parents"
-        };
-    }
+    rpc DeleteParentalRelationship(FeatureConnection) returns (google.protobuf.Empty) {}
     // Delete a child relationship with a feature
-    rpc DeleteChildRelationship(FeatureConnection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/features/{id}/children"
-        };
-    }
+    rpc DeleteChildRelationship(FeatureConnection) returns (google.protobuf.Empty) {}
     // Detach an existing location from reference feature
-    rpc DetachLocation(ReferenceFeatureFilter) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/features/{id}/locations"
-        };
-    }
+    rpc DetachLocation(ReferenceFeatureFilter) returns (google.protobuf.Empty) {}
     // Delete a synonym from the feature.
-    rpc DeleteSynonym(FeatureSynonym) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/features/{id}/synonyms"
-        };
-    }
+    rpc DeleteSynonym(FeatureSynonym) returns (google.protobuf.Empty) {}
     // Delete a publication from the feature.
-    rpc DeletePublication(FeaturePublication) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/features/{id}/publications"
-        };
-    }
+    rpc DeletePublication(FeaturePublication) returns (google.protobuf.Empty) {}
     // Remove the previous feature from the feature history.
-    rpc RemovePrevFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/features/{id}/prevfeature"
-        };
-    }
+    rpc RemovePrevFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {}
     // Remove the next feature from the feature history.
-    rpc RemoveNextFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/features/{id}/nextfeature"
-        };
-    }
+    rpc RemoveNextFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {}
     // Delete dbxref from a feature. 
-    rpc DeleteDbxref(FeatureDbxref) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/features/{id}/dbxrefs"
-        };
-    }
+    rpc DeleteDbxref(FeatureDbxref) returns (google.protobuf.Empty) {}
 }
 
 message FeatureId {
