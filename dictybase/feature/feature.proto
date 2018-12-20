@@ -192,20 +192,20 @@ message FeatureId {
 }
 
 message FeatureRelationFilter {
-    string id = 1;
+    string feature_id = 1;
     // Type of relationship, generally a sequence ontology term
     string relation = 2;
 }
 
 message ReferenceFeatureFilter {
-    string id = 1;
+    string feature_id = 1;
     // Used for feature with multiple locations, 0 is used as default.
     int64 rank = 2;
 }
 
 message LocatedFeatureFilter {
     // unique id of the reference feature
-    string id = 1;
+    string feature_id = 1;
     // The biological type of feature, generally a sequence ontology term.
     string type = 2;
     // The `filter` field restricts no of features in the collection by using a
@@ -291,7 +291,6 @@ message PaginatedFeatureCollection {
 // List of features
 message FeatureCollection {
     repeated FeatureData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
 }
 
 
@@ -312,33 +311,32 @@ message FeatureData {
 message FeatureAttributes {
     // Short human readable textual name
     string name = 1;
-    string id = 2;
     // Identifier of the user who created the feature
-    int64 created_by = 3 [(validator.field) = {int_gt: 0}];
+    int64 created_by = 2 [(validator.field) = {int_gt: 0}];
     // Identifier of the user who updated the feature
-    int64 updated_by = 4 [(validator.field) = {int_gt: 0}];
+    int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
     // Timestamp for creation and update 
-    google.protobuf.Timestamp created_at = 5 [(validator.field) = {msg_exists: true}];
-    google.protobuf.Timestamp updated_at = 6 [(validator.field) = {msg_exists: true}];
-    Organism organism = 7;
+    google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
+    google.protobuf.Timestamp updated_at = 5 [(validator.field) = {msg_exists: true}];
+    Organism organism = 6;
     // Toggle the obsolete status
-    bool is_obsolete = 8;
+    bool is_obsolete = 7;
     // List of biological parent features
-    repeated FeatureRelationship parents = 9;
+    repeated FeatureRelationship parents = 8;
     // List of biological children feature
-    repeated FeatureRelationship children = 10;
+    repeated FeatureRelationship children = 9;
     // List of feature locations in the reference backend
-    repeated FeatureLocation location = 11;
+    repeated FeatureLocation location = 10;
     // Alternate list of names
-    repeated string synonyms = 12;
-    repeated Publication publications = 13;
+    repeated string synonyms = 11;
+    repeated Publication publications = 12;
     // Indicates if the feature is generated(annotated) from the
     // result of an automated analysis
-    bool is_analysis = 14;
+    bool is_analysis = 13;
     // Version of this feature, it increase by 1 for the replacement
-    int64 version = 15 [(validator.field) = {int_gt: 0}];
+    int64 version = 14 [(validator.field) = {int_gt: 0}];
     // Earlier instance of the feature that this one has replaced
-    repeated Dbxref dbxrefs = 16;
+    repeated Dbxref dbxrefs = 15;
 }
 
 // Definition for updating a feature
@@ -360,34 +358,33 @@ message FeatureUpdate {
 message FeatureUpdateAttributes {
     // Short human readable textual name
     string name = 1;
-    string id = 2;
     // Identifier of the user who updated the feature
-    int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
-    repeated Dbxref dbxrefs = 4;
-    Organism organism = 5;
+    int64 updated_by = 2 [(validator.field) = {int_gt: 0}];
+    repeated Dbxref dbxrefs = 3;
+    Organism organism = 4;
     // List of biological parent features
-    repeated FeatureRelationship parents = 6;
+    repeated FeatureRelationship parents = 5;
     // List of biological children feature
-    repeated FeatureRelationship children = 7;
-    repeated FeatureLocation location = 8;
+    repeated FeatureRelationship children = 6;
+    repeated FeatureLocation location = 7;
     // aLTERNATe list of names
-    repeated string synonyms = 9;
-    repeated Publication publications = 10;
+    repeated string synonyms = 8;
+    repeated Publication publications = 9;
     // Indicates if the feature is generated(annotated) from the
     // result of an automated analysis
-    bool is_analysis = 11;
+    bool is_analysis = 10;
 }
 
 // Defintion for managing synonym of a feature
 message FeatureSynonym {
-    string id = 1;
+    string feature_id = 1;
     string synonym = 2;
 }
 
 // Definition for managing a previous or next feature in the feature
 // history
 message FeatureHistory {
-    string id = 1;
+    string feature_id = 1;
     string linked_feature = 2;
 }
 
@@ -401,7 +398,7 @@ message Publication {
 
 // Definition for managing publication with a feature
 message FeaturePublication {
-    string id = 1;
+    string feature_id = 1;
     FeaturePublication publication = 2;
 }
 
@@ -409,7 +406,7 @@ message FeaturePublication {
 // Definition for connecting two biologically related(parent or
 // children) features
 message FeatureConnection {
-    string id = 1;
+    string feature_id = 1;
     FeatureRelationship relationship = 2;
 }
 
@@ -417,8 +414,8 @@ message FeatureConnection {
 message FeatureRelationship {
     // Type of relationship, generally a sequence ontology term
     string relation = 1;
-    // Related feature
-    Feature feature = 2;
+    // Related feature id
+    string feature_id = 2;
 }
 
 // Definition for managing dbxref with a feature
@@ -439,14 +436,14 @@ message Dbxref {
 
 // Definition for attaching a new location to a feature
 message NewFeatureLocation {
-    string id = 1;
+    string feature_id = 1;
     FeatureLocation location = 2;
 }
 
 // The location of a feature relative to another feature using space-based(interbase) coordinates.
 message FeatureLocation {
     // Source or reference feature(identifier) which this location is relative to
-    string source_feature = 1;
+    string source_feature_id = 1;
     // start/leftmost boundary of this location in linear range based on
     // interbase coordinates. To convert it to base-oriented system, add 1 to
     // this value.
