@@ -5,7 +5,6 @@ import "google/api/annotations.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
-import "dictybase/api/jsonapi/payload.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 
 
@@ -283,9 +282,8 @@ message NewFeatureAttributes {
 
 // List of features with pagination
 message PaginatedFeatureCollection {
-    repeated FeatureData data = 1;
-    dictybase.api.jsonapi.PaginationLinks links = 2;
-    dictybase.api.jsonapi.Pagination pagination = 3;
+    repeated FeatureData data = 1 [(validator.field) = {msg_exists : true}];
+    Meta meta = 2 [(validator.field) = {msg_exists : true}];
 }
 
 // List of features
@@ -488,10 +486,10 @@ message Organism {
 
 // ListParameters defines fields for manipulating output of PaginatedFeatureCollection
 message ListParameters {
-    // The page number to fetch
-    int64 pagenum = 1;
-    // Number of records per page
-    int64 pagesize = 2;
+    // A unique pointer to the next set of result in the list
+    int64 cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
     // The `filter` field restricts the data return by the collection. To use
     // it, supply one or multiple allowed fields to filter followed
     // by a filter expression. It uses the following syntax...
@@ -539,4 +537,17 @@ message ListParameters {
     // The sort field allow to sort the data return by the collection based on
     // allowed fields. To use it, supply a comma separated one
     // or more allowed fields.
+}
+
+
+// Metadata definition for traversing the collection
+message Meta {
+    // A unique pointer to the next set of result in the collection. Set the
+    // cursor value parameter to the value of next_cursor to retrieve the next
+    // set of collection using the same method
+    int64 next_cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
+    // Total number of records in the collection.
+    int64 total = 3;
 }
