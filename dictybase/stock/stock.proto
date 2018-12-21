@@ -60,9 +60,9 @@ message StockAttributes {
     // User who updated stock entry
     string updated_by = 4 [(validator.field) = {string_not_empty : true}];
     // Summary of the stock
-    string summary = 5 [(validator.field) = {string_not_empty : true}];
+    string summary = 5;
     // Editable version of the stock summary (Slate JSON format)
-    string editable_summary = 6 [(validator.field) = {string_not_empty : true}];
+    string editable_summary = 6;
     // Depositor of the stock
     string depositor = 7;
     // List of associated genes
@@ -81,7 +81,7 @@ message StrainProperties {
     // Descriptor for the strain, a quick overview of its key genetic modifications
     string descriptor = 2 [(validator.field) = {string_not_empty : true}];
     // Species of the strain
-    string species = 3;
+    string species = 3 [(validator.field) = {string_not_empty : true}];
     // Related plasmid for the strain
     string plasmid = 4;
     // List of parents of the strain
@@ -116,11 +116,11 @@ message NewStockAttributes {
     // User who updated stock entry
     string updated_by = 2 [(validator.field) = {string_not_empty : true}];
     // Summary of the stock
-    string summary = 3 [(validator.field) = {string_not_empty : true}];
+    string summary = 3;
     // Editable version of the stock summary (Slate JSON format)
-    string editable_summary = 4 [(validator.field) = {string_not_empty : true}];
+    string editable_summary = 4;
     // Depositor of the stock
-    string depositor = 5 [(validator.field) = {string_not_empty : true}];
+    string depositor = 5;
     // List of associated genes
     repeated string genes = 6;
     // List of database cross references
