@@ -249,7 +249,6 @@ message FeatureUpdate {
     // An optional mask specifying which fields to update.
     // Presence of this field allow partial updates.
     google.protobuf.FieldMask update_mask = 2;
-    string id = 3;
 }
 
 // Definition of feature fields for updating a feature
