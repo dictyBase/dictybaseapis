@@ -202,7 +202,7 @@ message StockParameters {
     // be used for filtering
     //   * stock_type         - Type of stock (string)
     //   * depositor          - Depositor of the stock (string)
-    //   * parent             - Parental strain (string)
+    //   * parent             - Parental strain (string) (currently not implemented)
     //   * plasmid            - Related plasmid for the strain (string)
     //   * species            - The species of the strain (string)
     //   * systematic_name    - Unambiguous name for the strain (string)
@@ -223,7 +223,7 @@ message StockParameters {
     //              =~   Contains substring
     //              !~   Not contains substring
     //              ===  Equals
-    //              !==  Not equals
+    //              !=   Not equals
     //
     //        Operators for number
     //              ==  Equals
@@ -238,6 +238,12 @@ message StockParameters {
     //              $<   Less than
     //              $<=  Less than equal to
     //              $>=  Greater than equal to
+    //
+    //        Operators for items in arrays
+    //              @=~   Contains substring
+    //              @!~   Not contains substring (not implemented yet)
+    //              @==   Equals
+    //              @!=   Not equals
     //
     // expression - The value that will be included or excluded from the
     // result. URL-reserved characters must be URL-encoded for http request.
