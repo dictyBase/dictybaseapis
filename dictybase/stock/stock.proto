@@ -119,10 +119,12 @@ message NewStockAttributes {
     repeated string genes = 6;
     // List of database cross references
     repeated string dbxrefs = 7;
+    // Depositor of the stock
+    string depositor = 8;
     // List of related publications
-    repeated string publications = 8;
-    StrainProperties strain_properties = 9;
-    PlasmidProperties plasmid_properties = 10;
+    repeated string publications = 9;
+    StrainProperties strain_properties = 10;
+    PlasmidProperties plasmid_properties = 11;
 }
 
 // Definition for creating a new stock
