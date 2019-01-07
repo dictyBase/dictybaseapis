@@ -120,7 +120,7 @@ message NewStockAttributes {
     // List of database cross references
     repeated string dbxrefs = 7;
     // Depositor of the stock
-    string depositor = 8;
+    string depositor = 8 [(validator.field) = {string_not_empty : true}] ;
     // List of related publications
     repeated string publications = 9;
     StrainProperties strain_properties = 10;
