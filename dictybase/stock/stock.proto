@@ -113,18 +113,16 @@ message NewStockAttributes {
     string summary = 3;
     // Editable version of the stock summary (Slate JSON format)
     string editable_summary = 4;
-    // Depositor of the stock
-    string label = 5;
     // List of associated genes
-    repeated string genes = 6;
+    repeated string genes = 5;
     // List of database cross references
-    repeated string dbxrefs = 7;
+    repeated string dbxrefs = 6;
     // Depositor of the stock
-    string depositor = 8 [(validator.field) = {string_not_empty : true}] ;
+    string depositor = 7 [(validator.field) = {string_not_empty : true}] ;
     // List of related publications
-    repeated string publications = 9;
-    StrainProperties strain_properties = 10;
-    PlasmidProperties plasmid_properties = 11;
+    repeated string publications = 8;
+    StrainProperties strain_properties = 9;
+    PlasmidProperties plasmid_properties = 10;
 }
 
 // Definition for creating a new stock
