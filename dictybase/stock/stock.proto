@@ -80,8 +80,8 @@ message StrainProperties {
     string species = 3 [(validator.field) = {string_not_empty : true}];
     // Related plasmid for the strain
     string plasmid = 4;
-    // List of parents of the strain
-    repeated string parents = 5;
+    // Parent of the strain
+    string parent = 5;
     // List of names for the strain
     repeated string names = 6;
 }
@@ -166,8 +166,8 @@ message StrainUpdateProperties {
     string species = 3;
     // Related plasmid for the strain
     string plasmid = 4;
-    // List of parents of the strain
-    repeated string parents = 5;
+    // Parent of the strain
+    string parent = 5;
     // List of names for the strain
     repeated string names = 6;
 }
