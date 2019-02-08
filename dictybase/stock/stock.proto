@@ -24,8 +24,10 @@ service StockService {
     rpc UpdateStock(StockUpdate) returns (Stock) {}
     // Remove an existing stock
     rpc RemoveStock(StockId) returns (google.protobuf.Empty) {}
-    // List all stocks
-    rpc ListStocks(StockParameters) returns (StockCollection) {}
+    // List all strains
+    rpc ListStrains(StockParameters) returns (StockCollection) {}
+    // List all plasmids
+    rpc ListPlasmids(StockParameters) returns (StockCollection) {}
 }
 
 message StockId {
@@ -80,8 +82,8 @@ message StrainProperties {
     string species = 3 [(validator.field) = {string_not_empty : true}];
     // Related plasmid for the strain
     string plasmid = 4;
-    // List of parents of the strain
-    repeated string parents = 5;
+    // Parent of the strain
+    string parent = 5;
     // List of names for the strain
     repeated string names = 6;
 }
@@ -166,8 +168,8 @@ message StrainUpdateProperties {
     string species = 3;
     // Related plasmid for the strain
     string plasmid = 4;
-    // List of parents of the strain
-    repeated string parents = 5;
+    // Parent of the strain
+    string parent = 5;
     // List of names for the strain
     repeated string names = 6;
 }
@@ -198,7 +200,6 @@ message StockParameters {
     //
     // The following fields of `StockAttributes` definition are allowed to
     // be used for filtering
-    //   * stock_type         - Type of stock (string)
     //   * depositor          - Depositor of the stock (string)
     //   * parent             - Parental strain (string) (currently not implemented)
     //   * plasmid            - Related plasmid for the strain (string)
