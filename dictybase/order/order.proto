@@ -24,7 +24,7 @@ service OrderService {
     // List all orders
     rpc ListOrders(ListParameters) returns (OrderCollection) {}
     // Load existing order
-    rpc LoadOrder(OrderId, ExistingOrder) returns (Order) {}
+    rpc LoadOrder(ExistingOrder) returns (Order) {}
 }
 
 message OrderId {

@@ -29,7 +29,7 @@ service StockService {
     // List all plasmids
     rpc ListPlasmids(StockParameters) returns (StockCollection) {}
     // Load existing stock
-    rpc LoadStock(StockId, NewStock) returns (Stock) {}
+    rpc LoadStock(ExistingStock) returns (Stock) {}
 }
 
 message StockId {
@@ -127,6 +127,44 @@ message NewStockAttributes {
     repeated string publications = 8;
     StrainProperties strain_properties = 9;
     PlasmidProperties plasmid_properties = 10;
+}
+
+// Definition for loading an existing stock
+message ExistingStock {
+    message Data {
+        // Resource name, i.e. "strain"
+        string type = 1;
+        // Existing stock ID
+        string id = 2;
+        ExistingStockAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines attributes for loading an existing stock
+message ExistingStockAttributes {
+    // Timestamp for creation
+    google.protobuf.Timestamp created_at = 1 [(validator.field) = {msg_exists : true}];
+    // Timestamp for update
+    google.protobuf.Timestamp updated_at = 2 [(validator.field) = {msg_exists : true}];
+    // User who created stock entry
+    string created_by = 3 [(validator.field) = {string_not_empty : true}];
+    // User who updated stock entry
+    string updated_by = 4 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 5;
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 6;
+    // List of associated genes
+    repeated string genes = 7;
+    // List of database cross references
+    repeated string dbxrefs = 8;
+    // Depositor of the stock
+    string depositor = 9 [(validator.field) = {string_not_empty : true}] ;
+    // List of related publications
+    repeated string publications = 10;
+    StrainProperties strain_properties = 11;
+    PlasmidProperties plasmid_properties = 12;
 }
 
 // Definition for creating a new stock
