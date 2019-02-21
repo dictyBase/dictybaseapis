@@ -23,6 +23,8 @@ service OrderService {
     rpc UpdateOrder(OrderUpdate) returns (Order) {}
     // List all orders
     rpc ListOrders(ListParameters) returns (OrderCollection) {}
+    // Load existing order
+    rpc LoadOrder(OrderId, ExistingOrder) returns (Order) {}
 }
 
 message OrderId {
@@ -112,6 +114,43 @@ message NewOrderAttributes {
     // List of items in the order, in this case it will be mostly biological
     // stocks such as plasmids and strains
     repeated string items = 10 [(validator.field) = {string_not_empty : true}];
+}
+
+// Definition for loading an existing order
+message ExistingOrder {
+    message Data {
+        // Resource name, by default should be order
+        string type = 1;
+        ExistingOrderAttributes attributes = 2;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Defines attributes for loading an existing order
+message ExistingOrderAttributes {
+    // Time order was created
+    google.protobuf.Timestamp created_at = 1 [(validator.field) = {msg_exists : true}];
+    // Name of courier for delivery
+    string courier = 2;
+    // Account identification used for courier service
+    string courier_account = 3;
+    // Any comments about the order
+    string comments = 4;
+    // Type of payment being used
+    string payment = 5;
+    // Order number for purchase
+    string purchase_order_num = 6;
+    // Status of order
+    OrderStatus status = 7;
+    // Person (user) who is receiving the stocks in mail
+    string consumer = 8;
+    // Person (user) who is paying for the stocks
+    string payer = 9;
+    // Person who is ordering (logged in user)
+    string purchaser = 10 [(validator.field) = {string_not_empty : true}];
+    // List of items in the order, in this case it will be mostly biological
+    // stocks such as plasmids and strains
+    repeated string items = 11 [(validator.field) = {string_not_empty : true}];
 }
 
 // Definition for updating an existing order

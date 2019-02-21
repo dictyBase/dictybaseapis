@@ -28,6 +28,8 @@ service StockService {
     rpc ListStrains(StockParameters) returns (StockCollection) {}
     // List all plasmids
     rpc ListPlasmids(StockParameters) returns (StockCollection) {}
+    // Load existing stock
+    rpc LoadStock(StockId, NewStock) returns (Stock) {}
 }
 
 message StockId {
