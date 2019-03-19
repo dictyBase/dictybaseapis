@@ -20,7 +20,7 @@ service TaggedAnnotationService {
     rpc GetAnnotation(AnnotationId) returns (TaggedAnnotation) {}
     // Retrieves a single tagged annotation associated with an entry
     rpc GetEntryAnnotation(EntryAnnotationRequest) returns (TaggedAnnotation) {}
-    // Retrieves all tagged annotations
+    // List tagged annotations using pagination, ten entries are retrieved by default
     rpc ListAnnotations(ListParameters) returns (TaggedAnnotationCollection) {}
     // Create a tagged annotation
     rpc CreateAnnotation(NewTaggedAnnotation) returns (TaggedAnnotation) {}

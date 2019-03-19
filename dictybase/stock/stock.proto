@@ -24,9 +24,9 @@ service StockService {
     rpc UpdateStock(StockUpdate) returns (Stock) {}
     // Remove an existing stock
     rpc RemoveStock(StockId) returns (google.protobuf.Empty) {}
-    // List all strains
+    // List strains using pagination, ten entries are retrieved by default
     rpc ListStrains(StockParameters) returns (StockCollection) {}
-    // List all plasmids
+    // List plasmids using pagination, ten entries are retrieved by default
     rpc ListPlasmids(StockParameters) returns (StockCollection) {}
     // Load existing stock
     rpc LoadStock(ExistingStock) returns (Stock) {}

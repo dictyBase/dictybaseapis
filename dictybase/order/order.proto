@@ -22,7 +22,7 @@ service OrderService {
     rpc CreateOrder(NewOrder) returns (Order) {}
     // Update an existing order
     rpc UpdateOrder(OrderUpdate) returns (Order) {}
-    // List all orders
+    // List orders using pagination, ten entries are retrieved by default
     rpc ListOrders(ListParameters) returns (OrderCollection) {}
     // Load existing order
     rpc LoadOrder(ExistingOrder) returns (Order) {}
