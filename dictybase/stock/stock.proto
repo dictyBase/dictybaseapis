@@ -49,6 +49,30 @@ message Stock {
     Data data = 1 [(validator.field) = {msg_exists : true}];
 }
 
+// Definition of an individual strain
+message Strain {
+    message Data {
+        // Resource name ("strain", "plasmid", etc)
+        string type = 1;
+        // Unique identifier for the stock
+        string id = 2;
+        StrainAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Definition of an individual plasmid
+message Plasmid {
+    message Data {
+        // Resource name ("strain", "plasmid", etc)
+        string type = 1;
+        // Unique identifier for the stock
+        string id = 2;
+        PlasmidAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
 // Definition of various stock attributes
 message StockAttributes {
     // Timestamp for creation
@@ -73,6 +97,56 @@ message StockAttributes {
     repeated string publications = 10;
     StrainProperties strain_properties = 11;
     PlasmidProperties plasmid_properties = 12;
+}
+
+// Definition of various strain attributes
+message StrainAttributes {
+    // Timestamp for creation
+    google.protobuf.Timestamp created_at = 1 [(validator.field) = {msg_exists : true}];
+    // Timestamp for update
+    google.protobuf.Timestamp updated_at = 2 [(validator.field) = {msg_exists : true}];
+    // User who created stock entry
+    string created_by = 3 [(validator.field) = {string_not_empty : true}];
+    // User who updated stock entry
+    string updated_by = 4 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 5;
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 6;
+    // Depositor of the stock
+    string depositor = 7;
+    // List of associated genes
+    repeated string genes = 8;
+    // List of database cross references
+    repeated string dbxrefs = 9;
+    // List of related publications
+    repeated string publications = 10;
+    StrainProperties strain_properties = 11 [(validator.field) = {msg_exists : true}];
+}
+
+// Definition of various stock attributes
+message PlasmidAttributes {
+    // Timestamp for creation
+    google.protobuf.Timestamp created_at = 1 [(validator.field) = {msg_exists : true}];
+    // Timestamp for update
+    google.protobuf.Timestamp updated_at = 2 [(validator.field) = {msg_exists : true}];
+    // User who created stock entry
+    string created_by = 3 [(validator.field) = {string_not_empty : true}];
+    // User who updated stock entry
+    string updated_by = 4 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 5;
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 6;
+    // Depositor of the stock
+    string depositor = 7;
+    // List of associated genes
+    repeated string genes = 8;
+    // List of database cross references
+    repeated string dbxrefs = 9;
+    // List of related publications
+    repeated string publications = 10;
+    PlasmidProperties plasmid_properties = 11;
 }
 
 message StrainProperties {
@@ -229,9 +303,9 @@ message StockCollection {
 
 // StockParameters defines fields for manipulating output of Stock collection
 message StockParameters {
-    // A unique pointer to the next set of result in the list
+    // A unique pointer to the next set of result in the list (default is 0)
     int64 cursor = 1;
-    // Maximum number of records that can be fetch per request
+    // Maximum number of records that can be fetch per request (default is 10)
     int64 limit = 2;
     // The `filter` field restricts the data return by the collection. To use
     // it, supply one or multiple allowed fields to filter followed
