@@ -16,18 +16,24 @@ option objc_class_prefix = "DICTYAPI";
 
 // The stock service specification
 service StockService {
+    // Retrieves strain by ID
+    rpc GetStrain(StockId) returns (Strain) {}
     // Retrieves stock by ID
-    rpc GetStock(StockId) returns (Stock) {}
-    // Create a new stock
-    rpc CreateStock(NewStock) returns (Stock) {}
-    // Update an existing stock
-    rpc UpdateStock(StockUpdate) returns (Stock) {}
+    rpc GetPlasmid(StockId) returns (Plasmid) {}
+    // Create a new strain
+    rpc CreateStrain(NewStrain) returns (Strain) {}
+    // Create a new plasmid
+    rpc CreatePlasmid(NewPlasmid) returns (Plasmid) {} 
+    // Update an existing strain
+    rpc UpdateStrain(StrainUpdate) returns (Strain) {}
+    // Update an existing plasmid
+    rpc UpdatePlasmid(PlasmidUpdate) returns (Plasmid) {}
     // Remove an existing stock
     rpc RemoveStock(StockId) returns (google.protobuf.Empty) {}
     // List strains using pagination, ten entries are retrieved by default
-    rpc ListStrains(StockParameters) returns (StockCollection) {}
+    rpc ListStrains(StockParameters) returns (StrainCollection) {}
     // List plasmids using pagination, ten entries are retrieved by default
-    rpc ListPlasmids(StockParameters) returns (StockCollection) {}
+    rpc ListPlasmids(StockParameters) returns (PlasmidCollection) {}
     // Load existing stock
     rpc LoadStock(ExistingStock) returns (Stock) {}
 }
@@ -52,9 +58,9 @@ message Stock {
 // Definition of an individual strain
 message Strain {
     message Data {
-        // Resource name ("strain", "plasmid", etc)
+        // Resource name
         string type = 1;
-        // Unique identifier for the stock
+        // Unique identifier for the strain
         string id = 2;
         StrainAttributes attributes = 3;
     }
@@ -64,9 +70,9 @@ message Strain {
 // Definition of an individual plasmid
 message Plasmid {
     message Data {
-        // Resource name ("strain", "plasmid", etc)
+        // Resource name
         string type = 1;
-        // Unique identifier for the stock
+        // Unique identifier for the plasmid
         string id = 2;
         PlasmidAttributes attributes = 3;
     }
@@ -181,6 +187,26 @@ message NewStock {
     Data data = 1 [(validator.field) = {msg_exists : true}];
 }
 
+// Definition for creating a new strain
+message NewStrain {
+    message Data {
+        // Resource name
+        string type = 1;
+        NewStrainAttributes attributes = 2;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Definition for creating a new plasmid
+message NewPlasmid {
+    message Data {
+        // Resource name
+        string type = 1;
+        NewPlasmidAttributes attributes = 2;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
 // Defines attributes for creating a new stock
 message NewStockAttributes {
     // User who created stock entry
@@ -201,6 +227,48 @@ message NewStockAttributes {
     repeated string publications = 8;
     StrainProperties strain_properties = 9;
     PlasmidProperties plasmid_properties = 10;
+}
+
+// Defines attributes for creating a new strain
+message NewStrainAttributes {
+    // User who created stock entry
+    string created_by = 1 [(validator.field) = {string_not_empty : true}];
+    // User who updated stock entry
+    string updated_by = 2 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 3;
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 4;
+    // List of associated genes
+    repeated string genes = 5;
+    // List of database cross references
+    repeated string dbxrefs = 6;
+    // Depositor of the stock
+    string depositor = 7 [(validator.field) = {string_not_empty : true}] ;
+    // List of related publications
+    repeated string publications = 8;
+    StrainProperties strain_properties = 9;
+}
+
+// Defines attributes for creating a new plasmid
+message NewPlasmidAttributes {
+    // User who created stock entry
+    string created_by = 1 [(validator.field) = {string_not_empty : true}];
+    // User who updated stock entry
+    string updated_by = 2 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 3;
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 4;
+    // List of associated genes
+    repeated string genes = 5;
+    // List of database cross references
+    repeated string dbxrefs = 6;
+    // Depositor of the stock
+    string depositor = 7 [(validator.field) = {string_not_empty : true}] ;
+    // List of related publications
+    repeated string publications = 8;
+    PlasmidProperties plasmid_properties = 9;
 }
 
 // Definition for loading an existing stock
@@ -253,6 +321,30 @@ message StockUpdate {
     Data data = 1 [(validator.field) = {msg_exists : true}];
 }
 
+// Definition for creating a new strain
+message StrainUpdate {
+    message Data {
+        // Resource name
+        string type = 1;
+        // Unique ID for strain
+        string id = 2 [(validator.field) = {string_not_empty : true}];
+        StrainUpdateAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Definition for creating a new plasmid
+message PlasmidUpdate {
+    message Data {
+        // Resource name
+        string type = 1;
+        // Unique ID for plasmid
+        string id = 2 [(validator.field) = {string_not_empty : true}];
+        PlasmidUpdateAttributes attributes = 3;
+    }
+    Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
 // Defines attributes for updating a stock
 message StockUpdateAttributes {
     // User who updated stock entry
@@ -271,6 +363,44 @@ message StockUpdateAttributes {
     repeated string publications = 7;
     StrainUpdateProperties strain_properties = 8;
     PlasmidProperties plasmid_properties = 9;
+}
+
+// Defines attributes for updating a strain
+message StrainUpdateAttributes {
+    // User who updated stock entry
+    string updated_by = 1 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 2;
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 3;
+    // Depositor of the stock
+    string depositor = 4;
+    // List of associated genes
+    repeated string genes = 5;
+    // List of database cross references
+    repeated string dbxrefs = 6;
+    // List of related publications
+    repeated string publications = 7;
+    StrainUpdateProperties strain_properties = 8;
+}
+
+// Defines attributes for updating a plasmid
+message PlasmidUpdateAttributes {
+    // User who updated stock entry
+    string updated_by = 1 [(validator.field) = {string_not_empty : true}];
+    // Summary of the stock
+    string summary = 2;
+    // Editable version of the stock summary (Slate JSON format)
+    string editable_summary = 3;
+    // Depositor of the stock
+    string depositor = 4;
+    // List of associated genes
+    repeated string genes = 5;
+    // List of database cross references
+    repeated string dbxrefs = 6;
+    // List of related publications
+    repeated string publications = 7;
+    PlasmidProperties plasmid_properties = 8;
 }
 
 message StrainUpdateProperties {
@@ -298,7 +428,33 @@ message StockCollection {
         StockAttributes attributes = 3;
     }
     repeated Data data = 1 [(validator.field) = {msg_exists : true}];
-    Meta meta = 3 [(validator.field) = {msg_exists : true}];
+    Meta meta = 2 [(validator.field) = {msg_exists : true}];
+}
+
+// List of strains
+message StrainCollection {
+    message Data {
+        // Resource name
+        string type = 1;
+        // Unique identifier for the stock
+        string id = 2;
+        StrainAttributes attributes = 3;
+    }
+    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    Meta meta = 2 [(validator.field) = {msg_exists : true}];
+}
+
+// List of plasmids
+message PlasmidCollection {
+    message Data {
+        // Resource name
+        string type = 1;
+        // Unique identifier for the stock
+        string id = 2;
+        PlasmidAttributes attributes = 3;
+    }
+    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    Meta meta = 2 [(validator.field) = {msg_exists : true}];
 }
 
 // StockParameters defines fields for manipulating output of Stock collection
