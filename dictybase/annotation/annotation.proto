@@ -126,7 +126,7 @@ message NewTaggedAnnotationAttributes {
     string value = 1 [(validator.field) = {string_not_empty : true}];
     // serialized text content in a format recognized by frontend rich text
     // editor
-    string editable_value = 2 [(validator.field) = {string_not_empty : true}];
+    string editable_value = 2 ;
     // Unique identifier(generally email) of the user who created the annotation
     string created_by = 3 [(validator.field) = {string_not_empty : true}];
     // An identifiable tagname for the annotation, primarily
