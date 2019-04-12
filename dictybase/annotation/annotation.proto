@@ -29,11 +29,28 @@ service TaggedAnnotationService {
     rpc UpdateAnnotation(TaggedAnnotationUpdate) returns (TaggedAnnotation) {}
     // Delete an existing annotation
     rpc DeleteAnnotation(AnnotationId) returns (google.protobuf.Empty) {}
+    // Creates an annotation group from bunch of existing tagged annotations.
+    rpc CreateAnnotationGroup(AnnotationIdList) returns (TaggedAnnotationGroup) {}
+    // Retrieves an annotation group
+    rpc GetAnnotationGroup(AnnotationId) returns (TaggedAnnotationGroup) {}
+    // Adds an existing tagged annotation to an existing annotation group
+    rpc AddToAnnotationGroup(AnnotationId) returns (TaggedAnnotationGroup) {}
 }
 
 message AnnotationId {
     // unique identifier for the annotation
     string id = 1 [(validator.field) = {string_not_empty : true}];
+}
+
+// Identifiers for grouping list of tagged annotations
+message AnnotationIdList {
+    // list of unique identifiers
+    repeated string ids = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Group of tagged annotations
+message TaggedAnnotationGroup {
+    repeated TaggedAnnotation group = 1;
 }
 
 
