@@ -35,6 +35,8 @@ service TaggedAnnotationService {
     rpc GetAnnotationGroup(AnnotationId) returns (TaggedAnnotationGroup) {}
     // Adds an existing tagged annotation to an existing annotation group
     rpc AddToAnnotationGroup(AnnotationId) returns (TaggedAnnotationGroup) {}
+    // Remove an annotation group
+    rpc DeleteAnnotationGroup(AnnotationId) returns (google.protobuf.Empty) {}
 }
 
 message AnnotationId {
