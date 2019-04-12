@@ -32,11 +32,11 @@ service TaggedAnnotationService {
     // Creates an annotation group from bunch of existing tagged annotations.
     rpc CreateAnnotationGroup(AnnotationIdList) returns (TaggedAnnotationGroup) {}
     // Retrieves an annotation group
-    rpc GetAnnotationGroup(AnnotationId) returns (TaggedAnnotationGroup) {}
+    rpc GetAnnotationGroup(AnnotationEntryId) returns (TaggedAnnotationGroup) {}
     // Adds an existing tagged annotation to an existing annotation group
-    rpc AddToAnnotationGroup(AnnotationId) returns (TaggedAnnotationGroup) {}
+    rpc AddToAnnotationGroup(AnnotationGroupRequest) returns (TaggedAnnotationGroup) {}
     // Remove an annotation group
-    rpc DeleteAnnotationGroup(AnnotationId) returns (google.protobuf.Empty) {}
+    rpc DeleteAnnotationGroup(AnnotationEntryId) returns (google.protobuf.Empty) {}
 }
 
 message AnnotationId {
@@ -49,6 +49,19 @@ message AnnotationIdList {
     // list of unique identifiers
     repeated string ids = 1 [(validator.field) = {msg_exists : true}];
 }
+
+message AnnotationEntryId {
+    // unique identifier of a biological entity that is being annotated
+    string entry_id = 1 [(validator.field) = {string_not_empty : true}];
+}
+
+message AnnotationGroupRequest {
+    // unique identifier for the annotation
+    string id = 1 [(validator.field) = {string_not_empty : true}];
+    // unique identifier of a biological entity that is being annotated
+    string entry_id = 2 [(validator.field) = {string_not_empty : true}];
+}
+
 
 // Group of tagged annotations
 message TaggedAnnotationGroup {
