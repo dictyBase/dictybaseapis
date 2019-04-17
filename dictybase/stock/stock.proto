@@ -427,6 +427,7 @@ message StockParameters {
     //   * systematic_name    - Unambiguous name for the strain (string)
     //   * summary            - Summary of the stock (string)
     //   * name               - Name used for strain (string), searches in the "names" attribute
+    //   * plasmid_name       - Name used for plasmid (string)
     //   * created_at         - Date the stock was created (number), can be in the
     //                          following formats:
     //                          YYYY-MM-DD, YYYY-MM, YYYY
