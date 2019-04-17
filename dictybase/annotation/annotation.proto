@@ -34,9 +34,11 @@ service TaggedAnnotationService {
     // Retrieves an annotation group
     rpc GetAnnotationGroup(AnnotationEntryId) returns (TaggedAnnotationGroup) {}
     // Adds an existing tagged annotation to an existing annotation group
-    rpc AddToAnnotationGroup(AnnotationGroupRequest) returns (TaggedAnnotationGroup) {}
+    rpc AddToAnnotationGroup(AnnotationId) returns (TaggedAnnotationGroup) {}
     // Remove an annotation group
     rpc DeleteAnnotationGroup(AnnotationEntryId) returns (google.protobuf.Empty) {}
+    // List tagged annotation groups using pagination, ten entries are retrieved by default
+    rpc ListAnnotationGroups(ListGroupParameters) returns (TaggedAnnotationGroupCollection) {}
 }
 
 message AnnotationId {
@@ -51,21 +53,34 @@ message AnnotationIdList {
 }
 
 message AnnotationEntryId {
-    // unique identifier of a biological entity that is being annotated
-    string entry_id = 1 [(validator.field) = {string_not_empty : true}];
-}
-
-message AnnotationGroupRequest {
-    // unique identifier for the annotation
-    string id = 1 [(validator.field) = {string_not_empty : true}];
-    // unique identifier of a biological entity that is being annotated
-    string entry_id = 2 [(validator.field) = {string_not_empty : true}];
+    // unique identifier of a group
+    string group_id = 1 [(validator.field) = {string_not_empty : true}];
 }
 
 
 // Group of tagged annotations
 message TaggedAnnotationGroup {
-    repeated TaggedAnnotation group = 1;
+    message Data {
+        // resource name, by default should be annotation
+        string type = 1;
+        // unique identifier for the annotation
+        string id = 2;
+        TaggedAnnotationAttributes attributes = 3;
+    }
+    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    // unique identifier for the annotation group
+    string group_id = 2;
+}
+
+// List of tagged annotation groups
+message TaggedAnnotationGroupCollection {
+    message Data {
+        // resource name, by default it should be annotation group
+        string type = 1;
+        TaggedAnnotationGroup group = 2;
+    }
+    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    Meta meta = 2 [(validator.field) = {msg_exists : true}];
 }
 
 
@@ -219,7 +234,6 @@ message ListParameters {
     //   * ontology    - Ontology that provides the tag names (string).
     //   * version     - Version no (number).
     //
-    // field_name - Any one of the allowed field_name of the `AnnotationAttributes` definition.
     // operator - Defines the type of filter match to use. It could be any of
     // the following four and all of them should be URL-encoded for http request.
     //
@@ -252,9 +266,60 @@ message ListParameters {
     //           filter: "value~cytoskeletion;tag==cell membrane;ontology==cellular"
     //
     string filter = 3;
-    // The sort field allow to sort the data return by the collection based on
-    // fields of `AnnotationAttributes. To use it, supply a comma separated one
-    // or more allowed field from the definition of `AnnotationAttributes`.
+}
+
+
+// ListGroupParameters defines fields for manipulating output of TaggedAnnotationGroupCollection collection
+message ListGroupParameters {
+    // A unique pointer to the next set of result in the list
+    int64 cursor = 1;
+    // Maximum number of records that can be fetch per request
+    int64 limit = 2;
+    // The `filter` field restricts the data return by the collection. To use
+    // it, supply one or multiple allowed fields to filter followed
+    // by a filter expression. It uses the following syntax...
+    //        field_name operator expression
+    //
+    // The following fields of `AnnotationAttributes` definition are allowed to
+    // be used for filtering
+    //   * entry_id    - The entry that is being annotated (string)
+    //   * created_by  - Email id of the user (string)
+    //   * tag         - Tag name, a term from an ontology (string).
+    //   * ontology    - Ontology that provides the tag names (string).
+    //   * version     - Version no (number), current version is used by default.
+    //
+    // operator - Defines the type of filter match to use. It could be any of
+    // the following four and all of them should be URL-encoded for http request.
+    //
+    //        Operators for strings
+    //              =~    Contains substring
+    //              !~   Not contains substring
+    //              ===  Equals
+    //              !==  Not equals
+    //
+    //        Operators for numbers
+    //              ==  Equals
+    //              !=  Not equals
+    //              >   Greater than
+    //              <   Less than
+    //              =<  Less than equal to
+    //              >=  Greater than equal to
+    //
+    // expression - The value that will be included or excluded from the
+    // result. URL-reserved characters must be URL-encoded for http request.
+    //
+    //           filter: "created_by==caboose@abc.com"
+    //           filter: "entry_id==DDB_G4839483"
+    //           filter: "tag==growth"
+    //
+    // Filter can be combined using OR or AND boolean logic.
+    //   * The OR is represented using a comma(,).
+    //   * The AND is represented using a semi-colon(;).
+    //   * AND and OR operators can be combined and AND takes precedence over OR.
+    //
+    //           filter: "tag~cytoskeletion;entry_id==DDB_G4839783;ontology==cellular"
+    //
+    string filter = 3;
 }
 
 // Metadata definition for traversing the collection
