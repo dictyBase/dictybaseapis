@@ -116,7 +116,7 @@ message NewOrderAttributes {
     string purchaser = 9 [(validator.field) = {string_not_empty : true}];
     // List of items in the order, in this case it will be mostly biological
     // stocks such as plasmids and strains
-    repeated string items = 10 [(validator.field) = {string_not_empty : true}];
+    repeated string items = 10 [(validator.field) = {repeated_count_min : 1}];
 }
 
 // Definition for loading an existing order
@@ -139,7 +139,7 @@ message ExistingOrderAttributes {
     string purchaser = 3 [(validator.field) = {string_not_empty : true}];
     // List of items in the order, in this case it will be mostly biological
     // stocks such as plasmids and strains
-    repeated string items = 4 [(validator.field) = {string_not_empty : true}];
+    repeated string items = 4 [(validator.field) = {repeated_count_min : 1}];
 }
 
 // Definition for updating an existing order
@@ -182,7 +182,7 @@ message OrderCollection {
         string id = 2;
         OrderAttributes attributes = 3;
     }
-    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    repeated Data data = 1 [(validator.field) = {repeated_count_min : 1}];
     Meta meta = 3 [(validator.field) = {msg_exists : true}];
 }
 

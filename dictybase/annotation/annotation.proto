@@ -18,7 +18,7 @@ option objc_class_prefix = "DICTYAPI";
 service TaggedAnnotationService {
     // Retrieves the specified tagged annotation
     rpc GetAnnotation(AnnotationId) returns (TaggedAnnotation) {}
-    // Retrieves a single tagged annotation associated with an entry
+    // Retrieves a single tagged annotation associated with a specific entry
     rpc GetEntryAnnotation(EntryAnnotationRequest) returns (TaggedAnnotation) {}
     // List tagged annotations using pagination, ten entries are retrieved by default
     rpc ListAnnotations(ListParameters) returns (TaggedAnnotationCollection) {}
@@ -33,7 +33,9 @@ service TaggedAnnotationService {
     rpc CreateAnnotationGroup(AnnotationIdList) returns (TaggedAnnotationGroup) {}
     // Retrieves an annotation group
     rpc GetAnnotationGroup(AnnotationEntryId) returns (TaggedAnnotationGroup) {}
-    // Adds an existing tagged annotation to an existing annotation group
+    // Retrieves an annotation group associated with a specific entry
+    rpc GetEntryAnnotationGroup(EntryAnnotationRequest) returns (TaggedAnnotationGroup) {}
+    // Adds an existing annotation into an existing annotation group
     rpc AddToAnnotationGroup(AnnotationId) returns (TaggedAnnotationGroup) {}
     // Remove an annotation group
     rpc DeleteAnnotationGroup(AnnotationEntryId) returns (google.protobuf.Empty) {}
@@ -49,7 +51,7 @@ message AnnotationId {
 // Identifiers for grouping list of tagged annotations
 message AnnotationIdList {
     // list of unique identifiers
-    repeated string ids = 1 [(validator.field) = {msg_exists : true}];
+    repeated string ids = 1 [(validator.field) = {repeated_count_min : 1}];
 }
 
 message AnnotationEntryId {
