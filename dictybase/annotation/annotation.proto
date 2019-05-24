@@ -33,8 +33,6 @@ service TaggedAnnotationService {
     rpc CreateAnnotationGroup(AnnotationIdList) returns (TaggedAnnotationGroup) {}
     // Retrieves an annotation group
     rpc GetAnnotationGroup(AnnotationEntryId) returns (TaggedAnnotationGroup) {}
-    // Retrieves an annotation group associated with a specific entry
-    rpc GetEntryAnnotationGroup(EntryAnnotationRequest) returns (TaggedAnnotationGroup) {}
     // Adds an existing annotation into an existing annotation group
     rpc AddToAnnotationGroup(AnnotationId) returns (TaggedAnnotationGroup) {}
     // Remove an annotation group
