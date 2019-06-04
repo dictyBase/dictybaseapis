@@ -32,7 +32,7 @@ service TaggedAnnotationService {
     // Creates an annotation group from bunch of existing tagged annotations.
     rpc CreateAnnotationGroup(AnnotationIdList) returns (TaggedAnnotationGroup) {}
     // Retrieves an annotation group
-    rpc GetAnnotationGroup(AnnotationEntryId) returns (TaggedAnnotationGroup) {}
+    rpc GetAnnotationGroup(GroupEntryId) returns (TaggedAnnotationGroup) {}
     // Adds an existing annotation into an existing annotation group
     rpc AddToAnnotationGroup(AnnotationGroupId) returns (TaggedAnnotationGroup) {}
     // Remove an annotation group
@@ -45,7 +45,13 @@ message AnnotationGroupId {
     // unique identifier for the annotation
     string id = 1 [(validator.field) = {string_not_empty : true}];
     // unique identifier of a group
-    string group_id = 1 [(validator.field) = {string_not_empty : true}];
+    string group_id = 2 [(validator.field) = {string_not_empty : true}];
+}
+
+
+message AnnotationId {
+    // unique identifier for the annotation
+    string id = 1 [(validator.field) = {string_not_empty : true}];
 }
 
 // Identifiers for grouping list of tagged annotations
