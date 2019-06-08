@@ -297,7 +297,7 @@ message ListGroupParameters {
     //   * created_by  - Email id of the user (string)
     //   * tag         - Tag name, a term from an ontology (string).
     //   * ontology    - Ontology that provides the tag names (string).
-    //   * version     - Version no (number), current version is used by default.
+    //   * rank        - Ordering of annotation (number).
     //
     // operator - Defines the type of filter match to use. It could be any of
     // the following four and all of them should be URL-encoded for http request.
@@ -329,6 +329,7 @@ message ListGroupParameters {
     //   * AND and OR operators can be combined and AND takes precedence over OR.
     //
     //           filter: "tag~cytoskeletion;entry_id==DDB_G4839783;ontology==cellular"
+    //           filter: "tag~membrane;entry_id==DDB_G4839783;ontology==cellular;rank=0"
     //
     string filter = 3;
 }
