@@ -341,6 +341,4 @@ message Meta {
     int64 next_cursor = 1;
     // Maximum number of records that can be fetch per request
     int64 limit = 2;
-    // Total number of records in the collection.
-    int64 total = 3;
 }
