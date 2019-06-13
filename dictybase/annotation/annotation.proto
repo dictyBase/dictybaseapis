@@ -244,6 +244,7 @@ message ListParameters {
     //   * tag         - Tag name, a term from an ontology (string).
     //   * ontology    - Ontology that provides the tag names (string).
     //   * version     - Version no (number).
+    //   * value       - annotation in plain text format (number).
     //
     // operator - Defines the type of filter match to use. It could be any of
     // the following four and all of them should be URL-encoded for http request.
