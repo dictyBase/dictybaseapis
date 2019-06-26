@@ -91,18 +91,16 @@ message StrainAttributes {
     repeated string dbxrefs = 9;
     // List of related publications
     repeated string publications = 10;
-    // Unambiguous name for the strain
-    string systematic_name = 11 [(validator.field) = {string_not_empty : true}];
     // Descriptor for the strain, a quick overview of its key genetic modifications
-    string label = 12 [(validator.field) = {string_not_empty : true}];
+    string label = 11 [(validator.field) = {string_not_empty : true}];
     // Species of the strain
-    string species = 13 [(validator.field) = {string_not_empty : true}];
+    string species = 12 [(validator.field) = {string_not_empty : true}];
     // Related plasmid for the strain
-    string plasmid = 14;
+    string plasmid = 13;
     // Parent of the strain
-    string parent = 15;
+    string parent = 14;
     // List of names for the strain
-    repeated string names = 16;
+    repeated string names = 15;
 }
 
 // Definition of various stock attributes
@@ -173,18 +171,16 @@ message NewStrainAttributes {
     string depositor = 7 [(validator.field) = {string_not_empty : true}] ;
     // List of related publications
     repeated string publications = 8;
-    // Unambiguous name for the strain
-    string systematic_name = 9 [(validator.field) = {string_not_empty : true}];
     // Descriptor for the strain, a quick overview of its key genetic modifications
-    string label = 10 [(validator.field) = {string_not_empty : true}];
+    string label = 9 [(validator.field) = {string_not_empty : true}];
     // Species of the strain
-    string species = 11 [(validator.field) = {string_not_empty : true}];
+    string species = 10 [(validator.field) = {string_not_empty : true}];
     // Related plasmid for the strain
-    string plasmid = 12;
+    string plasmid = 11;
     // Parent of the strain
-    string parent = 13;
+    string parent = 12;
     // List of names for the strain
-    repeated string names = 14;
+    repeated string names = 13;
 }
 
 // Defines attributes for creating a new plasmid
@@ -259,18 +255,16 @@ message ExistingStrainAttributes {
     string depositor = 9 [(validator.field) = {string_not_empty : true}] ;
     // List of related publications
     repeated string publications = 10;
-    // Unambiguous name for the strain
-    string systematic_name = 11 [(validator.field) = {string_not_empty : true}];
     // Descriptor for the strain, a quick overview of its key genetic modifications
-    string label = 12 [(validator.field) = {string_not_empty : true}];
+    string label = 11 [(validator.field) = {string_not_empty : true}];
     // Species of the strain
-    string species = 13 [(validator.field) = {string_not_empty : true}];
+    string species = 12 [(validator.field) = {string_not_empty : true}];
     // Related plasmid for the strain
-    string plasmid = 14;
+    string plasmid = 13;
     // Parent of the strain
-    string parent = 15;
+    string parent = 14;
     // List of names for the strain
-    repeated string names = 16;
+    repeated string names = 15;
 }
 
 // Defines attributes for loading an existing plasmid
@@ -343,18 +337,16 @@ message StrainUpdateAttributes {
     repeated string dbxrefs = 6;
     // List of related publications
     repeated string publications = 7;
-    // Unambiguous name for the strain
-    string systematic_name = 8;
     // Descriptor for the strain, a quick overview of its key genetic modifications
-    string label = 9;
+    string label = 8;
     // Species of the strain
-    string species = 10;
+    string species = 9;
     // Related plasmid for the strain
-    string plasmid = 11;
+    string plasmid = 10;
     // Parent of the strain
-    string parent = 12;
+    string parent = 11;
     // List of names for the strain
-    repeated string names = 13;
+    repeated string names = 12;
 }
 
 // Defines attributes for updating a plasmid
@@ -424,7 +416,6 @@ message StockParameters {
     //   * parent             - Parental strain (string) (currently not implemented)
     //   * plasmid            - Related plasmid for the strain (string)
     //   * species            - The species of the strain (string)
-    //   * systematic_name    - Unambiguous name for the strain (string)
     //   * summary            - Summary of the stock (string)
     //   * name               - Name used for strain (string), searches in the "names" attribute
     //   * plasmid_name       - Name used for plasmid (string)
