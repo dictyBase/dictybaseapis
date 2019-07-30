@@ -252,7 +252,7 @@ message ExistingStrainAttributes {
     // List of database cross references
     repeated string dbxrefs = 8;
     // Depositor of the stock
-    string depositor = 9 [(validator.field) = {string_not_empty : true}] ;
+    string depositor = 9;
     // List of related publications
     repeated string publications = 10;
     // Descriptor for the strain, a quick overview of its key genetic modifications
@@ -276,7 +276,7 @@ message ExistingPlasmidAttributes {
     // User who created stock entry
     string created_by = 3 [(validator.field) = {string_not_empty : true}];
     // User who updated stock entry
-    string updated_by = 4 [(validator.field) = {string_not_empty : true}];
+    string updated_by = 4;
     // Summary of the stock
     string summary = 5;
     // Editable version of the stock summary (Slate JSON format)
@@ -286,7 +286,7 @@ message ExistingPlasmidAttributes {
     // List of database cross references
     repeated string dbxrefs = 8;
     // Depositor of the stock
-    string depositor = 9 [(validator.field) = {string_not_empty : true}] ;
+    string depositor = 9;
     // List of related publications
     repeated string publications = 10;
     // Image map for the plasmid
