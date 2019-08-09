@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package dictybase.analysis;
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/analysis;analysis";
+option java_multiple_files = true;
+option java_outer_classname = "AnalysisProto";
+option java_package = "org.dictybase.analysis";
+option objc_class_prefix = "DICTYAPI";
+
+service AnalysisService {
+    // Create a blast database from the provided sequence
+    rpc CreateBlastDb(stream BlastDbParams) returns(google.protobuf.Empty) {}
+}
+
+// Various parameters required for creating a blast database
+message BlastDbParams {
+    // sequence needed for database, provided in chunks
+    bytes seq_chunk = 1;
+    // ncbi taxonid of the organism
+    string taxon_id = 2 [(validator.field) = {string_not_empty : true}];
+    // name of the database
+    string name = 3 [(validator.field) = {string_not_empty : true}];
+    // human readable description of the database
+    string title = 4 [(validator.field) = {string_not_empty : true}];
+    // Type of sequence, nucleotide or protein
+    string seqtype = 5 [(validator.field) = {string_not_empty : true}];
+}
