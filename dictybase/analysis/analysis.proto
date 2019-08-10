@@ -15,7 +15,7 @@ option objc_class_prefix = "DICTYAPI";
 
 service AnalysisService {
     // Create a blast database from the provided sequence
-    rpc CreateBlastDb(stream BlastDbRequest) returns() {}
+    rpc CreateBlastDb(stream BlastDbRequest) returns(google.protobuf.Empty) {}
 }
 
 // Various parameters required for creating a blast database
