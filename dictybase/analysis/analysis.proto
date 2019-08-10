@@ -15,7 +15,7 @@ option objc_class_prefix = "DICTYAPI";
 
 service AnalysisService {
     // Create a blast database from the provided sequence
-    rpc CreateBlastDb(stream BlastDbRequest) returns(google.protobuf.Empty) {}
+    rpc CreateBlastDb(stream BlastDbRequest) returns() {}
 }
 
 // Various parameters required for creating a blast database
@@ -44,5 +44,5 @@ message BlastDbParams {
     // human readable description of the database
     string title = 4 [(validator.field) = {string_not_empty : true}];
     // Type of sequence, nucleotide or protein
-    string seqtype = 5 [(validator.field) = {string_not_empty : true}];
+    string seqtype = 6 [(validator.field) = {string_not_empty : true}];
 }
