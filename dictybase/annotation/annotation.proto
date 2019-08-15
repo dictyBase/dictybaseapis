@@ -28,7 +28,7 @@ service TaggedAnnotationService {
     // created with a link to the previous annotation(copy on write).
     rpc UpdateAnnotation(TaggedAnnotationUpdate) returns (TaggedAnnotation) {}
     // Delete an existing annotation
-    rpc DeleteAnnotation(AnnotationId) returns (google.protobuf.Empty) {}
+    rpc DeleteAnnotation(DeleteAnnotationRequest) returns (google.protobuf.Empty) {}
     // Creates an annotation group from bunch of existing tagged annotations.
     rpc CreateAnnotationGroup(AnnotationIdList) returns (TaggedAnnotationGroup) {}
     // Retrieves an annotation group
@@ -111,6 +111,13 @@ message EntryAnnotationRequest {
     int64 rank = 4;
     // Status for active or retired annotation. Active annotation is chosen by default.
     bool is_obsolete = 5;
+}
+
+message DeleteAnnotationRequest {
+    // unique identifier of a biological entity that is being annotated
+    string entry_id = 1 [(validator.field) = {string_not_empty : true}];
+    // flag to indicate whether the entry will be wiped or turned obsolete(soft delete)
+    bool purge = 2;
 }
 
 // List of paginated tagged annotations
