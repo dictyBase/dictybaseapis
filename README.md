@@ -21,6 +21,15 @@ payload messages. It can be accessed through [gRPC](https://grpc.io).
 In general, every API has its own directory with matching proto packages. The
 `api` folder contain reusable definitions.
 
+## Requirements
+* [Protobuf](https://github.com/protocolbuffers/protobuf) - v3.9.2
+* [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway) - v1.11.3
+### Compiling to golang
+* [Golang protobuf](https://github.com/golang/protobuf) - v1.3.2
+* [go-proto-validators](https://github.com/mwitkow/go-proto-validators) - v0.2.0
+### Optional
+* [protoc-gen-doc](https://github.com/pseudomuto/protoc-gen-doc/) - v1.3.0
+
 
 ## Developers
 <a href="https://sourcerer.io/cybersiddhu"><img src="https://sourcerer.io/assets/avatar/cybersiddhu" height="80px" alt="Sourcerer"></a>
