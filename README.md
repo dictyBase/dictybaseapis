@@ -1,4 +1,13 @@
 # dictyBase APIs
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](LICENSE)   
+![GitHub repo size](https://img.shields.io/github/repo-size/dictyBase/dictybaseapis?style=plastic)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/dictyBase/dictybaseapis?style=plastic)
+![Commits](https://badgen.net/github/commits/dictyBase/dictybaseapis/master)
+![Last commit](https://badgen.net/github/last-commit/dictyBase/dictybaseapis/master)   
+[![Funding](https://badgen.net/badge/NIGMS/Rex%20L%20Chisholm,dictyBase/yellow?list=|)](https://projectreporter.nih.gov/project_info_description.cfm?aid=9476993)
+[![Funding](https://badgen.net/badge/NIGMS/Rex%20L%20Chisholm,DSC/yellow?list=|)](https://projectreporter.nih.gov/project_info_description.cfm?aid=9438930)
+
+
 This repository contains interface definitions of public
 [dictyBase](http://dictybase.org) API that supports both gRPC and REST
 protocols. These definitions can be used with open source tools generate client
