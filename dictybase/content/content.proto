@@ -7,7 +7,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
-import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "validator.proto";
 
 
 option cc_enable_arenas = true;

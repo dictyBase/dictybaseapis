@@ -4,7 +4,7 @@ package dictybase.annotation;
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
-import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "validator.proto";
 
 
 option cc_enable_arenas = true;
@@ -75,7 +75,7 @@ message TaggedAnnotationGroup {
         string id = 2;
         TaggedAnnotationAttributes attributes = 3;
     }
-    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    repeated Data data = 1;
     // unique identifier for the annotation group
     string group_id = 2;
     // Timestamp for creation an update
@@ -90,7 +90,7 @@ message TaggedAnnotationGroupCollection {
         string type = 1;
         TaggedAnnotationGroup group = 2;
     }
-    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    repeated Data data = 1;
     Meta meta = 2 [(validator.field) = {msg_exists : true}];
 }
 
@@ -129,7 +129,7 @@ message TaggedAnnotationCollection {
         string id = 2;
         TaggedAnnotationAttributes attributes = 3;
     }
-    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    repeated Data data = 1;
     Meta meta = 3 [(validator.field) = {msg_exists : true}];
 }
 

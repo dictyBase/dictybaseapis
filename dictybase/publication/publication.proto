@@ -4,7 +4,7 @@ package dictybase.publication;
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
-import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "validator.proto";
 
 
 option cc_enable_arenas = true;
