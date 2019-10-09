@@ -1,8 +1,6 @@
 # dictyBase APIs
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](LICENSE)   
 ![GitHub repo size](https://img.shields.io/github/repo-size/dictyBase/dictybaseapis?style=plastic)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/dictyBase/dictybaseapis?style=plastic)
-![Commits](https://badgen.net/github/commits/dictyBase/dictybaseapis/master)
 ![Last commit](https://badgen.net/github/last-commit/dictyBase/dictybaseapis/master)   
 [![Funding](https://badgen.net/badge/NIGMS/Rex%20L%20Chisholm,dictyBase/yellow?list=|)](https://projectreporter.nih.gov/project_info_description.cfm?aid=9476993)
 [![Funding](https://badgen.net/badge/NIGMS/Rex%20L%20Chisholm,DSC/yellow?list=|)](https://projectreporter.nih.gov/project_info_description.cfm?aid=9438930)
@@ -28,3 +26,7 @@ versions of the API, which can be accessed two different wire protocols.
 In general, every API has its own directory with matching proto packages. The
 `api` folder contain reusable definitions.
 
+
+## Developers
+<a href="https://sourcerer.io/cybersiddhu"><img src="https://sourcerer.io/assets/avatar/cybersiddhu" height="80px" alt="Sourcerer"></a>
+<a href="https://sourcerer.io/wildlifehexagon"><img src="https://sourcerer.io/assets/avatar/wildlifehexagon" height="80px" alt="Sourcerer"></a>
