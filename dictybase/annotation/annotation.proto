@@ -114,8 +114,8 @@ message EntryAnnotationRequest {
 }
 
 message DeleteAnnotationRequest {
-    // unique identifier of a biological entity that is being annotated
-    string entry_id = 1 [(validator.field) = {string_not_empty : true}];
+    // unique identifier for the annotation
+    string id = 1 [(validator.field) = {string_not_empty : true}];
     // flag to indicate whether the entry will be wiped or turned obsolete(soft delete)
     bool purge = 2;
 }
