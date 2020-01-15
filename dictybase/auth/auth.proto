@@ -19,20 +19,24 @@ option objc_class_prefix = "DICTYAPI";
 service AuthService {
     // Logs user into authserver
     rpc Login(NewLogin) returns (Auth) {}
+    // Logs user into authserver
+    rpc Relogin(NewRelogin) returns (Auth) {}
     // Retrieves new refresh token and JWT
-    rpc GetRefreshToken(google.protobuf.Empty) returns (Token) {}
+    rpc GetRefreshToken(NewToken) returns (Token) {}
     // Logs user out of authserver
-    rpc Logout(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc Logout(NewRefreshToken) returns (google.protobuf.Empty) {}
 }
 
 // Definition of an individual auth response
 message Auth {
     // JSON Web Token (JWT)
     string token = 1;
+    // Refresh token
+    string refresh_token = 2;
     // Identity of user
-    dictybase.identity.Identity identity = 2;
+    dictybase.identity.Identity identity = 3;
     // User API data
-    dictybase.user.User user = 3;
+    dictybase.user.User user = 4;
 }
 
 message NewLogin {
@@ -52,7 +56,26 @@ message NewLogin {
     string provider = 6 [(validator.field) = {string_not_empty : true}];
 }
 
+message NewRelogin {
+    // Refresh token
+    string refresh_token = 1 [(validator.field) = {string_not_empty : true}];
+}
+
+message NewToken {
+    // JSON Web Token (JWT)
+    string token = 1;
+    // Refresh token (unique ID)
+    string refresh_token = 2;
+}
+
+message NewRefreshToken {
+    // Refresh token (unique ID)
+    string refresh_token = 1;
+}
+
 message Token {
     // JSON Web Token (JWT)
-    string token = 1 [(validator.field) = {msg_exists : true}];
+    string token = 1;
+    // Refresh token (unique ID)
+    string refresh_token = 2;
 }
