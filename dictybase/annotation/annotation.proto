@@ -38,6 +38,8 @@ service TaggedAnnotationService {
     rpc DeleteAnnotationGroup(GroupEntryId) returns (google.protobuf.Empty) {}
     // List tagged annotation groups using pagination, ten entries are retrieved by default
     rpc ListAnnotationGroups(ListGroupParameters) returns (TaggedAnnotationGroupCollection) {}
+    // Retrieves tag information
+    rpc GetAnnotationTag(TagRequest) returns (AnnotationTag) {}
 }
 
 message AnnotationGroupId {
@@ -119,6 +121,16 @@ message DeleteAnnotationRequest {
     bool purge = 2;
 }
 
+// Definition of various fields needed to fetch a tag information
+message TagRequest {
+    // human readable name
+    string name = 1 [(validator.field) = {string_not_empty : true}];
+    // ontology to which this tag belong
+    string ontology = 2 [(validator.field) = {string_not_empty : true}];
+    // status for active or retired tag
+    bool is_obsolete = 3;
+}
+
 // List of paginated tagged annotations
 message TaggedAnnotationCollection {
     message Data {
@@ -144,6 +156,18 @@ message TaggedAnnotation {
         TaggedAnnotationAttributes attributes = 3;
     }
     Data data = 1 [(validator.field) = {msg_exists : true}];
+}
+
+// Definition of annotation tag
+message AnnotationTag {
+    // tag identifier
+    string id = 1;
+    // human readable name
+    string name = 2;
+    // ontology to which this tag belong
+    string ontology = 3;
+    // status for active or retired tag
+    bool is_obsolete = 4;
 }
 
 // Definition of various tagged annotation attributes
