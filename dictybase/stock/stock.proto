@@ -394,7 +394,7 @@ message PlasmidCollection {
         string id = 2;
         PlasmidAttributes attributes = 3;
     }
-    repeated Data data = 1 [(validator.field) = {msg_exists : true}];
+    repeated Data data = 1;
     Meta meta = 2 [(validator.field) = {msg_exists : true}];
 }
 

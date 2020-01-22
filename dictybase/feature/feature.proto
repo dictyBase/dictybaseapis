@@ -181,7 +181,7 @@ message NewFeatureAttributes {
 
 // List of features with pagination
 message PaginatedFeatureCollection {
-    repeated FeatureData data = 1 [(validator.field) = {msg_exists : true}];
+    repeated FeatureData data = 1;
     Meta meta = 2 [(validator.field) = {msg_exists : true}];
 }
 
