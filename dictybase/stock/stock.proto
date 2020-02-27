@@ -417,6 +417,7 @@ message StockParameters {
     //   * species            - The species of the strain (string)
     //   * summary            - Summary of the stock (string)
     //   * name               - Name used for strain (string), searches in the "names" attribute
+    //   * descriptor         - Descriptor for the strain (string), searches in the "label" attribute
     //   * plasmid_name       - Name used for plasmid (string)
     //   * created_at         - Date the stock was created (number), can be in the
     //                          following formats:
