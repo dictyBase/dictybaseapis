@@ -1,0 +1,11 @@
+
+version: 2
+updates:
+- package-ecosystem: github-actions
+  target-branch: develop
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: saturday
+    time: "11:00"
+    timezone: America/Chicago
