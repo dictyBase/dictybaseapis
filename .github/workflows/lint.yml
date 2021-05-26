@@ -19,3 +19,5 @@ jobs:
         run: buf build
       - name: run buf lint
         run: buf lint
+      - name: run buf breaking
+        run: buf breaking --against '.git#branch=master'
