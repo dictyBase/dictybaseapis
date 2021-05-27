@@ -1,9 +1,9 @@
-name: Buf Lint
+name: Buf
 on:
   pull_request:
     types: [edited, labeled, opened, synchronize, reopened]
 jobs:
-  buf:
+  lint:
     name: Buf build and lint
     runs-on: ubuntu-20.04
     steps:
@@ -19,5 +19,20 @@ jobs:
         run: buf build
       - name: run buf lint
         run: buf lint
-      - name: run buf breaking
-        run: buf breaking --against 'https://github.com/dictyBase/dictybaseapis.git#branch=master'
+      # - name: run buf breaking
+      #   run: buf breaking --against 'https://github.com/dictyBase/dictybaseapis.git#branch=master'
+  generate:
+    name: Generate Go code
+    runs-on: ubuntu-20.04
+    needs: lint
+    steps:
+      - name: check out code
+        uses: actions/checkout@v2
+      - name: download and setup path for buf binary
+        run: |
+          mkdir -p buf/bin
+          curl -L -o buf/bin/buf https://github.com/bufbuild/buf/releases/download/v0.42.1/buf-Linux-x86_64
+          chmod +x buf/bin/buf
+          echo "$GITHUB_WORKSPACE/buf/bin" >> $GITHUB_PATH
+      - name: generate go code
+        run: buf generate --path dictybase      
