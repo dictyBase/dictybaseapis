@@ -20,4 +20,4 @@ jobs:
       - name: run buf lint
         run: buf lint
       - name: run buf breaking
-        run: buf breaking --against '.git#branch=master'
+        run: buf breaking --against 'https://github.com/dictyBase/dictybaseapis.git#branch=master'
