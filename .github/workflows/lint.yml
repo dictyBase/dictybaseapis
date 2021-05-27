@@ -48,7 +48,7 @@ jobs:
         run: buf generate --path dictybase
       - name: clone go-genproto
         if: success()
-        run: git clone https://.:${{ secrets.GITHUB_TOKEN }}@github.com/dictybase/go-genproto go-genproto
+        run: git clone https://.:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/dictybase/go-genproto go-genproto
       - name: move generated files
         run: rsync -r proto/ go-genproto/dictybaseapis --remove-source-files && rm -rf proto
       - name: move into updated repo
@@ -62,6 +62,8 @@ jobs:
         run: git checkout -b chore/update-${{ steps.vars.outputs.id }}
       - name: commit changes
         run: |
+            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git config --global user.name "GitHub Actions"
             git add .
             git commit -m "update from https://github.com/$GITHUB_REPOSITORY/commit/${{ steps.vars.outputs.id }}"
       - name: push changes
