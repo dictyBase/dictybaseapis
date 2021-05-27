@@ -9,3 +9,5 @@ plugins:
     opt: 
       - allow_delete_body=true
       - logtostderr=true
+  - name: govalidators
+    out: proto
