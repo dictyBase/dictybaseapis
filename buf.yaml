@@ -6,8 +6,6 @@ deps:
   - buf.build/grpc-ecosystem/grpc-gateway
 lint:
   use:
-    - DEFAULT
-  enum_zero_value_suffix: _INVALID
-  service_suffix: API
+    - MINIMAL
   ignore:
     - github.com/mwitkow
