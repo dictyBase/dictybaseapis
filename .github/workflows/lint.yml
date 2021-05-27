@@ -70,4 +70,4 @@ jobs:
             git add .
             git commit -m "update from https://github.com/$GITHUB_REPOSITORY/commit/${{ steps.vars.outputs.id }}"
       - name: push changes
-        run: git push origin chore/update-${{ steps.vars.outputs.id }}
+        run: git push https://github.com/dictyBase/go-genproto.git chore/update-${{ steps.vars.outputs.id }}
