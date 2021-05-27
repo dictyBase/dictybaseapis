@@ -52,9 +52,18 @@ jobs:
         with:
           repository: dictybase/go-genproto
           path: go-genproto
-      # - name: move generated files
-      #   run: rsync -r proto/ go-genproto/dictybaseapis --remove-source-files && rm -rf proto
-      - name: log output
-        run: ls
-      - name: log gen output
-        run: cd go-genproto && ls
+      - name: move generated files
+        run: rsync -r proto/ go-genproto/dictybaseapis --remove-source-files && rm -rf proto
+      - name: move into updated repo
+        run: cd go-genproto
+      - name: get short sha
+        id: vars
+        run: |
+          sha=$(git rev-parse --short HEAD)
+          echo ::set-output name=id::${sha}
+      - name: create new branch in cloned repo
+        run: git checkout -b chore/update-${steps.vars.outputs.id}
+      - name: commit changes
+        run: git add . && git commit -m "update from https://github.com/${env.GITHUB_REPOSITORY}/commit/${steps.vars.outputs.id}"
+      - name: push changes
+        run: git push -u origin chore/update-${steps.vars.outputs.id}
