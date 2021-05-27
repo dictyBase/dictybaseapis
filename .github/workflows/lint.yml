@@ -62,8 +62,6 @@ jobs:
         run: git checkout -b chore/update-${{ steps.vars.outputs.id }}
       - name: commit changes
         run: |
-            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git config --global user.name "GitHub Actions"
             git add .
             git commit -m "update from https://github.com/$GITHUB_REPOSITORY/commit/${{ steps.vars.outputs.id }}"
       - name: push changes
