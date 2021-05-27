@@ -52,6 +52,7 @@ jobs:
         with:
           repository: dictybase/go-genproto
           path: go-genproto
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: move generated files
         run: rsync -r proto/ go-genproto/dictybaseapis --remove-source-files && rm -rf proto
       - name: move into updated repo
