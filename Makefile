@@ -17,7 +17,6 @@ install:
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v${PROTOC_GEN_GO_GRPC_VERSION}
 	go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway@v${PROTOC_GEN_GRPC_GATEWAY_VERSION}
 	go install github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v${PROTOC_GEN_GOVALIDATORS_VERSION}
-	curl -L \
-    	"https://github.com/bufbuild/buf/releases/download/v${BUF_VERSION}/buf-Linux-x86_64" \
-    	-o "$(shell go env GOPATH)/bin/buf" && \
-  		chmod +x "$(shell go env GOPATH)/bin/buf"
+	mkdir -p buf/bin
+	curl -L -o buf/bin/buf "https://github.com/bufbuild/buf/releases/download/v${BUF_VERSION}/buf-Linux-x86_64"
+  	chmod +x buf/bin/buf
