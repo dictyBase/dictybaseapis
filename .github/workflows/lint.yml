@@ -46,3 +46,13 @@ jobs:
           go install github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v0.3.2
       - name: generate go code
         run: buf generate --path dictybase
+      - name: clone go-genproto
+        if: success()
+        uses: actions/checkout@master
+        with:
+          repository: dictybase/go-genproto
+          path: ./go-genproto
+      - name: move generated files
+        run: rsync -r proto/ go-genproto/dictybaseapis --remove-source-files
+      - name: log outputs
+        run: ls && cd go-genproto && ls
