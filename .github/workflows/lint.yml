@@ -62,8 +62,8 @@ jobs:
           sha=$(git rev-parse --short HEAD)
           echo ::set-output name=id::${sha}
       - name: create new branch in cloned repo
-        run: git checkout -b chore/update-${steps.vars.outputs.id}
+        run: git checkout -b chore/update-${{ steps.vars.outputs.id }}
       - name: commit changes
-        run: git add . && git commit -m "update from https://github.com/${env.GITHUB_REPOSITORY}/commit/${steps.vars.outputs.id}"
+        run: git add . && git commit -m "update from https://github.com/$GITHUB_REPOSITORY/commit/${{ steps.vars.outputs.id }}"
       - name: push changes
-        run: git push -u origin chore/update-${steps.vars.outputs.id}
+        run: git push -u origin chore/update-${{ steps.vars.outputs.id }}
