@@ -4,23 +4,15 @@ on:
     types: [edited, labeled, opened, synchronize, reopened]
 jobs:
   lint:
-    name: Buf build and lint
+    name: Linter
     runs-on: ubuntu-20.04
     steps:
       - name: check out code
         uses: actions/checkout@v2
-      - name: download and setup path for buf binary
-        run: |
-          mkdir -p buf/bin
-          curl -L -o buf/bin/buf https://github.com/bufbuild/buf/releases/download/v0.42.1/buf-Linux-x86_64
-          chmod +x buf/bin/buf
-          echo "$GITHUB_WORKSPACE/buf/bin" >> $GITHUB_PATH
-      - name: run buf build
-        run: buf build
-      - name: run buf lint
-        run: buf lint
-      # - name: run buf breaking
-      #   run: buf breaking --against 'https://github.com/dictyBase/dictybaseapis.git#branch=master'
+      - name: install necessary binaries
+        run: make install
+      - name: lint
+        run: make lint
   generate:
     name: Generate Go code
     runs-on: ubuntu-20.04
@@ -28,11 +20,11 @@ jobs:
     steps:
       - name: check out code
         uses: actions/checkout@v2
-      - name: download and setup path for buf binary
-        run: |
-          mkdir -p buf/bin
-          curl -L -o buf/bin/buf https://github.com/bufbuild/buf/releases/download/v0.42.1/buf-Linux-x86_64
-          chmod +x buf/bin/buf
-          echo "$GITHUB_WORKSPACE/buf/bin" >> $GITHUB_PATH
+      - name: set up golang
+        uses: actions/setup-go@v2
+        with:
+            go-version: "^1.16.3"
+      - name: install necessary binaries
+        run: make install
       - name: generate go code
-        run: buf generate --path dictybase      
+        run: make generate
