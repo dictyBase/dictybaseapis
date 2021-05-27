@@ -51,8 +51,10 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: dictybase/go-genproto
-          path: ./go-genproto
-      - name: move generated files
-        run: rsync -r proto/ go-genproto/dictybaseapis --remove-source-files
-      - name: log outputs
-        run: ls && cd go-genproto && ls
+          path: go-genproto
+      # - name: move generated files
+      #   run: rsync -r proto/ go-genproto/dictybaseapis --remove-source-files && rm -rf proto
+      - name: log output
+        run: ls
+      - name: log gen output
+        run: cd go-genproto && ls
