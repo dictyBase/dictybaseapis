@@ -75,16 +75,14 @@ jobs:
           echo ::set-output name=id::${sha}
       - name: create new branch in cloned repo
         run: git checkout -b chore/update-${{ steps.vars.outputs.id }}
-      - name: print files
-        run: ls
-      # - name: commit changes
-      #   env:
-      #     GIT_USERNAME: dictybasebot
-      #     GIT_EMAIL: dictybasebot@users.noreply.github.com
-      #   run: |
-      #       git config --local user.name "${{ env.GIT_USERNAME }}"
-      #       git config --local user.email "${{ env.GIT_EMAIL }}"
-      #       git add .
-      #       git commit -m "update on `date +"%Y-%m-%d:%H:%M:%S"`"
-      # - name: push changes
-      #   run: git push https://github.com/dictyBase/go-genproto.git chore/update-${{ steps.vars.outputs.id }}
+      - name: commit changes
+        env:
+          GIT_USERNAME: dictybasebot
+          GIT_EMAIL: dictybasebot@users.noreply.github.com
+        run: |
+            git config --local user.name "${{ env.GIT_USERNAME }}"
+            git config --local user.email "${{ env.GIT_EMAIL }}"
+            git add ${{ env.REPO_PATH }}
+            git commit -m "update on `date +"%Y-%m-%d:%H:%M:%S"`"
+      - name: push changes
+        run: git push https://github.com/dictyBase/go-genproto.git chore/update-${{ steps.vars.outputs.id }}
