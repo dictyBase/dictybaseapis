@@ -82,7 +82,7 @@ jobs:
         run: |
             git config --local user.name "${{ env.GIT_USERNAME }}"
             git config --local user.email "${{ env.GIT_EMAIL }}"
-            git add ${{ env.REPO_PATH }}
+            git add go-genproto/
             git commit -m "update on `date +"%Y-%m-%d:%H:%M:%S"`"
       - name: push changes
         run: git push https://github.com/dictyBase/go-genproto.git chore/update-${{ steps.vars.outputs.id }}
