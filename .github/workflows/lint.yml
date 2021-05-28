@@ -28,6 +28,13 @@ jobs:
     steps:
       - name: check out code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.ACCESS_TOKEN }}
+      - name: configure git
+        run: |
+            git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+            git config --global user.name "$GITHUB_ACTOR"
       - name: set up golang
         uses: actions/setup-go@v2
         with:
@@ -49,15 +56,18 @@ jobs:
       - name: clone go-genproto
         if: success()
         uses: actions/checkout@v2
+        env:
+          REPO: dictybase/go-genproto
+          REPO_PATH: go-genproto
         with:
           fetch-depth: 0
           token: ${{ secrets.ACCESS_TOKEN }}
-          repository: dictybase/go-genproto
-          path: go-genproto
+          repository: ${{ env.REPO }}
+          path: ${{ env.REPO_PATH }}
       - name: move generated files
         run: rsync -r proto/ go-genproto/dictybaseapis --remove-source-files && rm -rf proto
       - name: move into updated repo
-        run: cd go-genproto
+        run: cd ${{ env.REPO_PATH }}
       - name: get short sha
         id: vars
         run: |
@@ -66,10 +76,13 @@ jobs:
       - name: create new branch in cloned repo
         run: git checkout -b chore/update-${{ steps.vars.outputs.id }}
       - name: commit changes
+        env:
+          GIT_USERNAME: wildlifehexagon
+          GIT_EMAIL: wildlifehexagon@users.noreply.github.com
         run: |
-            git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
-            git config --global user.name $GITHUB_ACTOR
+            git config --local user.name "${{ env.GIT_USERNAME }}"
+            git config --local user.email "${{ env.GIT_EMAIL }}"
             git add .
-            git commit -m "update from https://github.com/$GITHUB_REPOSITORY/commit/${{ steps.vars.outputs.id }}"
+            git commit -m "update on `date +"%Y-%m-%d:%H:%M:%S"`"
       - name: push changes
         run: git push https://github.com/dictyBase/go-genproto.git chore/update-${{ steps.vars.outputs.id }}
