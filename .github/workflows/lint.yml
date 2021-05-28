@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN }}
           repository: dictybase/go-genproto
           path: go-genproto
       - name: move generated files
