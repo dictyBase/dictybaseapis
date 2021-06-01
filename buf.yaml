@@ -3,7 +3,6 @@ version: v1beta1
 name: buf.build/dictybase/dictybaseapis
 deps:
   - buf.build/beta/googleapis
-  - buf.build/grpc-ecosystem/grpc-gateway
 lint:
   use:
     - BASIC

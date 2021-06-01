@@ -49,7 +49,6 @@ jobs:
         run: |
           go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26.0
           go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1.0
-          go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway@v1.16.0
           go install github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v0.3.2
       - name: generate go code
         run: buf generate --path dictybase

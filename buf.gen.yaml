@@ -8,10 +8,5 @@ plugins:
     out: proto
   - name: go-grpc
     out: proto
-  - name: grpc-gateway
-    out: proto
-    opt: 
-      - allow_delete_body=true
-      - logtostderr=true
   - name: govalidators
     out: proto
