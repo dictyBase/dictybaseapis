@@ -20,41 +20,16 @@ option objc_class_prefix = "DICTYAPI";
 // The content service definition
 service ContentService {
     // Gets the content of specified page(slug)
-    rpc GetContentBySlug (ContentRequest) returns (Content) {
-        option (google.api.http).get = "/contents/slug/{slug}";
-    }
-    rpc GetContent (ContentIdRequest) returns (Content) {
-        option (google.api.http).get = "/contents/{id}";
-    }
-
+    rpc GetContentBySlug (ContentRequest) returns (Content) {}
+    rpc GetContent (ContentIdRequest) returns (Content) {}
     // Store the content of a new page(slug)
-    rpc StoreContent (StoreContentRequest) returns (Content) {
-        // HTTP request body contain all the information.
-        option (google.api.http) = {
-            post: "/contents"
-            body: "*"
-        };
-    }
-
+    rpc StoreContent (StoreContentRequest) returns (Content) {}
     // Update the content of an existing page
-    rpc UpdateContent (UpdateContentRequest) returns (Content) {
-        option (google.api.http) = {
-            patch: "/contents/{id}",
-            body: "*"
-        };
-    }
-
+    rpc UpdateContent (UpdateContentRequest) returns (Content) {}
     // Delete an existing page along with its content
-    rpc DeleteContent (ContentIdRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/contents/{id}"
-        };
-    }
-
+    rpc DeleteContent (ContentIdRequest) returns (google.protobuf.Empty) {}
     // Basic health check that always return success
-    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {
-        option (google.api.http).get = "/healthz";
-    }
+    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {}
 }
 
 message Content {

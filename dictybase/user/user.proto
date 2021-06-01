@@ -20,83 +20,28 @@ option objc_class_prefix = "DICTYAPI";
 // The user service definition
 service UserService {
     // Check the existence of user
-    rpc ExistUser (dictybase.api.jsonapi.IdRequest) returns (dictybase.api.jsonapi.ExistResponse) {
-    }
+    rpc ExistUser (dictybase.api.jsonapi.IdRequest) returns (dictybase.api.jsonapi.ExistResponse) {}
     // Gets the specified user
-    rpc GetUser (dictybase.api.jsonapi.GetRequest) returns (User) {
-        // Resource id is mapped to the URL.
-        option (google.api.http).get = "/users/{id}";
-    }
-
+    rpc GetUser (dictybase.api.jsonapi.GetRequest) returns (User) {}
     // Gets the specified user by their email id
-    rpc GetUserByEmail (dictybase.api.jsonapi.GetEmailRequest) returns (User) {
-        option (google.api.http).get = "/users/email/{email}";
-    }
-
+    rpc GetUserByEmail (dictybase.api.jsonapi.GetEmailRequest) returns (User) {}
     // Gets all related roles
-    rpc GetRelatedRoles (dictybase.api.jsonapi.RelationshipRequest) returns (RoleCollection) {
-        option (google.api.http).get = "/users/{id}/roles";
-    }
-
+    rpc GetRelatedRoles (dictybase.api.jsonapi.RelationshipRequest) returns (RoleCollection) {}
     // List all users. Only *roles* relationship is allowed for inclusion.
-    rpc ListUsers (dictybase.api.jsonapi.ListRequest) returns (UserCollection) {
-        option (google.api.http).get = "/users";
-    }
-
+    rpc ListUsers (dictybase.api.jsonapi.ListRequest) returns (UserCollection) {}
     // Create an user
-    rpc CreateUser(CreateUserRequest) returns (User) {
-        // Resource is contained in the HTTP request body.
-        option (google.api.http) = {
-            post: "/users"
-            body: "*"
-        };
-    }
-
+    rpc CreateUser(CreateUserRequest) returns (User) {}
     // Create relationship links with roles
-    rpc CreateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            post: "/users/{id}/relationships/roles"
-            body: "*"
-        };
-    }
-
-    // Update an user
-    rpc UpdateUser(UpdateUserRequest) returns (User) {
-        // Resource is contained in the HTTP request body.
-        option (google.api.http) = {
-            patch: "/users/{id}"
-            body: "*"
-        };
-    }
-
+    rpc CreateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+    rpc UpdateUser(UpdateUserRequest) returns (User) {}
     // Update relationship links with roles
-    rpc UpdateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            patch: "/users/{id}/relationships/roles"
-            body: "*"
-        };
-    }
-
+    rpc UpdateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
     // Delete an user
-    rpc DeleteUser(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/users/{id}"
-        };
-    }
-
-
+    rpc DeleteUser(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {}
     // Delete relationship links with roles
-    rpc DeleteRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/users/{id}/relationships/roles"
-            body: "*"
-        };
-    }
-
+    rpc DeleteRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
     // Basic health check that always return success
-    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {
-        option (google.api.http).get = "/healthz";
-    }
+    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {}
 }
 
 message UpdateUserRequest {
@@ -210,100 +155,31 @@ message NewUserRelationships {
 // The role service definition
 service RoleService {
     // Gets the specified role
-    rpc GetRole (dictybase.api.jsonapi.GetRequest) returns (Role) {
-        // Resource id is mapped to the URL.
-        option (google.api.http).get = "/roles/{id}";
-    }
-
+    rpc GetRole (dictybase.api.jsonapi.GetRequest) returns (Role) {}
     // Gets all related users
-    rpc GetRelatedUsers (dictybase.api.jsonapi.RelationshipRequestWithPagination) returns (UserCollection) {
-        option (google.api.http).get = "/roles/{id}/users";
-    }
-
+    rpc GetRelatedUsers (dictybase.api.jsonapi.RelationshipRequestWithPagination) returns (UserCollection) {}
     // Gets all related permissions
-    rpc GetRelatedPermissions  (dictybase.api.jsonapi.RelationshipRequest) returns (PermissionCollection) {
-        option (google.api.http).get = "/roles/{id}/permissions";
-    }
-
+    rpc GetRelatedPermissions  (dictybase.api.jsonapi.RelationshipRequest) returns (PermissionCollection) {}
     // List all roles. Both *users* and *permissions* relationships are allowed in the include parameter.
-    rpc ListRoles (dictybase.api.jsonapi.SimpleListRequest) returns (RoleCollection) {
-        option (google.api.http).get = "/roles";
-    }
-
+    rpc ListRoles (dictybase.api.jsonapi.SimpleListRequest) returns (RoleCollection) {}
     // Create an role
-    rpc CreateRole(CreateRoleRequest) returns (Role) {
-        // Resource is contained in the HTTP request body.
-        option (google.api.http) = {
-            post: "/roles"
-            body: "*"
-        };
-    }
-
+    rpc CreateRole(CreateRoleRequest) returns (Role) {}
     // Create user relationship with role
-    rpc CreateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            post: "/roles/{id}/relationships/users"
-            body: "*"
-        };
-    }
-
-
+    rpc CreateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
     // Create permission relationship with role
-    rpc CreatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            post: "/roles/{id}/relationships/permissions"
-            body: "*"
-        };
-    }
-
-
+    rpc CreatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
     // Update an role
-    rpc UpdateRole(UpdateRoleRequest) returns (Role) {
-        // Resource is contained in the HTTP request body.
-        option (google.api.http) = {
-            patch: "/roles/{id}"
-            body: "*"
-        };
-    }
-
+    rpc UpdateRole(UpdateRoleRequest) returns (Role) {}
     // Update existing user relationship with role
-    rpc UpdateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            patch: "/roles/{id}/relationships/users"
-            body: "*"
-        };
-    }
-
+    rpc UpdateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
     // Update existing permission relationship with role
-    rpc UpdatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            patch: "/roles/{id}/relationships/permissions"
-            body: "*"
-        };
-    }
-
+    rpc UpdatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
     // Delete an role
-    rpc DeleteRole(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/roles/{id}"
-        };
-    }
-
+    rpc DeleteRole(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {}
     // Delete existing user relationship with role
-    rpc DeleteUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/roles/{id}/relationships/users"
-            body: "*"
-        };
-    }
-
+    rpc DeleteUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
     // Delete existing permission relationship with role
-    rpc DeletePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/roles/{id}/relationships/permissions"
-            body: "*"
-        };
-    }
+    rpc DeletePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
 }
 
 
@@ -397,39 +273,15 @@ message NewRoleRelationships {
 // The permission service definition
 service PermissionService {
     // Gets the specified permission
-    rpc GetPermission (dictybase.api.jsonapi.GetRequestWithFields) returns (Permission) {
-        // Resource id is mapped to the URL.
-        option (google.api.http).get = "/permissions/{id}";
-    }
+    rpc GetPermission (dictybase.api.jsonapi.GetRequestWithFields) returns (Permission) {}
     // List all permissions
-    rpc ListPermissions (dictybase.api.jsonapi.SimpleListRequest) returns (PermissionCollection) {
-        option (google.api.http).get = "/permissions";
-    }
-
+    rpc ListPermissions (dictybase.api.jsonapi.SimpleListRequest) returns (PermissionCollection) {}
     // Create an permission
-    rpc CreatePermission(CreatePermissionRequest) returns (Permission) {
-        // Resource is contained in the HTTP request body.
-        option (google.api.http) = {
-            post: "/permissions"
-            body: "*"
-        };
-    }
-
+    rpc CreatePermission(CreatePermissionRequest) returns (Permission) {}
     // Update an permission
-    rpc UpdatePermission(UpdatePermissionRequest) returns (Permission) {
-        // Resource is contained in the HTTP request body.
-        option (google.api.http) = {
-            patch: "/permissions/{id}"
-            body: "*"
-        };
-    }
-
+    rpc UpdatePermission(UpdatePermissionRequest) returns (Permission) {}
     // Delete an permission
-    rpc DeletePermission(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/permissions/{id}"
-        };
-    }
+    rpc DeletePermission(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {}
 }
 
 
