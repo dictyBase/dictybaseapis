@@ -71,7 +71,7 @@ jobs:
       - name: copy generated files
         run: |
           rm -rf target/dictybaseapis
-          cp -r generated/github.com/dictyBase/go-genproto target/dictybaseapis
+          cp -r generated/github.com/dictyBase/go-genproto target
           cd target
           git add .
           git diff-index --quiet HEAD || git commit -m "update on `date +"%Y-%m-%d:%H:%M:%S"`"
