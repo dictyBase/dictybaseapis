@@ -26,8 +26,8 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: install buf plugins
         run: |
-          go install github.com/bufbuild/buf/cmd/protoc-gen-buf-breaking@v0.43.2
-          go install github.com/bufbuild/buf/cmd/protoc-gen-buf-lint@v0.43.2
+          go install github.com/bufbuild/buf/cmd/protoc-gen-buf-breaking
+          go install github.com/bufbuild/buf/cmd/protoc-gen-buf-lint
       - name: run linter
         run: protoc -I . $(find ./dictybase -name '*.proto') -o /dev/stdout --buf-lint_out=.
       # - name: run buf breaking
@@ -41,11 +41,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: ${{ secrets.ACCESS_TOKEN }}
-      - name: configure git
-        run: |
-            git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
-            git config --global user.name "$GITHUB_ACTOR"
       - name: set up golang
         uses: actions/setup-go@v2
         with:
@@ -63,36 +58,28 @@ jobs:
           go install github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v0.3.2
       - name: generate go code
         run: buf generate --path dictybase
-      - name: checkout target repo
+      - name: prepare target repo
         if: success()
-        uses: actions/checkout@v2
-        env:
-          REPO: dictybase/go-genproto
-          REPO_PATH: go-genproto
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.ACCESS_TOKEN }}
-          repository: ${{ env.REPO }}
-          path: ${{ env.REPO_PATH }}
-      - name: move generated files
-        run: cp -R proto/ go-genproto/dictybaseapis
-      - name: move into updated repo
-        run: cd ${{ env.REPO_PATH }}
+        run: |
+          git clone https://github.com/dictyBase/go-genproto.git target
+          git config --global user.email "dictybasebot@users.noreply.github.com"
+          git config --global user.name "dictybasebot"
+      - name: copy generated files
+        run: |
+          rm -rf target/dictybaseapis
+          cp -r generated/github.com/dictyBase/go-genproto target/dictybaseapis
+          cd target
+          git add .
+          git diff-index --quiet HEAD || git commit -m "update on `date +"%Y-%m-%d:%H:%M:%S"`"
       - name: get short sha
         id: vars
         run: |
           sha=$(git rev-parse --short HEAD)
           echo ::set-output name=id::${sha}
-      - name: create new branch in cloned repo
-        run: git checkout -b chore/update-${{ steps.vars.outputs.id }}
-      - name: commit changes
-        env:
-          GIT_USERNAME: dictybasebot
-          GIT_EMAIL: dictybasebot@users.noreply.github.com
-        run: |
-            git config --local user.name "${{ env.GIT_USERNAME }}"
-            git config --local user.email "${{ env.GIT_EMAIL }}"
-            git add go-genproto/
-            git commit -m "update on `date +"%Y-%m-%d:%H:%M:%S"`"
-      # - name: push changes
-      #   run: git push https://github.com/dictyBase/go-genproto.git chore/update-${{ steps.vars.outputs.id }}
+      - name: push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          branch: chore/update-${{ steps.vars.outputs.id }}
+          directory: ./target
+          repository: dictybase/go-genproto

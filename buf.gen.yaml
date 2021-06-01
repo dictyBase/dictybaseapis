@@ -5,8 +5,8 @@ version: v1beta1
 # The plugins to run.
 plugins:
   - name: go
-    out: proto
+    out: generated
   - name: go-grpc
-    out: proto
+    out: generated
   - name: govalidators
-    out: proto
+    out: generated
