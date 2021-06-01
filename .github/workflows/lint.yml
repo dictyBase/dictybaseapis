@@ -26,8 +26,8 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: install buf plugins
         run: |
-          go install github.com/bufbuild/buf/cmd/protoc-gen-buf-breaking
-          go install github.com/bufbuild/buf/cmd/protoc-gen-buf-lint
+          go install github.com/bufbuild/buf/cmd/protoc-gen-buf-breaking@v0.43.2
+          go install github.com/bufbuild/buf/cmd/protoc-gen-buf-lint@v0.43.2
       - name: run linter
         run: protoc -I . $(find ./dictybase -name '*.proto') -o /dev/stdout --buf-lint_out=.
       # - name: run buf breaking
