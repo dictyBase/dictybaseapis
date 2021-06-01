@@ -74,7 +74,7 @@ jobs:
           cp -r generated/github.com/dictyBase/go-genproto/dictybaseapis target
           cd target
           git add .
-          git diff-index --quiet HEAD || git commit -m "update on `date +"%Y-%m-%d:%H:%M:%S"`"
+          git diff-index --quiet HEAD || git commit -m "update on `date +"%m-%d-%Y:%H:%M:%S"`"
       - name: get short sha
         id: vars
         run: |
