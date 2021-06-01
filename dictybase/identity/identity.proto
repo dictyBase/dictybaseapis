@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 package dictybase.identity;
-import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "dictybase/api/jsonapi/payload.proto";
