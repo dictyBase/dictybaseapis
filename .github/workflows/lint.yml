@@ -41,6 +41,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: configure git
+        run: |
+            git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+            git config --global user.name "$GITHUB_ACTOR"
       - name: set up golang
         uses: actions/setup-go@v2
         with:
