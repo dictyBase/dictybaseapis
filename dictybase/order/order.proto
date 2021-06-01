@@ -48,10 +48,10 @@ message Order {
 
 // The pre-defined labels for order status
 enum OrderStatus {
-    In_preparation = 0;
-    Growing = 1;
-    Cancelled = 2;
-    Shipped = 3;
+    IN_PREPARATION = 0;
+    GROWING = 1;
+    CANCELLED = 2;
+    SHIPPED = 3;
 }
 
 // Definition of various order attributes

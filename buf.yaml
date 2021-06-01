@@ -6,6 +6,6 @@ deps:
   - buf.build/grpc-ecosystem/grpc-gateway
 lint:
   use:
-    - MINIMAL
+    - BASIC
   ignore:
     - github.com/mwitkow
