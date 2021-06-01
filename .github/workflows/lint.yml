@@ -62,10 +62,16 @@ jobs:
           go install github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v0.3.2
       - name: generate go code
         run: buf generate --path dictybase
-      - name: prepare target repo
+      - name: checkout target repo
         if: success()
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.ACCESS_TOKEN }}
+          repository: dictybase/go-genproto
+          path: target
+      - name: add git config
         run: |
-          git clone https://github.com/dictyBase/go-genproto.git target
           git config --local user.email "dictybasebot@users.noreply.github.com"
           git config --local user.name "dictybasebot"
       - name: copy generated files
