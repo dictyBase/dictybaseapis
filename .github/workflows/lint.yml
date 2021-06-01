@@ -66,8 +66,8 @@ jobs:
         if: success()
         run: |
           git clone https://github.com/dictyBase/go-genproto.git target
-          git config --global user.email "dictybasebot@users.noreply.github.com"
-          git config --global user.name "dictybasebot"
+          git config --local user.email "dictybasebot@users.noreply.github.com"
+          git config --local user.name "dictybasebot"
       - name: copy generated files
         run: |
           rm -rf target/dictybaseapis
