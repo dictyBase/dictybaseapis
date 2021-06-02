@@ -1,36 +1,51 @@
 # dictyBase APIs
-[![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](LICENSE)   
-![GitHub repo size](https://img.shields.io/github/repo-size/dictyBase/dictybaseapis?style=plastic)
-![Last commit](https://badgen.net/github/last-commit/dictyBase/dictybaseapis/master)   
-[![Funding](https://badgen.net/badge/NIGMS/Rex%20L%20Chisholm,dictyBase/yellow?list=|)](https://projectreporter.nih.gov/project_info_description.cfm?aid=9476993)
-[![Funding](https://badgen.net/badge/NIGMS/Rex%20L%20Chisholm,DSC/yellow?list=|)](https://projectreporter.nih.gov/project_info_description.cfm?aid=9438930)
 
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](LICENSE)  
+![Buf](https://github.com/dictyBase/dictybaseapis/workflows/Buf/badge.svg)
+![Last commit](https://badgen.net/github/last-commit/dictyBase/dictybaseapis/master)  
+[![Funding](https://badgen.net/badge/Funding/Rex%20L%20Chisholm,dictyBase,DCR/yellow?list=|)](https://reporter.nih.gov/project-details/10024726)
+
+Cli application for importing dictybase data.The documentation is [here](docs/import.md)
+
+## Misc Badges
+
+![Issues](https://badgen.net/github/issues/dictyBase/dictybaseapis)
+![Open Issues](https://badgen.net/github/open-issues/dictyBase/dictybaseapis)
+![Closed Issues](https://badgen.net/github/closed-issues/dictyBase/dictybaseapis)
+![Total PRS](https://badgen.net/github/prs/dictyBase/dictybaseapis)
+![Open PRS](https://badgen.net/github/open-prs/dictyBase/dictybaseapis)
+![Closed PRS](https://badgen.net/github/closed-prs/dictyBase/dictybaseapis)
+![Merged PRS](https://badgen.net/github/merged-prs/dictyBase/dictybaseapis)  
+![Commits](https://badgen.net/github/commits/dictyBase/dictybaseapis/master)
+![Branches](https://badgen.net/github/branches/dictyBase/dictybaseapis)
+![Tags](https://badgen.net/github/tags/dictyBase/dictybaseapis)  
+![GitHub repo size](https://img.shields.io/github/repo-size/dictyBase/dictybaseapis?style=plastic)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/dictyBase/dictybaseapis?style=plastic)
 
 This repository contains interface definitions of public
-[dictyBase](http://dictybase.org) API that supports both gRPC and REST
-protocols. These definitions can be used with open source tools generate client
-libraries, documentation and other artifacts.
+[dictyBase](http://dictybase.org) API that supports gRPC protocols. These definitions
+can be used with open source tools generate client libraries, documentation and
+other artifacts.
 
-## Overview 
-dictyBase APIs are typically deployed as API services that are hosted under different DNS names. 
+## Overview
+
+dictyBase APIs are typically deployed as API services that are hosted under different DNS names.
 It uses Protocol Buffers version 3 (proto3) as their Interface
 Definition Language (IDL) to define the API interface and the structure of the
 payload messages. It can be accessed through [gRPC](https://grpc.io).
 
 ## Repository structure
+
 In general, every API has its own directory with matching proto packages. The
-`api` folder contain reusable definitions.
+`dictybase` folder contains reusable definitions.
 
-## Requirements
-* [Protobuf](https://github.com/protocolbuffers/protobuf) - v3.9.2
-* [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway) - v1.11.3
-### Compiling to golang
-* [Golang protobuf](https://github.com/golang/protobuf) - v1.3.2
-* [go-proto-validators](https://github.com/mwitkow/go-proto-validators) - v0.2.0
-### Optional
-* [protoc-gen-doc](https://github.com/pseudomuto/protoc-gen-doc/) - v1.3.0
+## Development
 
+This project has been designed to be automated by GitHub Actions. To make changes,
+create a new branch and push your changes. This will automatically create a pull
+request then run `buf lint` to verify your changes. If everything is fine, it will
+generate updated Go code and open a PR in the [go-genproto](https://github.com/dictyBase/go-genproto)
+repository where it will need to be manually reviewed.
 
-## Developers
-<a href="https://sourcerer.io/cybersiddhu"><img src="https://sourcerer.io/assets/avatar/cybersiddhu" height="80px" alt="Sourcerer"></a>
-<a href="https://sourcerer.io/wildlifehexagon"><img src="https://sourcerer.io/assets/avatar/wildlifehexagon" height="80px" alt="Sourcerer"></a>
+**Note: if making any updates to the `buf.gen.yaml` file, you need to run `buf beta mod update`
+to update the lock file.**

@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 package dictybase.identity;
-import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "dictybase/api/jsonapi/payload.proto";
@@ -18,36 +17,15 @@ option objc_class_prefix = "DICTYAPI";
 // The content service definition
 service IdentityService {
     // Gets the specified identity
-    rpc GetIdentityFromProvider(IdentityProviderReq) returns (Identity) {
-        option (google.api.http).get = "/identities/{provider}/{identifier}";
-    }
-
-    rpc GetIdentity(dictybase.api.jsonapi.IdRequest) returns (Identity) {
-        option (google.api.http).get = "/identities/{id}";
-    }
-
-    rpc ExistProviderIdentity(IdentityProviderReq) returns (dictybase.api.jsonapi.ExistResponse) {
-    }
-
+    rpc GetIdentityFromProvider(IdentityProviderReq) returns (Identity) {}
+    rpc GetIdentity(dictybase.api.jsonapi.IdRequest) returns (Identity) {}
+    rpc ExistProviderIdentity(IdentityProviderReq) returns (dictybase.api.jsonapi.ExistResponse) {}
     // Create a new identity
-    rpc CreateIdentity (CreateIdentityReq) returns (Identity) {
-        option (google.api.http) = {
-            post: "/identities"
-            body: "*"
-        };
-    }
-
+    rpc CreateIdentity (CreateIdentityReq) returns (Identity) {}
     // Delete an existing identity
-    rpc DeleteIdentity (dictybase.api.jsonapi.IdRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            delete: "/identities/{id}"
-        };
-    }
-
+    rpc DeleteIdentity (dictybase.api.jsonapi.IdRequest) returns (google.protobuf.Empty) {}
     // Basic health check that always return success
-    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {
-        option (google.api.http).get = "/healthz";
-    }
+    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {}
 }
 
 // Definition for various fields

@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package dictybase.analysis;
 import "google/protobuf/empty.proto";
-import "google/api/annotations.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 
 

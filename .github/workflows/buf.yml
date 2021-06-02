@@ -1,0 +1,86 @@
+name: Buf
+on:
+  pull_request:
+    types: [edited, labeled, opened, synchronize, reopened]
+jobs:
+  lint:
+    name: Linter
+    runs-on: ubuntu-20.04
+    steps:
+      - name: check out code
+        uses: actions/checkout@v2
+      - name: set up golang
+        uses: actions/setup-go@v2
+        with:
+            go-version: "^1.16.3"
+      - name: download and setup path for buf binary
+        run: |
+          mkdir -p buf/bin
+          curl -L -o buf/bin/buf https://github.com/bufbuild/buf/releases/download/v0.43.2/buf-Linux-x86_64
+          chmod +x buf/bin/buf
+          echo "$GITHUB_WORKSPACE/buf/bin" >> $GITHUB_PATH
+      - name: run linter
+        run: buf lint
+      # - name: run buf breaking
+      #   run: buf breaking --against 'https://github.com/dictyBase/dictybaseapis.git#branch=master'
+  generate:
+    name: Generate Go code
+    runs-on: ubuntu-20.04
+    needs: lint
+    steps:
+      - name: check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: configure git
+        run: |
+            git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+            git config --global user.name "$GITHUB_ACTOR"
+      - name: set up golang
+        uses: actions/setup-go@v2
+        with:
+            go-version: "^1.16.3"
+      - name: download and setup path for buf binary
+        run: |
+          mkdir -p buf/bin
+          curl -L -o buf/bin/buf https://github.com/bufbuild/buf/releases/download/v0.43.2/buf-Linux-x86_64
+          chmod +x buf/bin/buf
+          echo "$GITHUB_WORKSPACE/buf/bin" >> $GITHUB_PATH
+      - name: download go binaries
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26.0
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1.0
+          go install github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v0.3.2
+      - name: generate go code
+        run: buf generate --path dictybase
+      - name: checkout target repo
+        if: success()
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.ACCESS_TOKEN }}
+          repository: dictybase/go-genproto
+          path: target
+      - name: add git config
+        run: |
+          git config --local user.email "dictybasebot@users.noreply.github.com"
+          git config --local user.name "dictybasebot"
+      - name: copy generated files
+        run: |
+          rm -rf target/dictybaseapis
+          cp -r generated/github.com/dictyBase/go-genproto/dictybaseapis target
+          cd target
+          git add .
+          git diff-index --quiet HEAD || git commit -m "update on `date +"%m-%d-%Y:%H:%M:%S"`"
+      - name: get short sha
+        id: vars
+        run: |
+          sha=$(git rev-parse --short HEAD)
+          echo ::set-output name=id::${sha}
+      - name: push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          branch: chore/update-${{ steps.vars.outputs.id }}
+          directory: ./target
+          repository: dictybase/go-genproto

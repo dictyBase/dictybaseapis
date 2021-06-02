@@ -1,0 +1,10 @@
+
+version: v1beta1
+name: buf.build/dictybase/dictybaseapis
+deps:
+  - buf.build/beta/googleapis
+lint:
+  use:
+    - BASIC
+  ignore:
+    - github.com/mwitkow
