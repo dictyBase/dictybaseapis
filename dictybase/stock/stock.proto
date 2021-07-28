@@ -384,7 +384,9 @@ message StrainList {
     message Data {
         // Resource name
         string type = 1;
-        StrainAttributes attributes = 2;
+        // Unique identifier for the stock
+        string id = 2;
+        StrainAttributes attributes = 3;
     }
     repeated Data data = 1;
 }
