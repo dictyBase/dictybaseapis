@@ -31,6 +31,8 @@ service StockService {
     rpc RemoveStock(StockId) returns (google.protobuf.Empty) {}
     // List strains using pagination, ten entries are retrieved by default
     rpc ListStrains(StockParameters) returns (StrainCollection) {}
+    // List strains using strain id without any pagination
+    rpc ListStrainsByIds(StockIdList) returns (StrainList) {}
     // List plasmids using pagination, ten entries are retrieved by default
     rpc ListPlasmids(StockParameters) returns (PlasmidCollection) {}
     // Load existing strain
@@ -42,6 +44,11 @@ service StockService {
 message StockId {
     // Unique identifier for the stock
     string id = 1 [(validator.field) = {string_not_empty : true}];
+}
+
+// Definition for list of unique stock identifier
+message StockIdList {
+    repeated string id = 1 [(validator.field) = {regex: "^DB(P|S)[0-9]{5,}$"}];
 }
 
 // Definition of an individual strain
@@ -370,6 +377,16 @@ message PlasmidUpdateAttributes {
     string sequence = 9;
     // Unambiguous name for the plasmid
     string name = 10;
+}
+
+// List of strains without any metadata for pagination
+message StrainList {
+    message Data {
+        // Resource name
+        string type = 1;
+        StrainAttributes attributes = 2;
+    }
+    repeated Data data = 1;
 }
 
 // List of strains
