@@ -107,6 +107,9 @@ message StrainAttributes {
     string parent = 14;
     // List of names for the strain
     repeated string names = 15;
+    // dictybase specific strain property that will 
+    // map to dicty_strain_property ontology
+    string dicty_strain_property = 16;
 }
 
 // Definition of various stock attributes
@@ -137,6 +140,9 @@ message PlasmidAttributes {
     string sequence = 12;
     // Unambiguous name for the plasmid
     string name = 13 [(validator.field) = {string_not_empty : true}];
+    // dictybase specific plasmid property that will 
+    // map to dicty_plasmid_keyword ontology
+    string dicty_plasmid_property = 14;
 }
 
 // Definition for creating a new strain
@@ -187,6 +193,9 @@ message NewStrainAttributes {
     string parent = 12;
     // List of names for the strain
     repeated string names = 13;
+    // dictybase specific strain property that will 
+    // map to dicty_strain_property ontology
+    string dicty_strain_property = 14;
 }
 
 // Defines attributes for creating a new plasmid
@@ -213,6 +222,9 @@ message NewPlasmidAttributes {
     string sequence = 10;
     // Unambiguous name for the plasmid
     string name = 11 [(validator.field) = {string_not_empty : true}];
+    // dictybase specific plasmid property that will 
+    // map to dicty_plasmid_keyword ontology
+    string dicty_plasmid_property = 12;
 }
 
 // Definition for loading an existing strain
@@ -271,6 +283,9 @@ message ExistingStrainAttributes {
     string parent = 14;
     // List of names for the strain
     repeated string names = 15;
+    // dictybase specific strain property that will 
+    // map to dicty_strain_property ontology
+    string dicty_strain_property = 16;
 }
 
 // Defines attributes for loading an existing plasmid
@@ -301,6 +316,9 @@ message ExistingPlasmidAttributes {
     string sequence = 12;
     // Unambiguous name for the plasmid
     string name = 13 [(validator.field) = {string_not_empty : true}];
+    // dictybase specific plasmid property that will 
+    // map to dicty_plasmid_keyword ontology
+    string dicty_plasmid_property = 14;
 }
 
 // Definition for creating a new strain
@@ -353,6 +371,9 @@ message StrainUpdateAttributes {
     string parent = 11;
     // List of names for the strain
     repeated string names = 12;
+    // dictybase specific strain property that will 
+    // map to dicty_strain_property ontology
+    string dicty_strain_property = 13;
 }
 
 // Defines attributes for updating a plasmid
@@ -377,6 +398,9 @@ message PlasmidUpdateAttributes {
     string sequence = 9;
     // Unambiguous name for the plasmid
     string name = 10;
+    // dictybase specific plasmid property that will 
+    // map to dicty_plasmid_keyword ontology
+    string dicty_plasmid_property = 11;
 }
 
 // List of strains without any metadata for pagination
