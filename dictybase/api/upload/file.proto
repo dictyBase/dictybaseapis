@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package dictybase.api.upload;
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/api/upload;upload";
+option java_multiple_files = true;
+option java_outer_classname = "FileUploadProto";
+option java_package = "org.dictybase.api.upload";
+option objc_class_prefix = "DICTYAPI";
+
+// FileUploadRequest defines requests parameters for uploading
+// a file through protocol buffer. The file is expected to be uploaded
+// grpc client side streaming
+message FileUploadRequest {
+    // name of the file
+    string name = 1;
+    // content of the file, expected to be streamed in chunk
+    bytes content = 2;
+}
+
+// FileUploadResponse defines response received after completion of 
+// file upload
+message FileUploadResponse {
+    // message send by the server after file upload
+    string msg = 1;
+}
