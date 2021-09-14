@@ -19,9 +19,19 @@ message FileUploadRequest {
     bytes content = 2;
 }
 
+
+
 // FileUploadResponse defines response received after completion of 
 // file upload
 message FileUploadResponse {
+    enum Status {
+        // a new file
+        CREATED = 0;
+        // an existing file
+        UPDATED = 1;
+    }
+    // Status gives the status after file upload
+    Status status = 1;
     // message send by the server after file upload
-    string msg = 1;
+    string msg = 2;
 }
