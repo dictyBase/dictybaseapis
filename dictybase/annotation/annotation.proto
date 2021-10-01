@@ -42,7 +42,7 @@ service TaggedAnnotationService {
     // Retrieves tag information
     rpc GetAnnotationTag(TagRequest) returns (AnnotationTag) {}
     // Upload obojson formatted file through client side streaming
-    rpc OboJsonFileUpload(stream dictybase.api.upload.FileUploadRequest)
+    rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest)
                           returns (dictybase.api.upload.FileUploadResponse) {}
 }
 
