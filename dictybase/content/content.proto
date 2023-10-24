@@ -51,10 +51,10 @@ message ContentAttributes {
     string name = 1;
     // page slug. Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
     string slug = 2;
-    // id of the user who created the content
-    int64 created_by = 3;
-    // id of the user who updated the content
-    int64 updated_by = 4;
+    // email id of the user who created the content
+    string created_by = 3;
+    // email id of the user who updated the content
+    string updated_by = 4;
     // Timestamp for creation and update 
     google.protobuf.Timestamp created_at = 5;
     google.protobuf.Timestamp updated_at = 6;
@@ -81,10 +81,8 @@ message ContentIdRequest {
 message NewContentAttributes {
     // page name
     string name = 1 [(validator.field) = {regex: "[a-z,A-z,0-9]+"}];
-    // user id who is creating this content
-    // The existence of user will be verified(not implemented yet) 
-    // using the `user` microservice backend.
-    int64 created_by = 2 [(validator.field) = {int_gt: 0}];
+    // email of the user who is creating this content
+    string created_by = 2 [(validator.field) = {string_not_empty: true}];
     // page content, expected to be serialized `JSON` string.
     string content = 3 [(validator.field) = {string_not_empty: true}];
     // namespace for the page, it is prepended to the
@@ -107,10 +105,8 @@ message StoreContentRequest {
 // Changing either or both of name and namespace
 // attributes alter the slug for the page
 message ExistingContentAttributes {
-    // user id who is updating this content
-    // The existence of user will be verified(not implemented yet)
-    // using the `user` microservice backend.
-    int64 updated_by = 1 [(validator.field) = {int_gt: 0}];
+    // email id of the user who is updating this content
+    string updated_by = 1 [(validator.field) = {string_not_empty: true}];
     // serialized page content(for example serialized draft js object)
     string content = 2 [(validator.field) = {string_not_empty: true}];
 }
