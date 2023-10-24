@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-20.04
     if: github.actor != 'dependabot[bot]'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: get branch name
         id: vars
         run: |
@@ -15,5 +15,5 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          destination_branch: master
+          destination_branch: develop
           pr_title: Pulling ${{ steps.vars.outputs.branch }} into develop
