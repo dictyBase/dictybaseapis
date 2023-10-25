@@ -1,12 +1,10 @@
 # The version of the generation template.
-# Required.
-# The only currently-valid value is v1beta1.
 version: v1
 # The plugins to run.
 plugins:
-  - name: go
+  - plugin: buf.build/protocolbuffers/go:v1.31.0
     out: generated
-  - name: go-grpc
+  - plugin: buf.build/grpc/go:v1.3.0
     out: generated
-  - name: govalidators
+  - plugin: govalidators
     out: generated
