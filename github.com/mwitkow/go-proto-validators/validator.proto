@@ -5,7 +5,6 @@
 
 // TODO(mwitkow): Add example.
 
-
 syntax = "proto2";
 package validator;
 

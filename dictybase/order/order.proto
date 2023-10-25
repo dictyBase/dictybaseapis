@@ -1,10 +1,10 @@
 syntax = "proto3";
 
 package dictybase.order;
+
+import "github.com/mwitkow/go-proto-validators/validator.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "github.com/mwitkow/go-proto-validators/validator.proto";
-
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/order;order";
@@ -15,249 +15,249 @@ option objc_class_prefix = "DICTYAPI";
 
 // The order service specification
 service OrderService {
-    // Retrieves order by ID
-    rpc GetOrder(OrderId) returns (Order) {}
-    // Create a new order
-    rpc CreateOrder(NewOrder) returns (Order) {}
-    // Update an existing order
-    rpc UpdateOrder(OrderUpdate) returns (Order) {}
-    // List orders using pagination, ten entries are retrieved by default
-    rpc ListOrders(ListParameters) returns (OrderCollection) {}
-    // Load existing order
-    rpc LoadOrder(ExistingOrder) returns (Order) {}
-    // Clear database before loading existing orders
-    rpc PrepareForOrder(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  // Retrieves order by ID
+  rpc GetOrder(OrderId) returns (Order) {}
+  // Create a new order
+  rpc CreateOrder(NewOrder) returns (Order) {}
+  // Update an existing order
+  rpc UpdateOrder(OrderUpdate) returns (Order) {}
+  // List orders using pagination, ten entries are retrieved by default
+  rpc ListOrders(ListParameters) returns (OrderCollection) {}
+  // Load existing order
+  rpc LoadOrder(ExistingOrder) returns (Order) {}
+  // Clear database before loading existing orders
+  rpc PrepareForOrder(google.protobuf.Empty) returns (google.protobuf.Empty) {}
 }
 
 message OrderId {
-    // Unique identifier for the order
-    string id = 1 [(validator.field) = {string_not_empty : true}];
+  // Unique identifier for the order
+  string id = 1 [(validator.field) = {string_not_empty: true}];
 }
 
 // Definition of an individual order
 message Order {
-    message Data {
-        // Resource name, by default should be order
-        string type = 1;
-        // Unique identifier for the order
-        string id = 2;
-        OrderAttributes attributes = 3;
-    }
-    Data data = 1 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // Resource name, by default should be order
+    string type = 1;
+    // Unique identifier for the order
+    string id = 2;
+    OrderAttributes attributes = 3;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
 
 // The pre-defined labels for order status
 enum OrderStatus {
-    IN_PREPARATION = 0;
-    GROWING = 1;
-    CANCELLED = 2;
-    SHIPPED = 3;
+  IN_PREPARATION = 0;
+  GROWING = 1;
+  CANCELLED = 2;
+  SHIPPED = 3;
 }
 
 // Definition of various order attributes
 message OrderAttributes {
-    // Timestamp for creation
-    google.protobuf.Timestamp created_at = 1 [(validator.field) = {msg_exists : true}];
-    // Timestamp for update
-    google.protobuf.Timestamp updated_at = 2 [(validator.field) = {msg_exists : true}];
-    // Name of courier for delivery
-    string courier = 3;
-    // Account identification used for courier service
-    string courier_account = 4;
-    // Any comments about the order
-    string comments = 5;
-    // Type of payment being used
-    string payment = 6;
-    // Order number for purchase
-    string purchase_order_num = 7;
-    // Status of order
-    OrderStatus status = 8;
-    // Person (user) who is receiving the stocks in mail
-    string consumer = 9;
-    // Person (user) who is paying for the stocks
-    string payer = 10;
-    // Person who is ordering (logged in user)
-    string purchaser = 11;
-    // List of items in the order, in this case it will be mostly biological
-    // stocks such as plasmids and strains
-    repeated string items = 12;
+  // Timestamp for creation
+  google.protobuf.Timestamp created_at = 1 [(validator.field) = {msg_exists: true}];
+  // Timestamp for update
+  google.protobuf.Timestamp updated_at = 2 [(validator.field) = {msg_exists: true}];
+  // Name of courier for delivery
+  string courier = 3;
+  // Account identification used for courier service
+  string courier_account = 4;
+  // Any comments about the order
+  string comments = 5;
+  // Type of payment being used
+  string payment = 6;
+  // Order number for purchase
+  string purchase_order_num = 7;
+  // Status of order
+  OrderStatus status = 8;
+  // Person (user) who is receiving the stocks in mail
+  string consumer = 9;
+  // Person (user) who is paying for the stocks
+  string payer = 10;
+  // Person who is ordering (logged in user)
+  string purchaser = 11;
+  // List of items in the order, in this case it will be mostly biological
+  // stocks such as plasmids and strains
+  repeated string items = 12;
 }
 
 // Definition for creating a new order
 message NewOrder {
-    message Data {
-        // Resource name, by default should be order
-        string type = 1;
-        NewOrderAttributes attributes = 2;
-    }
-    Data data = 1 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // Resource name, by default should be order
+    string type = 1;
+    NewOrderAttributes attributes = 2;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
 
 // Defines attributes for creating a new order
 message NewOrderAttributes {
-    // Name of courier for delivery
-    string courier = 1 [(validator.field) = {string_not_empty : true}];
-    // Account identification used for courier service
-    string courier_account = 2 [(validator.field) = {string_not_empty : true}];
-    // Any comments about the order
-    string comments = 3;
-    // Type of payment being used
-    string payment = 4 [(validator.field) = {string_not_empty : true}];
-    // Order number for purchase
-    string purchase_order_num = 5 [(validator.field) = {string_not_empty : true}];
-    // Status of order
-    OrderStatus status = 6 [(validator.field) = {msg_exists : true}];
-    // Person (user) who is receiving the stocks in mail
-    string consumer = 7 [(validator.field) = {string_not_empty : true}];
-    // Person (user) who is paying for the stocks
-    string payer = 8 [(validator.field) = {string_not_empty : true}];
-    // Person who is ordering (logged in user)
-    string purchaser = 9 [(validator.field) = {string_not_empty : true}];
-    // List of items in the order, in this case it will be mostly biological
-    // stocks such as plasmids and strains
-    repeated string items = 10 [(validator.field) = {repeated_count_min : 1}];
+  // Name of courier for delivery
+  string courier = 1 [(validator.field) = {string_not_empty: true}];
+  // Account identification used for courier service
+  string courier_account = 2 [(validator.field) = {string_not_empty: true}];
+  // Any comments about the order
+  string comments = 3;
+  // Type of payment being used
+  string payment = 4 [(validator.field) = {string_not_empty: true}];
+  // Order number for purchase
+  string purchase_order_num = 5 [(validator.field) = {string_not_empty: true}];
+  // Status of order
+  OrderStatus status = 6 [(validator.field) = {msg_exists: true}];
+  // Person (user) who is receiving the stocks in mail
+  string consumer = 7 [(validator.field) = {string_not_empty: true}];
+  // Person (user) who is paying for the stocks
+  string payer = 8 [(validator.field) = {string_not_empty: true}];
+  // Person who is ordering (logged in user)
+  string purchaser = 9 [(validator.field) = {string_not_empty: true}];
+  // List of items in the order, in this case it will be mostly biological
+  // stocks such as plasmids and strains
+  repeated string items = 10 [(validator.field) = {repeated_count_min: 1}];
 }
 
 // Definition for loading an existing order
 message ExistingOrder {
-    message Data {
-        // Resource name, by default should be order
-        string type = 1;
-        ExistingOrderAttributes attributes = 2;
-    }
-    Data data = 1 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // Resource name, by default should be order
+    string type = 1;
+    ExistingOrderAttributes attributes = 2;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
 
 // Defines attributes for loading an existing order
 message ExistingOrderAttributes {
-    // Time order was created
-    google.protobuf.Timestamp created_at = 1 [(validator.field) = {msg_exists : true}];
-    // Time order was updated
-    google.protobuf.Timestamp updated_at = 2 [(validator.field) = {msg_exists : true}];
-    // Person who is ordering (logged in user)
-    string purchaser = 3 [(validator.field) = {string_not_empty : true}];
-    // List of items in the order, in this case it will be mostly biological
-    // stocks such as plasmids and strains
-    repeated string items = 4 [(validator.field) = {repeated_count_min : 1}];
+  // Time order was created
+  google.protobuf.Timestamp created_at = 1 [(validator.field) = {msg_exists: true}];
+  // Time order was updated
+  google.protobuf.Timestamp updated_at = 2 [(validator.field) = {msg_exists: true}];
+  // Person who is ordering (logged in user)
+  string purchaser = 3 [(validator.field) = {string_not_empty: true}];
+  // List of items in the order, in this case it will be mostly biological
+  // stocks such as plasmids and strains
+  repeated string items = 4 [(validator.field) = {repeated_count_min: 1}];
 }
 
 // Definition for updating an existing order
 message OrderUpdate {
-    message Data {
-        // Resource name, by default should be order
-        string type = 1;
-        // Unique identifier for the order
-        string id = 2 [(validator.field) = {string_not_empty : true}];
-        OrderUpdateAttributes attributes = 3;
-    }
-    Data data = 1 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // Resource name, by default should be order
+    string type = 1;
+    // Unique identifier for the order
+    string id = 2 [(validator.field) = {string_not_empty: true}];
+    OrderUpdateAttributes attributes = 3;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
 
 // Defines attributes for updating an existing order
 message OrderUpdateAttributes {
-    // Name of courier for delivery
-    string courier = 1;
-    // Account identification used for courier service
-    string courier_account = 2;
-    // Any comments about the order
-    string comments = 3;
-    // Type of payment being used
-    string payment = 4;
-    // Order number for purchase
-    string purchase_order_num = 5;
-    // Status of order
-    OrderStatus status = 6;
-    // List of items in the order, in this case it will be mostly biological
-    // stocks such as plasmids and strains
-    repeated string items = 7;
+  // Name of courier for delivery
+  string courier = 1;
+  // Account identification used for courier service
+  string courier_account = 2;
+  // Any comments about the order
+  string comments = 3;
+  // Type of payment being used
+  string payment = 4;
+  // Order number for purchase
+  string purchase_order_num = 5;
+  // Status of order
+  OrderStatus status = 6;
+  // List of items in the order, in this case it will be mostly biological
+  // stocks such as plasmids and strains
+  repeated string items = 7;
 }
 
 // List of orders
 message OrderCollection {
-    message Data {
-        // Resource name, by default should be order
-        string type = 1;
-        // Unique identifier for the order
-        string id = 2;
-        OrderAttributes attributes = 3;
-    }
-    repeated Data data = 1 [(validator.field) = {repeated_count_min : 1}];
-    Meta meta = 3 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // Resource name, by default should be order
+    string type = 1;
+    // Unique identifier for the order
+    string id = 2;
+    OrderAttributes attributes = 3;
+  }
+  repeated Data data = 1 [(validator.field) = {repeated_count_min: 1}];
+  Meta meta = 3 [(validator.field) = {msg_exists: true}];
 }
 
 // ListParameters defines fields for manipulating output of Order collection
 message ListParameters {
-    // A unique pointer to the next set of result in the list
-    int64 cursor = 1;
-    // Maximum number of records that can be fetch per request
-    int64 limit = 2;
-    // The `filter` field restricts the data return by the collection. To use
-    // it, supply one or multiple allowed fields to filter followed
-    // by a filter expression. It uses the following syntax...
-    //        field_name operator expression
-    //
-    // The following fields of `OrderAttributes` definition are allowed to
-    // be used for filtering
-    //   * item               - Items that are part of order (string).
-    //   * courier            - The courier used for delivery (string)
-    //   * payment            - Type of payment being used (string)
-    //   * status             - The status of the order (string)
-    //   * created_at         - Date the items are ordered (number), can be in the
-    //                          following formats:
-    //                          YYYY-MM-DD, YYYY-MM, YYYY
-    //
-    // field_name - Any one of the allowed field_name of the `OrderAttributes` definition.
-    // operator - Defines the type of filter match to use. It could be any of
-    // the following four and all of them should be URL-encoded for http request.
-    //
-    //        Operators for strings
-    //              =~   Contains substring
-    //              !~   Not contains substring
-    //              ===  Equals
-    //              !==  Not equals
-    //
-    //        Operators for number
-    //              ==  Equals
-    //              >   Greater than
-    //              <   Less than
-    //              <=  Less than equal to
-    //              >=  Greater than equal to
-    //
-    //        Operators for dates
-    //              $==  Equals
-    //              $>   Greater than
-    //              $<   Less than
-    //              $<=  Less than equal to
-    //              $>=  Greater than equal to
-    //
-    // expression - The value that will be included or excluded from the
-    // result. URL-reserved characters must be URL-encoded for http request.
-    //
-    //           filter: "status===Shipped"
-    //           filter: "courier===FedEx"
-    //
-    // Filter can be combined using OR or AND boolean logic.
-    //   * The OR is represented using a comma(,).
-    //   * The AND is represented using a semi-colon(;).
-    //   * AND and OR operators can be combined and AND takes precedence over OR.
-    //
-    //           filter: "courier===FedEx;payment===Credit"
-    //           filter: "created_at$>=20181201"
-    //
-    string filter = 3;
-    // The sort field allow to sort the data return by the collection based on
-    // fields of `OrderAttributes. To use it, supply a comma separated one
-    // or more allowed field from the definition of `OrderAttributes`.
+  // A unique pointer to the next set of result in the list
+  int64 cursor = 1;
+  // Maximum number of records that can be fetch per request
+  int64 limit = 2;
+  // The `filter` field restricts the data return by the collection. To use
+  // it, supply one or multiple allowed fields to filter followed
+  // by a filter expression. It uses the following syntax...
+  //        field_name operator expression
+  //
+  // The following fields of `OrderAttributes` definition are allowed to
+  // be used for filtering
+  //   * item               - Items that are part of order (string).
+  //   * courier            - The courier used for delivery (string)
+  //   * payment            - Type of payment being used (string)
+  //   * status             - The status of the order (string)
+  //   * created_at         - Date the items are ordered (number), can be in the
+  //                          following formats:
+  //                          YYYY-MM-DD, YYYY-MM, YYYY
+  //
+  // field_name - Any one of the allowed field_name of the `OrderAttributes` definition.
+  // operator - Defines the type of filter match to use. It could be any of
+  // the following four and all of them should be URL-encoded for http request.
+  //
+  //        Operators for strings
+  //              =~   Contains substring
+  //              !~   Not contains substring
+  //              ===  Equals
+  //              !==  Not equals
+  //
+  //        Operators for number
+  //              ==  Equals
+  //              >   Greater than
+  //              <   Less than
+  //              <=  Less than equal to
+  //              >=  Greater than equal to
+  //
+  //        Operators for dates
+  //              $==  Equals
+  //              $>   Greater than
+  //              $<   Less than
+  //              $<=  Less than equal to
+  //              $>=  Greater than equal to
+  //
+  // expression - The value that will be included or excluded from the
+  // result. URL-reserved characters must be URL-encoded for http request.
+  //
+  //           filter: "status===Shipped"
+  //           filter: "courier===FedEx"
+  //
+  // Filter can be combined using OR or AND boolean logic.
+  //   * The OR is represented using a comma(,).
+  //   * The AND is represented using a semi-colon(;).
+  //   * AND and OR operators can be combined and AND takes precedence over OR.
+  //
+  //           filter: "courier===FedEx;payment===Credit"
+  //           filter: "created_at$>=20181201"
+  //
+  string filter = 3;
+  // The sort field allow to sort the data return by the collection based on
+  // fields of `OrderAttributes. To use it, supply a comma separated one
+  // or more allowed field from the definition of `OrderAttributes`.
 }
 
 // Metadata definition for traversing the collection
 message Meta {
-    // A unique pointer to the next set of result in the collection. Set the
-    // cursor value parameter to the value of next_cursor to retrieve the next
-    // set of collection using the same method
-    int64 next_cursor = 1;
-    // Maximum number of records that can be fetch per request
-    int64 limit = 2;
-    // Total number of records in the collection.
-    int64 total = 3;
+  // A unique pointer to the next set of result in the collection. Set the
+  // cursor value parameter to the value of next_cursor to retrieve the next
+  // set of collection using the same method
+  int64 next_cursor = 1;
+  // Maximum number of records that can be fetch per request
+  int64 limit = 2;
+  // Total number of records in the collection.
+  int64 total = 3;
 }

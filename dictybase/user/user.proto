@@ -1,13 +1,13 @@
 syntax = "proto3";
 
 package dictybase.user;
-import "google/protobuf/field_mask.proto";
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
-import "google/protobuf/any.proto";
+
 import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
-
+import "google/protobuf/any.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/user;user";
@@ -18,327 +18,320 @@ option objc_class_prefix = "DICTYAPI";
 
 // The user service definition
 service UserService {
-    // Check the existence of user
-    rpc ExistUser (dictybase.api.jsonapi.IdRequest) returns (dictybase.api.jsonapi.ExistResponse) {}
-    // Gets the specified user
-    rpc GetUser (dictybase.api.jsonapi.GetRequest) returns (User) {}
-    // Gets the specified user by their email id
-    rpc GetUserByEmail (dictybase.api.jsonapi.GetEmailRequest) returns (User) {}
-    // Gets all related roles
-    rpc GetRelatedRoles (dictybase.api.jsonapi.RelationshipRequest) returns (RoleCollection) {}
-    // List all users. Only *roles* relationship is allowed for inclusion.
-    rpc ListUsers (dictybase.api.jsonapi.ListRequest) returns (UserCollection) {}
-    // Create an user
-    rpc CreateUser(CreateUserRequest) returns (User) {}
-    // Create relationship links with roles
-    rpc CreateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
-    rpc UpdateUser(UpdateUserRequest) returns (User) {}
-    // Update relationship links with roles
-    rpc UpdateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
-    // Delete an user
-    rpc DeleteUser(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {}
-    // Delete relationship links with roles
-    rpc DeleteRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
-    // Basic health check that always return success
-    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {}
+  // Check the existence of user
+  rpc ExistUser(dictybase.api.jsonapi.IdRequest) returns (dictybase.api.jsonapi.ExistResponse) {}
+  // Gets the specified user
+  rpc GetUser(dictybase.api.jsonapi.GetRequest) returns (User) {}
+  // Gets the specified user by their email id
+  rpc GetUserByEmail(dictybase.api.jsonapi.GetEmailRequest) returns (User) {}
+  // Gets all related roles
+  rpc GetRelatedRoles(dictybase.api.jsonapi.RelationshipRequest) returns (RoleCollection) {}
+  // List all users. Only *roles* relationship is allowed for inclusion.
+  rpc ListUsers(dictybase.api.jsonapi.ListRequest) returns (UserCollection) {}
+  // Create an user
+  rpc CreateUser(CreateUserRequest) returns (User) {}
+  // Create relationship links with roles
+  rpc CreateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+  rpc UpdateUser(UpdateUserRequest) returns (User) {}
+  // Update relationship links with roles
+  rpc UpdateRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+  // Delete an user
+  rpc DeleteUser(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {}
+  // Delete relationship links with roles
+  rpc DeleteRoleRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+  // Basic health check that always return success
+  rpc Healthz(dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {}
 }
 
 message UpdateUserRequest {
-    message Data {
-        string type = 1;
-        int64 id = 2;
-        UserAttributes attributes = 3;
-        ExistingUserRelationships relationships = 4;
-    }
-    Data data = 1;
-    // Unique id, required
+  message Data {
+    string type = 1;
     int64 id = 2;
-    // An optional mask specifying which fields to update.
-    // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 3;
+    UserAttributes attributes = 3;
+    ExistingUserRelationships relationships = 4;
+  }
+  Data data = 1;
+  // Unique id, required
+  int64 id = 2;
+  // An optional mask specifying which fields to update.
+  // Presence of this field allow partial updates.
+  google.protobuf.FieldMask update_mask = 3;
 }
 
 message CreateUserRequest {
-    // The payload for new user
-    message Data {
-        string type = 1;
-        UserAttributes attributes = 2;
-        NewUserRelationships relationships = 3;
-    }
-    Data data = 1;
+  // The payload for new user
+  message Data {
+    string type = 1;
+    UserAttributes attributes = 2;
+    NewUserRelationships relationships = 3;
+  }
+  Data data = 1;
 }
 
 // A user resource.
 message User {
-    UserData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
-    repeated google.protobuf.Any included = 3;
+  UserData data = 1;
+  dictybase.api.jsonapi.Links links = 2;
+  repeated google.protobuf.Any included = 3;
 }
 
 // A user collection resource.
 message UserCollection {
-    repeated UserData data = 1;
-    dictybase.api.jsonapi.PaginationLinks links = 2;
-    dictybase.api.jsonapi.Meta meta = 3;
-    repeated google.protobuf.Any included = 4;
+  repeated UserData data = 1;
+  dictybase.api.jsonapi.PaginationLinks links = 2;
+  dictybase.api.jsonapi.Meta meta = 3;
+  repeated google.protobuf.Any included = 4;
 }
 
 // A top level container for user data.
 message UserData {
-    // The resource name.
-    string type = 1;
-    // Unique id.
-    int64 id = 2;
-    UserAttributes attributes = 3;
-    dictybase.api.jsonapi.Links links = 4;
-    ExistingUserRelationships relationships = 5;
+  // The resource name.
+  string type = 1;
+  // Unique id.
+  int64 id = 2;
+  UserAttributes attributes = 3;
+  dictybase.api.jsonapi.Links links = 4;
+  ExistingUserRelationships relationships = 5;
 }
 
 // A container for user fields.
 message UserAttributes {
-    // First name.
-    string first_name = 1;
-    // Last name.
-    string last_name = 2;
-    // Email.
-    string email = 3;
-    // Organization in which the user belong.
-    string organization = 4;
-    // Group in which the user belong.
-    string group_name = 5;
-    // Address.
-    string first_address = 6;
-    // More address.
-    string second_address = 7;
-    // City.
-    string city = 8;
-    // State.
-    string state = 9;
-    // Zipcode.
-    string zipcode = 10;
-    // Country.
-    string country = 11;
-    // Phone no.
-    string phone = 12;
-    // Current status of user.
-    bool is_active = 13;
-    // Timestamp for creation and update 
-    google.protobuf.Timestamp created_at = 14;
-    google.protobuf.Timestamp updated_at = 15;
+  // First name.
+  string first_name = 1;
+  // Last name.
+  string last_name = 2;
+  // Email.
+  string email = 3;
+  // Organization in which the user belong.
+  string organization = 4;
+  // Group in which the user belong.
+  string group_name = 5;
+  // Address.
+  string first_address = 6;
+  // More address.
+  string second_address = 7;
+  // City.
+  string city = 8;
+  // State.
+  string state = 9;
+  // Zipcode.
+  string zipcode = 10;
+  // Country.
+  string country = 11;
+  // Phone no.
+  string phone = 12;
+  // Current status of user.
+  bool is_active = 13;
+  // Timestamp for creation and update
+  google.protobuf.Timestamp created_at = 14;
+  google.protobuf.Timestamp updated_at = 15;
 }
 
 // The relationship definition for existing users.
 message ExistingUserRelationships {
-    // Relationships with role resource.
-    message Roles {
-        // Http links with role resource.
-        dictybase.api.jsonapi.Links links = 1;
-        // A role [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
-        repeated dictybase.api.jsonapi.Data data = 2;
-    }
-    Roles roles = 1;
+  // Relationships with role resource.
+  message Roles {
+    // Http links with role resource.
+    dictybase.api.jsonapi.Links links = 1;
+    // A role [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
+    repeated dictybase.api.jsonapi.Data data = 2;
+  }
+  Roles roles = 1;
 }
-
 
 // The relationship definition for creating new users.
 message NewUserRelationships {
-    // Relationships with role resource.
-    message Roles {
-        // A role [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
-        repeated dictybase.api.jsonapi.Data data = 1;
-    }
-    Roles roles = 1;
+  // Relationships with role resource.
+  message Roles {
+    // A role [resource identifier object](http://jsonapi.org/format/#document-resource-identifier-objects).
+    repeated dictybase.api.jsonapi.Data data = 1;
+  }
+  Roles roles = 1;
 }
-
 
 // The role service definition
 service RoleService {
-    // Gets the specified role
-    rpc GetRole (dictybase.api.jsonapi.GetRequest) returns (Role) {}
-    // Gets all related users
-    rpc GetRelatedUsers (dictybase.api.jsonapi.RelationshipRequestWithPagination) returns (UserCollection) {}
-    // Gets all related permissions
-    rpc GetRelatedPermissions  (dictybase.api.jsonapi.RelationshipRequest) returns (PermissionCollection) {}
-    // List all roles. Both *users* and *permissions* relationships are allowed in the include parameter.
-    rpc ListRoles (dictybase.api.jsonapi.SimpleListRequest) returns (RoleCollection) {}
-    // Create an role
-    rpc CreateRole(CreateRoleRequest) returns (Role) {}
-    // Create user relationship with role
-    rpc CreateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
-    // Create permission relationship with role
-    rpc CreatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
-    // Update an role
-    rpc UpdateRole(UpdateRoleRequest) returns (Role) {}
-    // Update existing user relationship with role
-    rpc UpdateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
-    // Update existing permission relationship with role
-    rpc UpdatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
-    // Delete an role
-    rpc DeleteRole(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {}
-    // Delete existing user relationship with role
-    rpc DeleteUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
-    // Delete existing permission relationship with role
-    rpc DeletePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+  // Gets the specified role
+  rpc GetRole(dictybase.api.jsonapi.GetRequest) returns (Role) {}
+  // Gets all related users
+  rpc GetRelatedUsers(dictybase.api.jsonapi.RelationshipRequestWithPagination) returns (UserCollection) {}
+  // Gets all related permissions
+  rpc GetRelatedPermissions(dictybase.api.jsonapi.RelationshipRequest) returns (PermissionCollection) {}
+  // List all roles. Both *users* and *permissions* relationships are allowed in the include parameter.
+  rpc ListRoles(dictybase.api.jsonapi.SimpleListRequest) returns (RoleCollection) {}
+  // Create an role
+  rpc CreateRole(CreateRoleRequest) returns (Role) {}
+  // Create user relationship with role
+  rpc CreateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+  // Create permission relationship with role
+  rpc CreatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+  // Update an role
+  rpc UpdateRole(UpdateRoleRequest) returns (Role) {}
+  // Update existing user relationship with role
+  rpc UpdateUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+  // Update existing permission relationship with role
+  rpc UpdatePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+  // Delete an role
+  rpc DeleteRole(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {}
+  // Delete existing user relationship with role
+  rpc DeleteUserRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
+  // Delete existing permission relationship with role
+  rpc DeletePermissionRelationship(dictybase.api.jsonapi.DataCollection) returns (google.protobuf.Empty) {}
 }
 
-
 message UpdateRoleRequest {
-    message Data {
-        string type = 1;
-        int64 id = 2;
-        RoleAttributes attributes = 3;
-        ExistingRoleRelationships relationships = 4;
-    }
-    Data data = 1;
-    // Unique id, required
+  message Data {
+    string type = 1;
     int64 id = 2;
-    // An optional mask specifying which fields to update.
-    // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 3;
+    RoleAttributes attributes = 3;
+    ExistingRoleRelationships relationships = 4;
+  }
+  Data data = 1;
+  // Unique id, required
+  int64 id = 2;
+  // An optional mask specifying which fields to update.
+  // Presence of this field allow partial updates.
+  google.protobuf.FieldMask update_mask = 3;
 }
 
 message CreateRoleRequest {
-    // The payload for new role
-    message Data {
-        string type = 1;
-        RoleAttributes attributes = 2;
-        NewRoleRelationships relationships = 3;
-    }
-    Data data = 1;
+  // The payload for new role
+  message Data {
+    string type = 1;
+    RoleAttributes attributes = 2;
+    NewRoleRelationships relationships = 3;
+  }
+  Data data = 1;
 }
 
 // A definition for managing user roles.
 message Role {
-    RoleData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
-    repeated google.protobuf.Any included = 3;
+  RoleData data = 1;
+  dictybase.api.jsonapi.Links links = 2;
+  repeated google.protobuf.Any included = 3;
 }
 
 // A role collection definition.
 message RoleCollection {
-    repeated RoleData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
-    repeated google.protobuf.Any included = 3;
+  repeated RoleData data = 1;
+  dictybase.api.jsonapi.Links links = 2;
+  repeated google.protobuf.Any included = 3;
 }
 
 // A top level container for role data.
 message RoleData {
-    string type = 1;
-    int64 id = 2;
-    RoleAttributes attributes = 3;
-    dictybase.api.jsonapi.Links links = 4;
-    ExistingRoleRelationships relationships = 5;
+  string type = 1;
+  int64 id = 2;
+  RoleAttributes attributes = 3;
+  dictybase.api.jsonapi.Links links = 4;
+  ExistingRoleRelationships relationships = 5;
 }
 
 // A container for role fields.
 message RoleAttributes {
-    string role = 1;
-    string description = 2;
-    // Timestamp for creation and update 
-    google.protobuf.Timestamp created_at = 14;
-    google.protobuf.Timestamp updated_at = 15;
+  string role = 1;
+  string description = 2;
+  // Timestamp for creation and update
+  google.protobuf.Timestamp created_at = 14;
+  google.protobuf.Timestamp updated_at = 15;
 }
-
 
 // The relationship definition for existing roles.
 message ExistingRoleRelationships {
-    // Relationships with permission definition.
-    message Permissions {
-        dictybase.api.jsonapi.Links links = 1;
-        repeated dictybase.api.jsonapi.Data data = 2;
-    }
-    // Relationships with user definition.
-    message Users {
-        dictybase.api.jsonapi.Links links = 1;
-        repeated dictybase.api.jsonapi.Data data = 2;
-    }
-    Permissions permissions = 1;
-    Users users = 2;
+  // Relationships with permission definition.
+  message Permissions {
+    dictybase.api.jsonapi.Links links = 1;
+    repeated dictybase.api.jsonapi.Data data = 2;
+  }
+  // Relationships with user definition.
+  message Users {
+    dictybase.api.jsonapi.Links links = 1;
+    repeated dictybase.api.jsonapi.Data data = 2;
+  }
+  Permissions permissions = 1;
+  Users users = 2;
 }
 
 // The relationship definition for creating new roles.
 message NewRoleRelationships {
-    message Permissions {
-        repeated dictybase.api.jsonapi.Data data = 1;
-    }
-    message Users {
-        repeated dictybase.api.jsonapi.Data data = 1;
-    }
-    Permissions permissions = 1;
-    Users users = 2;
+  message Permissions {
+    repeated dictybase.api.jsonapi.Data data = 1;
+  }
+  message Users {
+    repeated dictybase.api.jsonapi.Data data = 1;
+  }
+  Permissions permissions = 1;
+  Users users = 2;
 }
-
 
 // The permission service definition
 service PermissionService {
-    // Gets the specified permission
-    rpc GetPermission (dictybase.api.jsonapi.GetRequestWithFields) returns (Permission) {}
-    // List all permissions
-    rpc ListPermissions (dictybase.api.jsonapi.SimpleListRequest) returns (PermissionCollection) {}
-    // Create an permission
-    rpc CreatePermission(CreatePermissionRequest) returns (Permission) {}
-    // Update an permission
-    rpc UpdatePermission(UpdatePermissionRequest) returns (Permission) {}
-    // Delete an permission
-    rpc DeletePermission(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {}
+  // Gets the specified permission
+  rpc GetPermission(dictybase.api.jsonapi.GetRequestWithFields) returns (Permission) {}
+  // List all permissions
+  rpc ListPermissions(dictybase.api.jsonapi.SimpleListRequest) returns (PermissionCollection) {}
+  // Create an permission
+  rpc CreatePermission(CreatePermissionRequest) returns (Permission) {}
+  // Update an permission
+  rpc UpdatePermission(UpdatePermissionRequest) returns (Permission) {}
+  // Delete an permission
+  rpc DeletePermission(dictybase.api.jsonapi.DeleteRequest) returns (google.protobuf.Empty) {}
 }
 
-
 message UpdatePermissionRequest {
-    message Data {
-        string type = 1;
-        int64 id = 2;
-        PermissionAttributes attributes = 3;
-    }
-    Data data = 1;
-    // Unique id, required
+  message Data {
+    string type = 1;
     int64 id = 2;
-    // An optional mask specifying which fields to update.
-    // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 3;
+    PermissionAttributes attributes = 3;
+  }
+  Data data = 1;
+  // Unique id, required
+  int64 id = 2;
+  // An optional mask specifying which fields to update.
+  // Presence of this field allow partial updates.
+  google.protobuf.FieldMask update_mask = 3;
 }
 
 message CreatePermissionRequest {
-    // The payload for new user
-    message Data {
-        string type = 1;
-        PermissionAttributes attributes = 2;
-    }
-    Data data = 1;
+  // The payload for new user
+  message Data {
+    string type = 1;
+    PermissionAttributes attributes = 2;
+  }
+  Data data = 1;
 }
 
 // A resource for managing user permission.
 message Permission {
-    PermissionData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
+  PermissionData data = 1;
+  dictybase.api.jsonapi.Links links = 2;
 }
 
 // A permission collection resource.
 message PermissionCollection {
-    repeated PermissionData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
+  repeated PermissionData data = 1;
+  dictybase.api.jsonapi.Links links = 2;
 }
-
 
 // A top level container for permission data.
 message PermissionData {
-    // The resource name.
-    string type = 1;
-    // Unique id.
-    int64 id = 2;
-    PermissionAttributes attributes = 3;
-    dictybase.api.jsonapi.Links links = 4;
+  // The resource name.
+  string type = 1;
+  // Unique id.
+  int64 id = 2;
+  PermissionAttributes attributes = 3;
+  dictybase.api.jsonapi.Links links = 4;
 }
 
 // A container for permission fields.
 message PermissionAttributes {
-    // Kind of permission, for example read, write, admin etc.
-    string permission = 1;
-    // Brief description of the type of permission.
-    string description = 2;
-    // Timestamp for creation and update 
-    google.protobuf.Timestamp created_at = 3;
-    google.protobuf.Timestamp updated_at = 4;
-    // Resource(object) on which this permission is granted
-    string resource = 5;
+  // Kind of permission, for example read, write, admin etc.
+  string permission = 1;
+  // Brief description of the type of permission.
+  string description = 2;
+  // Timestamp for creation and update
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+  // Resource(object) on which this permission is granted
+  string resource = 5;
 }
