@@ -1,0 +1,13 @@
+name: Buf checkup
+on: pull_request
+jobs:
+  lint:
+    name: Linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out code
+        uses: actions/checkout@v4
+      - name: setup buf
+        uses: bufbuild/buf-setup-action@v1
+      - name: run linter
+        uses: bufbuild/buf-lint-action@v1
