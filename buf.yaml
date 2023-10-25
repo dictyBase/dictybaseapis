@@ -1,7 +1,7 @@
 version: v1
 name: buf.build/dictybase/dictybaseapis
 deps:
-  - buf.build/beta/googleapis
+  - buf.build/googleapis/googleapis
 lint:
   use:
     - BASIC
