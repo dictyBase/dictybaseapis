@@ -1,11 +1,11 @@
 syntax = "proto3";
 
 package dictybase.feature;
+
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
-import "github.com/mwitkow/go-proto-validators/validator.proto";
-
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/feature;feature";
@@ -16,436 +16,431 @@ option objc_class_prefix = "DICTYAPI";
 
 // The feature service specification
 service FeatureService {
-    // Retrieves the specified feature
-    rpc GetFeature(FeatureId) returns (Feature) {}
-    // Retrieves all the biological parents features
-    rpc GetParents(FeatureRelationFilter) returns (FeatureCollection) {}
-    // Retrieves all biological children features
-    rpc GetChildren(FeatureRelationFilter) returns (FeatureCollection) {}
-    /* Retrieves the feature(called reference or source feature) under whose
-     * coordinate system the current feature is located. By default rank 0 is
-     * assumed*/
-    rpc GetReferenceFeature(ReferenceFeatureFilter) returns (Feature) {}
-    // Retrieves all reference features
-    rpc GetReferenceFeatures(FeatureId) returns (FeatureCollection) {}
-    /* Retrieves all features that are located within the bounds of
-    * referernce feature */
-    rpc GetLocatedFeatures(LocatedFeatureFilter) returns (PaginatedFeatureCollection) {}
-    // Retrieves all features
-    rpc ListFeatures(ListParameters) returns (PaginatedFeatureCollection) {}
-    // Create a new feature
-    rpc CreateFeature(NewFeature) returns (Feature) {}
-    // Update an existing feature
-    rpc UpdateFeature(FeatureUpdate) returns (Feature) {}
-    // Add a new parental relation with an existing feature. In case of an
-    // existing parent(s), it will be appended to the list.
-    rpc AddParentalRelationship(FeatureConnection) returns (Feature) {}
-    // Add a new child relation with an existing feature. In case of an
-    // existing child, it will be appended to the list.
-    rpc AddChildRelationship(FeatureConnection) returns (Feature) {}
-    // Attach a new location entry to connect to a referernce
-    // feature. In case of any existing location(s), it will be
-    // appended to the list. The reference feature referred in
-    // the location needs to exist.
-    rpc AttachLocation(NewFeatureLocation) returns (Feature) {}
-    // Add a new synonym.In case of existing synonym(s),
-    // it will be appended to the list
-    rpc AddSynonym(FeatureSynonym) returns (Feature) {}
-    // Add a new publication.In case of existing publication(s),
-    // it will append it to the list
-    rpc AddPublication(FeaturePublication) returns (Feature) {}
-    // Sets the previous feature in the feature history.
-    rpc SetPrevFeatureHistory(FeatureHistory) returns (Feature) {}
-    // Sets the next feature in the feature history.
-    rpc SetNextFeatureHistory(FeatureHistory) returns (Feature) {}
-    // Add a new dbxref. In case of existing dbxref it will
-    // append it to the list.
-    rpc AddDbxref(FeatureDbxref) returns (Feature) {}
-    // Create a new organism entry
-    rpc CreateOrganism(Organism) returns (Organism) {}
+  // Retrieves the specified feature
+  rpc GetFeature(FeatureId) returns (Feature) {}
+  // Retrieves all the biological parents features
+  rpc GetParents(FeatureRelationFilter) returns (FeatureCollection) {}
+  // Retrieves all biological children features
+  rpc GetChildren(FeatureRelationFilter) returns (FeatureCollection) {}
+  /* Retrieves the feature(called reference or source feature) under whose
+   * coordinate system the current feature is located. By default rank 0 is
+   * assumed*/
+  rpc GetReferenceFeature(ReferenceFeatureFilter) returns (Feature) {}
+  // Retrieves all reference features
+  rpc GetReferenceFeatures(FeatureId) returns (FeatureCollection) {}
+  /* Retrieves all features that are located within the bounds of
+   * referernce feature */
+  rpc GetLocatedFeatures(LocatedFeatureFilter) returns (PaginatedFeatureCollection) {}
+  // Retrieves all features
+  rpc ListFeatures(ListParameters) returns (PaginatedFeatureCollection) {}
+  // Create a new feature
+  rpc CreateFeature(NewFeature) returns (Feature) {}
+  // Update an existing feature
+  rpc UpdateFeature(FeatureUpdate) returns (Feature) {}
+  // Add a new parental relation with an existing feature. In case of an
+  // existing parent(s), it will be appended to the list.
+  rpc AddParentalRelationship(FeatureConnection) returns (Feature) {}
+  // Add a new child relation with an existing feature. In case of an
+  // existing child, it will be appended to the list.
+  rpc AddChildRelationship(FeatureConnection) returns (Feature) {}
+  // Attach a new location entry to connect to a referernce
+  // feature. In case of any existing location(s), it will be
+  // appended to the list. The reference feature referred in
+  // the location needs to exist.
+  rpc AttachLocation(NewFeatureLocation) returns (Feature) {}
+  // Add a new synonym.In case of existing synonym(s),
+  // it will be appended to the list
+  rpc AddSynonym(FeatureSynonym) returns (Feature) {}
+  // Add a new publication.In case of existing publication(s),
+  // it will append it to the list
+  rpc AddPublication(FeaturePublication) returns (Feature) {}
+  // Sets the previous feature in the feature history.
+  rpc SetPrevFeatureHistory(FeatureHistory) returns (Feature) {}
+  // Sets the next feature in the feature history.
+  rpc SetNextFeatureHistory(FeatureHistory) returns (Feature) {}
+  // Add a new dbxref. In case of existing dbxref it will
+  // append it to the list.
+  rpc AddDbxref(FeatureDbxref) returns (Feature) {}
+  // Create a new organism entry
+  rpc CreateOrganism(Organism) returns (Organism) {}
 
-    // Delete an existing feature
-    rpc DeleteFeature(FeatureId) returns (google.protobuf.Empty) {}
-    // Delete a parental relationship with a feature
-    rpc DeleteParentalRelationship(FeatureConnection) returns (google.protobuf.Empty) {}
-    // Delete a child relationship with a feature
-    rpc DeleteChildRelationship(FeatureConnection) returns (google.protobuf.Empty) {}
-    // Detach an existing location from reference feature
-    rpc DetachLocation(ReferenceFeatureFilter) returns (google.protobuf.Empty) {}
-    // Delete a synonym from the feature.
-    rpc DeleteSynonym(FeatureSynonym) returns (google.protobuf.Empty) {}
-    // Delete a publication from the feature.
-    rpc DeletePublication(FeaturePublication) returns (google.protobuf.Empty) {}
-    // Remove the previous feature from the feature history.
-    rpc RemovePrevFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {}
-    // Remove the next feature from the feature history.
-    rpc RemoveNextFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {}
-    // Delete dbxref from a feature. 
-    rpc DeleteDbxref(FeatureDbxref) returns (google.protobuf.Empty) {}
+  // Delete an existing feature
+  rpc DeleteFeature(FeatureId) returns (google.protobuf.Empty) {}
+  // Delete a parental relationship with a feature
+  rpc DeleteParentalRelationship(FeatureConnection) returns (google.protobuf.Empty) {}
+  // Delete a child relationship with a feature
+  rpc DeleteChildRelationship(FeatureConnection) returns (google.protobuf.Empty) {}
+  // Detach an existing location from reference feature
+  rpc DetachLocation(ReferenceFeatureFilter) returns (google.protobuf.Empty) {}
+  // Delete a synonym from the feature.
+  rpc DeleteSynonym(FeatureSynonym) returns (google.protobuf.Empty) {}
+  // Delete a publication from the feature.
+  rpc DeletePublication(FeaturePublication) returns (google.protobuf.Empty) {}
+  // Remove the previous feature from the feature history.
+  rpc RemovePrevFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {}
+  // Remove the next feature from the feature history.
+  rpc RemoveNextFeatureHistory(FeatureHistory) returns (google.protobuf.Empty) {}
+  // Delete dbxref from a feature.
+  rpc DeleteDbxref(FeatureDbxref) returns (google.protobuf.Empty) {}
 }
 
 message FeatureId {
-    // Unique feature identifier
-    string id = 1;
+  // Unique feature identifier
+  string id = 1;
 }
 
 message FeatureRelationFilter {
-    string feature_id = 1;
-    // Type of relationship, generally a sequence ontology term
-    string relation = 2;
+  string feature_id = 1;
+  // Type of relationship, generally a sequence ontology term
+  string relation = 2;
 }
 
 message ReferenceFeatureFilter {
-    string feature_id = 1;
-    // Used for feature with multiple locations, 0 is used as default.
-    int64 rank = 2;
+  string feature_id = 1;
+  // Used for feature with multiple locations, 0 is used as default.
+  int64 rank = 2;
 }
 
 message LocatedFeatureFilter {
-    // unique id of the reference feature
-    string feature_id = 1;
-    // The biological type of feature, generally a sequence ontology term.
-    string type = 2;
-    // The `filter` field restricts no of features in the collection by using a
-    // combination of custom start and end coordinates of reference feature. To
-    // use it, supply the field name followed by the filter expression. It uses
-    // the following syntax...
-    //        field_name operator value
-    //
-    // field_name - Any one of the allowed field name that are given below.
-    //
-    //   * start - leftmost boundary of location (number).
-    //   * end   - rightmost boundary of location (number).
-    //
-    // operator - Defines the type of filter match to use. It could be any of
-    // the following and all of them should be URL-encoded for http request.
-    //
-    //              >   Greater than
-    //              <   Less than
-    //              =<  Less than equal to
-    //              >=  Greater than equal to
-    //
-    // value - The value must be a number here. If only one of the value is
-    // given, the coordinate of reference feature is for the other by default.
-    // URL-reserved
-    // characters must be URL-encoded for http request.
-    //
-    //           filter: "start>=100"
-    //           filter: "end<789"
-    //
-    // Filter can be combined using AND boolean logic. The AND is represented
-    // using a semi-colon(;).
-    //
-    //           filter: "start>=89;end<=7430"
-    //
-    string filter = 3;
+  // unique id of the reference feature
+  string feature_id = 1;
+  // The biological type of feature, generally a sequence ontology term.
+  string type = 2;
+  // The `filter` field restricts no of features in the collection by using a
+  // combination of custom start and end coordinates of reference feature. To
+  // use it, supply the field name followed by the filter expression. It uses
+  // the following syntax...
+  //        field_name operator value
+  //
+  // field_name - Any one of the allowed field name that are given below.
+  //
+  //   * start - leftmost boundary of location (number).
+  //   * end   - rightmost boundary of location (number).
+  //
+  // operator - Defines the type of filter match to use. It could be any of
+  // the following and all of them should be URL-encoded for http request.
+  //
+  //              >   Greater than
+  //              <   Less than
+  //              =<  Less than equal to
+  //              >=  Greater than equal to
+  //
+  // value - The value must be a number here. If only one of the value is
+  // given, the coordinate of reference feature is for the other by default.
+  // URL-reserved
+  // characters must be URL-encoded for http request.
+  //
+  //           filter: "start>=100"
+  //           filter: "end<789"
+  //
+  // Filter can be combined using AND boolean logic. The AND is represented
+  // using a semi-colon(;).
+  //
+  //           filter: "start>=89;end<=7430"
+  //
+  string filter = 3;
 }
 
 // Definition for creating new feature
 message NewFeature {
-    message Data {
-        // The biological type of feature, generally a sequence ontology term
-        string type = 1 [(validator.field) = {string_not_empty: true}];
-        NewFeatureAttributes attributes = 2;
-    }
-    Data data = 1;
+  message Data {
+    // The biological type of feature, generally a sequence ontology term
+    string type = 1 [(validator.field) = {string_not_empty: true}];
+    NewFeatureAttributes attributes = 2;
+  }
+  Data data = 1;
 }
 
 // Definition of various feature fields for creating new feature
 message NewFeatureAttributes {
-    // Short human readable textual name
-    string name = 1;
-    // Identifier of the user who created the feature
-    int64 created_by = 2 [(validator.field) = {int_gt: 0}];
-    // Identifier of the user who updated the feature
-    int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
-    repeated Dbxref dbxrefs = 4;
-    Organism organism = 5;
-    // Toggle the obsolete status
-    bool is_obsolete = 6;
-    // List of biological parent features
-    repeated FeatureRelationship parents = 7;
-    // List of biological children feature
-    repeated FeatureRelationship children = 8;
-    repeated FeatureLocation location = 9;
-    // Alternate list of names
-    repeated string synonyms = 10;
-    repeated Publication publications = 11;
-    // Indicates if the feature is generated(annotated) from the
-    // result of an automated analysis
-    bool is_analysis = 12;
-    // Version of this feature, it increase by 1 for the replacement
-    int64 version = 13;
+  // Short human readable textual name
+  string name = 1;
+  // Identifier of the user who created the feature
+  int64 created_by = 2 [(validator.field) = {int_gt: 0}];
+  // Identifier of the user who updated the feature
+  int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
+  repeated Dbxref dbxrefs = 4;
+  Organism organism = 5;
+  // Toggle the obsolete status
+  bool is_obsolete = 6;
+  // List of biological parent features
+  repeated FeatureRelationship parents = 7;
+  // List of biological children feature
+  repeated FeatureRelationship children = 8;
+  repeated FeatureLocation location = 9;
+  // Alternate list of names
+  repeated string synonyms = 10;
+  repeated Publication publications = 11;
+  // Indicates if the feature is generated(annotated) from the
+  // result of an automated analysis
+  bool is_analysis = 12;
+  // Version of this feature, it increase by 1 for the replacement
+  int64 version = 13;
 }
-
 
 // List of features with pagination
 message PaginatedFeatureCollection {
-    repeated FeatureData data = 1;
-    Meta meta = 2 [(validator.field) = {msg_exists : true}];
+  repeated FeatureData data = 1;
+  Meta meta = 2 [(validator.field) = {msg_exists: true}];
 }
 
 // List of features
 message FeatureCollection {
-    repeated FeatureData data = 1;
+  repeated FeatureData data = 1;
 }
-
 
 // Definition of a biological entity
 message Feature {
-    FeatureData data = 1;
+  FeatureData data = 1;
 }
 
 message FeatureData {
-    // The biological type of feature, generally a sequence ontology term
-    string type = 1;
-    // Unique id
-    string id = 2;
-    FeatureAttributes attributes = 3;
+  // The biological type of feature, generally a sequence ontology term
+  string type = 1;
+  // Unique id
+  string id = 2;
+  FeatureAttributes attributes = 3;
 }
 
-// Definition of various feature fields 
+// Definition of various feature fields
 message FeatureAttributes {
-    // Short human readable textual name
-    string name = 1;
-    // Identifier of the user who created the feature
-    int64 created_by = 2 [(validator.field) = {int_gt: 0}];
-    // Identifier of the user who updated the feature
-    int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
-    // Timestamp for creation and update 
-    google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
-    google.protobuf.Timestamp updated_at = 5 [(validator.field) = {msg_exists: true}];
-    Organism organism = 6;
-    // Toggle the obsolete status
-    bool is_obsolete = 7;
-    // List of biological parent features
-    repeated FeatureRelationship parents = 8;
-    // List of biological children feature
-    repeated FeatureRelationship children = 9;
-    // List of feature locations in the reference backend
-    repeated FeatureLocation location = 10;
-    // Alternate list of names
-    repeated string synonyms = 11;
-    repeated Publication publications = 12;
-    // Indicates if the feature is generated(annotated) from the
-    // result of an automated analysis
-    bool is_analysis = 13;
-    // Version of this feature, it increase by 1 for the replacement
-    int64 version = 14 [(validator.field) = {int_gt: 0}];
-    // Earlier instance of the feature that this one has replaced
-    repeated Dbxref dbxrefs = 15;
+  // Short human readable textual name
+  string name = 1;
+  // Identifier of the user who created the feature
+  int64 created_by = 2 [(validator.field) = {int_gt: 0}];
+  // Identifier of the user who updated the feature
+  int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
+  // Timestamp for creation and update
+  google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
+  google.protobuf.Timestamp updated_at = 5 [(validator.field) = {msg_exists: true}];
+  Organism organism = 6;
+  // Toggle the obsolete status
+  bool is_obsolete = 7;
+  // List of biological parent features
+  repeated FeatureRelationship parents = 8;
+  // List of biological children feature
+  repeated FeatureRelationship children = 9;
+  // List of feature locations in the reference backend
+  repeated FeatureLocation location = 10;
+  // Alternate list of names
+  repeated string synonyms = 11;
+  repeated Publication publications = 12;
+  // Indicates if the feature is generated(annotated) from the
+  // result of an automated analysis
+  bool is_analysis = 13;
+  // Version of this feature, it increase by 1 for the replacement
+  int64 version = 14 [(validator.field) = {int_gt: 0}];
+  // Earlier instance of the feature that this one has replaced
+  repeated Dbxref dbxrefs = 15;
 }
 
 // Definition for updating a feature
 message FeatureUpdate {
-    message Data {
-        // The biological type of feature, generally a sequence ontology term
-        string type = 1 [(validator.field) = {string_not_empty: true}];
-        FeatureUpdateAttributes attributes = 2;
-        string id = 3 [(validator.field) = {string_not_empty: true}];
-    }
-    Data data = 1;
-    // An optional mask specifying which fields to update.
-    // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 2;
+  message Data {
+    // The biological type of feature, generally a sequence ontology term
+    string type = 1 [(validator.field) = {string_not_empty: true}];
+    FeatureUpdateAttributes attributes = 2;
+    string id = 3 [(validator.field) = {string_not_empty: true}];
+  }
+  Data data = 1;
+  // An optional mask specifying which fields to update.
+  // Presence of this field allow partial updates.
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 // Definition of feature fields for updating a feature
 message FeatureUpdateAttributes {
-    // Short human readable textual name
-    string name = 1;
-    // Identifier of the user who updated the feature
-    int64 updated_by = 2 [(validator.field) = {int_gt: 0}];
-    repeated Dbxref dbxrefs = 3;
-    Organism organism = 4;
-    // List of biological parent features
-    repeated FeatureRelationship parents = 5;
-    // List of biological children feature
-    repeated FeatureRelationship children = 6;
-    repeated FeatureLocation location = 7;
-    // aLTERNATe list of names
-    repeated string synonyms = 8;
-    repeated Publication publications = 9;
-    // Indicates if the feature is generated(annotated) from the
-    // result of an automated analysis
-    bool is_analysis = 10;
+  // Short human readable textual name
+  string name = 1;
+  // Identifier of the user who updated the feature
+  int64 updated_by = 2 [(validator.field) = {int_gt: 0}];
+  repeated Dbxref dbxrefs = 3;
+  Organism organism = 4;
+  // List of biological parent features
+  repeated FeatureRelationship parents = 5;
+  // List of biological children feature
+  repeated FeatureRelationship children = 6;
+  repeated FeatureLocation location = 7;
+  // aLTERNATe list of names
+  repeated string synonyms = 8;
+  repeated Publication publications = 9;
+  // Indicates if the feature is generated(annotated) from the
+  // result of an automated analysis
+  bool is_analysis = 10;
 }
 
 // Defintion for managing synonym of a feature
 message FeatureSynonym {
-    string feature_id = 1;
-    string synonym = 2;
+  string feature_id = 1;
+  string synonym = 2;
 }
 
 // Definition for managing a previous or next feature in the feature
 // history
 message FeatureHistory {
-    string feature_id = 1;
-    string linked_feature = 2;
+  string feature_id = 1;
+  string linked_feature = 2;
 }
 
 // Container for linked publications
 message Publication {
-    // An identifier that refers to a publication
-    string publication_id = 1;
-    // Source of this publication identifier
-    string source = 2 [(validator.field) = {string_not_empty: true}];
+  // An identifier that refers to a publication
+  string publication_id = 1;
+  // Source of this publication identifier
+  string source = 2 [(validator.field) = {string_not_empty: true}];
 }
 
 // Definition for managing publication with a feature
 message FeaturePublication {
-    string feature_id = 1;
-    FeaturePublication publication = 2;
+  string feature_id = 1;
+  FeaturePublication publication = 2;
 }
-
 
 // Definition for connecting two biologically related(parent or
 // children) features
 message FeatureConnection {
-    string feature_id = 1;
-    FeatureRelationship relationship = 2;
+  string feature_id = 1;
+  FeatureRelationship relationship = 2;
 }
 
 // Definition for a related feature
 message FeatureRelationship {
-    // Type of relationship, generally a sequence ontology term
-    string relation = 1;
-    // Related feature id
-    string feature_id = 2;
+  // Type of relationship, generally a sequence ontology term
+  string relation = 1;
+  // Related feature id
+  string feature_id = 2;
 }
 
 // Definition for managing dbxref with a feature
 message FeatureDbxref {
-    string feature_id = 1;
-    Dbxref dbxref = 2;
+  string feature_id = 1;
+  Dbxref dbxref = 2;
 }
 
 // An identifier typically from a bioinformatics database(NCBI,Uniprot,Ensembl etc.)
 message Dbxref {
-    // Identifier
-    string dbxref_id = 1 [(validator.field) = {string_not_empty: true}];
-    int64 version = 2;
-    // Source database
-    string database = 3 [(validator.field) = {string_not_empty: true}];
+  // Identifier
+  string dbxref_id = 1 [(validator.field) = {string_not_empty: true}];
+  int64 version = 2;
+  // Source database
+  string database = 3 [(validator.field) = {string_not_empty: true}];
 }
-
 
 // Definition for attaching a new location to a feature
 message NewFeatureLocation {
-    string feature_id = 1;
-    FeatureLocation location = 2;
+  string feature_id = 1;
+  FeatureLocation location = 2;
 }
 
 // The location of a feature relative to another feature using space-based(interbase) coordinates.
 message FeatureLocation {
-    // Source or reference feature(identifier) which this location is relative to
-    string source_feature_id = 1;
-    // start/leftmost boundary of this location in linear range based on
-    // interbase coordinates. To convert it to base-oriented system, add 1 to
-    // this value.
-    int64 start = 2;
-    // End/rightmost boundary of this location in linear range based on
-    // interbase coordinates. No conversion is needed to convert it to a base
-    // oriented system.
-    int64 end = 3;
-    // Orientation of this location, should be one of 0,1, or -1
-    int64 strand = 4;
-    // Phase of translation with respect to source feature, should be one of 0,1,or 2.
-    int64 phase = 5;
-    // Alternate residues which differ from feature residues
-    string residue = 6;
-    // Represents derivable extra location of a feature. The default value 0 is
-    // used for direct location. Any other derived location gets values greater
-    // than 0. For example, the position of an exon on a BAC and in a global
-    // chromosomal coordinates.
-    int64 group = 7;
-    // Used for feature with multiple locations, 0 is used as default. For
-    // example, a blast HSP has two locations, one on the query and one on the
-    // subject.
-    int64 rank = 8;
+  // Source or reference feature(identifier) which this location is relative to
+  string source_feature_id = 1;
+  // start/leftmost boundary of this location in linear range based on
+  // interbase coordinates. To convert it to base-oriented system, add 1 to
+  // this value.
+  int64 start = 2;
+  // End/rightmost boundary of this location in linear range based on
+  // interbase coordinates. No conversion is needed to convert it to a base
+  // oriented system.
+  int64 end = 3;
+  // Orientation of this location, should be one of 0,1, or -1
+  int64 strand = 4;
+  // Phase of translation with respect to source feature, should be one of 0,1,or 2.
+  int64 phase = 5;
+  // Alternate residues which differ from feature residues
+  string residue = 6;
+  // Represents derivable extra location of a feature. The default value 0 is
+  // used for direct location. Any other derived location gets values greater
+  // than 0. For example, the position of an exon on a BAC and in a global
+  // chromosomal coordinates.
+  int64 group = 7;
+  // Used for feature with multiple locations, 0 is used as default. For
+  // example, a blast HSP has two locations, one on the query and one on the
+  // subject.
+  int64 rank = 8;
 }
 
 // Defintion of an organism entry
 message Organism {
-    // Taxon identifier
-    string taxon_id = 1;
-    // Organism genus 
-    string genus = 2;
-    // Organism species 
-    string species = 3;
-    string common_name = 4;
-    // Taxonomic rank
-    string rank = 5;
-    // Scientific name
-    string scientific_name = 6;
-    // Strain name
-    string strain = 7;
+  // Taxon identifier
+  string taxon_id = 1;
+  // Organism genus
+  string genus = 2;
+  // Organism species
+  string species = 3;
+  string common_name = 4;
+  // Taxonomic rank
+  string rank = 5;
+  // Scientific name
+  string scientific_name = 6;
+  // Strain name
+  string strain = 7;
 }
 
 // ListParameters defines fields for manipulating output of PaginatedFeatureCollection
 message ListParameters {
-    // A unique pointer to the next set of result in the list
-    int64 cursor = 1;
-    // Maximum number of records that can be fetch per request
-    int64 limit = 2;
-    // The `filter` field restricts the data return by the collection. To use
-    // it, supply one or multiple allowed fields to filter followed
-    // by a filter expression. It uses the following syntax...
-    //        field_name operator value
-    //
-    // field_name - Any one of the allowed field name that are given below.
-    //
-    //   * name      - feature name (string).
-    //   * type      - The biological type of feature, generally a sequence ontology term (string)
-    //   * species   - Organism species (string)
-    //   * genus     - Organism genus (string)
-    //   * strain    - Strain name of the organism (string)
-    //   * taxon_id  - Taxon identifier (string)
-    //   * obsolete  - Live or retired feature (bool)
-    //   * analysis  - Feature as a result of analysis (bool)
-    //
-    // operator - Defines the type of filter match to use. It could be any of
-    // the following four and all of them should be URL-encoded for http request.
-    //
-    //              ==  Equals (URL encoding is %3D%3D)
-    //              !=  Not equals
-    //              ~  Contains/matches substring (case insensitive)
-    //              !~  Not contains substring (case insensitive)
-    //              >   Greater than
-    //              <   Less than
-    //              =<  Less than equal to
-    //              >=  Greater than equal to
-    //
-    // value - The value must be a string, a number or a boolean. URL-reserved
-    // characters must be URL-encoded for http request.
-    //
-    //           filter: "name==pcA"
-    //           filter: "name~scr"
-    //           filter: "obsolete==true"
-    //
-    // Filter can be combined using OR or AND boolean logic.
-    //   * The OR is represented using a comma(,).
-    //   * The AND is represented using a semi-colon(;).
-    //   * AND and OR operators can be combined and AND takes precedence over OR.
-    //
-    //           filter: "name==pcA;obsolete==true;type=exon"
-    //           filter: "name==transcription,name==gtx"
-    //
-    string filter = 3;
-    // The sort field allow to sort the data return by the collection based on
-    // allowed fields. To use it, supply a comma separated one
-    // or more allowed fields.
+  // A unique pointer to the next set of result in the list
+  int64 cursor = 1;
+  // Maximum number of records that can be fetch per request
+  int64 limit = 2;
+  // The `filter` field restricts the data return by the collection. To use
+  // it, supply one or multiple allowed fields to filter followed
+  // by a filter expression. It uses the following syntax...
+  //        field_name operator value
+  //
+  // field_name - Any one of the allowed field name that are given below.
+  //
+  //   * name      - feature name (string).
+  //   * type      - The biological type of feature, generally a sequence ontology term (string)
+  //   * species   - Organism species (string)
+  //   * genus     - Organism genus (string)
+  //   * strain    - Strain name of the organism (string)
+  //   * taxon_id  - Taxon identifier (string)
+  //   * obsolete  - Live or retired feature (bool)
+  //   * analysis  - Feature as a result of analysis (bool)
+  //
+  // operator - Defines the type of filter match to use. It could be any of
+  // the following four and all of them should be URL-encoded for http request.
+  //
+  //              ==  Equals (URL encoding is %3D%3D)
+  //              !=  Not equals
+  //              ~  Contains/matches substring (case insensitive)
+  //              !~  Not contains substring (case insensitive)
+  //              >   Greater than
+  //              <   Less than
+  //              =<  Less than equal to
+  //              >=  Greater than equal to
+  //
+  // value - The value must be a string, a number or a boolean. URL-reserved
+  // characters must be URL-encoded for http request.
+  //
+  //           filter: "name==pcA"
+  //           filter: "name~scr"
+  //           filter: "obsolete==true"
+  //
+  // Filter can be combined using OR or AND boolean logic.
+  //   * The OR is represented using a comma(,).
+  //   * The AND is represented using a semi-colon(;).
+  //   * AND and OR operators can be combined and AND takes precedence over OR.
+  //
+  //           filter: "name==pcA;obsolete==true;type=exon"
+  //           filter: "name==transcription,name==gtx"
+  //
+  string filter = 3;
+  // The sort field allow to sort the data return by the collection based on
+  // allowed fields. To use it, supply a comma separated one
+  // or more allowed fields.
 }
-
 
 // Metadata definition for traversing the collection
 message Meta {
-    // A unique pointer to the next set of result in the collection. Set the
-    // cursor value parameter to the value of next_cursor to retrieve the next
-    // set of collection using the same method
-    int64 next_cursor = 1;
-    // Maximum number of records that can be fetch per request
-    int64 limit = 2;
-    // Total number of records in the collection.
-    int64 total = 3;
+  // A unique pointer to the next set of result in the collection. Set the
+  // cursor value parameter to the value of next_cursor to retrieve the next
+  // set of collection using the same method
+  int64 next_cursor = 1;
+  // Maximum number of records that can be fetch per request
+  int64 limit = 2;
+  // Total number of records in the collection.
+  int64 total = 3;
 }

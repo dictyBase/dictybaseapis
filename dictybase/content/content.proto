@@ -1,13 +1,13 @@
 syntax = "proto3";
 
 package dictybase.content;
-import "google/protobuf/field_mask.proto";
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
+
 import "dictybase/api/jsonapi/payload.proto";
 import "dictybase/api/jsonapi/request.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
-
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/content;content";
@@ -18,111 +18,108 @@ option objc_class_prefix = "DICTYAPI";
 
 // The content service definition
 service ContentService {
-    // Gets the content of specified page(slug)
-    rpc GetContentBySlug (ContentRequest) returns (Content) {}
-    rpc GetContent (ContentIdRequest) returns (Content) {}
-    // Store the content of a new page(slug)
-    rpc StoreContent (StoreContentRequest) returns (Content) {}
-    // Update the content of an existing page
-    rpc UpdateContent (UpdateContentRequest) returns (Content) {}
-    // Delete an existing page along with its content
-    rpc DeleteContent (ContentIdRequest) returns (google.protobuf.Empty) {}
-    // Basic health check that always return success
-    rpc Healthz (dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {}
+  // Gets the content of specified page(slug)
+  rpc GetContentBySlug(ContentRequest) returns (Content) {}
+  rpc GetContent(ContentIdRequest) returns (Content) {}
+  // Store the content of a new page(slug)
+  rpc StoreContent(StoreContentRequest) returns (Content) {}
+  // Update the content of an existing page
+  rpc UpdateContent(UpdateContentRequest) returns (Content) {}
+  // Delete an existing page along with its content
+  rpc DeleteContent(ContentIdRequest) returns (google.protobuf.Empty) {}
+  // Basic health check that always return success
+  rpc Healthz(dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {}
 }
 
 message Content {
-    ContentData data = 1;
-    dictybase.api.jsonapi.Links links = 2;
+  ContentData data = 1;
+  dictybase.api.jsonapi.Links links = 2;
 }
 
 message ContentData {
-    // The resource name
-    string type = 1;
-    // Unique id
-    int64 id = 2;
-    ContentAttributes attributes = 3;
-    dictybase.api.jsonapi.Links links = 4;
+  // The resource name
+  string type = 1;
+  // Unique id
+  int64 id = 2;
+  ContentAttributes attributes = 3;
+  dictybase.api.jsonapi.Links links = 4;
 }
 
 // Definition of various content fields
 message ContentAttributes {
-    // page name
-    string name = 1;
-    // page slug. Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
-    string slug = 2;
-    // email id of the user who created the content
-    string created_by = 3;
-    // email id of the user who updated the content
-    string updated_by = 4;
-    // Timestamp for creation and update 
-    google.protobuf.Timestamp created_at = 5;
-    google.protobuf.Timestamp updated_at = 6;
-    // serialized page content(for example serialized draft js object)
-    string content = 7;
-    // namespace for the page
-    string namespace = 8;
+  // page name
+  string name = 1;
+  // page slug. Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
+  string slug = 2;
+  // email id of the user who created the content
+  string created_by = 3;
+  // email id of the user who updated the content
+  string updated_by = 4;
+  // Timestamp for creation and update
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+  // serialized page content(for example serialized draft js object)
+  string content = 7;
+  // namespace for the page
+  string namespace = 8;
 }
 
 message ContentRequest {
-    // Url slug
-    // Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
-    // The slug name should be unique
-    string slug = 1;
+  // Url slug
+  // Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
+  // The slug name should be unique
+  string slug = 1;
 }
 
 message ContentIdRequest {
-    // Unique id to identify content
-    int64 id = 1;
+  // Unique id to identify content
+  int64 id = 1;
 }
-
 
 // Definition for fields that are needed for storing the content
 message NewContentAttributes {
-    // page name
-    string name = 1 [(validator.field) = {regex: "[a-z,A-z,0-9]+"}];
-    // email of the user who is creating this content
-    string created_by = 2 [(validator.field) = {string_not_empty: true}];
-    // page content, expected to be serialized `JSON` string.
-    string content = 3 [(validator.field) = {string_not_empty: true}];
-    // namespace for the page, it is prepended to the
-    // name to generate an unique slug.
-    string namespace = 4 [(validator.field) = {string_not_empty: true}];
+  // page name
+  string name = 1 [(validator.field) = {regex: "[a-z,A-z,0-9]+"}];
+  // email of the user who is creating this content
+  string created_by = 2 [(validator.field) = {string_not_empty: true}];
+  // page content, expected to be serialized `JSON` string.
+  string content = 3 [(validator.field) = {string_not_empty: true}];
+  // namespace for the page, it is prepended to the
+  // name to generate an unique slug.
+  string namespace = 4 [(validator.field) = {string_not_empty: true}];
 }
 
 // Definition for storing new content
 message StoreContentRequest {
-    message Data {
-        // resource name
-        string type = 1;
-        NewContentAttributes attributes = 2;
-    }
-    Data data = 1;
+  message Data {
+    // resource name
+    string type = 1;
+    NewContentAttributes attributes = 2;
+  }
+  Data data = 1;
 }
-
 
 // Fields that can be updated
 // Changing either or both of name and namespace
 // attributes alter the slug for the page
 message ExistingContentAttributes {
-    // email id of the user who is updating this content
-    string updated_by = 1 [(validator.field) = {string_not_empty: true}];
-    // serialized page content(for example serialized draft js object)
-    string content = 2 [(validator.field) = {string_not_empty: true}];
+  // email id of the user who is updating this content
+  string updated_by = 1 [(validator.field) = {string_not_empty: true}];
+  // serialized page content(for example serialized draft js object)
+  string content = 2 [(validator.field) = {string_not_empty: true}];
 }
 
 message UpdateContentRequest {
-    message Data {
-        // resource name
-        string type = 1;
-        // unique id
-        int64 id = 2;
-        ExistingContentAttributes attributes = 3;
-    }
-    Data data = 1;
+  message Data {
+    // resource name
+    string type = 1;
+    // unique id
     int64 id = 2;
-    // An optional mask specifying which fields to update.
-    // Presence of this field allow partial updates.
-    google.protobuf.FieldMask update_mask = 3;
+    ExistingContentAttributes attributes = 3;
+  }
+  Data data = 1;
+  int64 id = 2;
+  // An optional mask specifying which fields to update.
+  // Presence of this field allow partial updates.
+  google.protobuf.FieldMask update_mask = 3;
 }
-

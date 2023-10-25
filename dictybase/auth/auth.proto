@@ -1,11 +1,11 @@
 syntax = "proto3";
 
 package dictybase.auth;
-import "google/protobuf/empty.proto";
-import "github.com/mwitkow/go-proto-validators/validator.proto";
+
 import "dictybase/identity/identity.proto";
 import "dictybase/user/user.proto";
-
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "google/protobuf/empty.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/auth;auth";
@@ -16,65 +16,65 @@ option objc_class_prefix = "DICTYAPI";
 
 // The auth service specification
 service AuthService {
-    // Logs user into authserver
-    rpc Login(NewLogin) returns (Auth) {}
-    // Logs user into authserver
-    rpc Relogin(NewRelogin) returns (Auth) {}
-    // Retrieves new refresh token and JWT
-    rpc GetRefreshToken(NewToken) returns (Token) {}
-    // Logs user out of authserver
-    rpc Logout(NewRefreshToken) returns (google.protobuf.Empty) {}
+  // Logs user into authserver
+  rpc Login(NewLogin) returns (Auth) {}
+  // Logs user into authserver
+  rpc Relogin(NewRelogin) returns (Auth) {}
+  // Retrieves new refresh token and JWT
+  rpc GetRefreshToken(NewToken) returns (Token) {}
+  // Logs user out of authserver
+  rpc Logout(NewRefreshToken) returns (google.protobuf.Empty) {}
 }
 
 // Definition of an individual auth response
 message Auth {
-    // JSON Web Token (JWT)
-    string token = 1;
-    // Refresh token
-    string refresh_token = 2;
-    // Identity of user
-    dictybase.identity.Identity identity = 3;
-    // User API data
-    dictybase.user.User user = 4;
+  // JSON Web Token (JWT)
+  string token = 1;
+  // Refresh token
+  string refresh_token = 2;
+  // Identity of user
+  dictybase.identity.Identity identity = 3;
+  // User API data
+  dictybase.user.User user = 4;
 }
 
 message NewLogin {
-    // Client ID received during application registration from every provider
-    string client_id = 1 [(validator.field) = {string_not_empty : true}];
-    // Scope of the application
-    string scopes = 2 [(validator.field) = {string_not_empty : true}];
-    // An unguessable random string. It is used to protect against cross-site request 
-    // forgery attacks. It is passed to the provider during first login.
-    string state = 3 [(validator.field) = {string_not_empty : true}];
-    // The URL in the application where users will be sent after authorization, 
-    // generally provided during the registration of the application.
-    string redirect_url = 4 [(validator.field) = {string_not_empty : true}];
-    // The code that is received as response from the first login
-    string code = 5 [(validator.field) = {string_not_empty : true}];
-    // Third party oAuth provider
-    string provider = 6 [(validator.field) = {string_not_empty : true}];
+  // Client ID received during application registration from every provider
+  string client_id = 1 [(validator.field) = {string_not_empty: true}];
+  // Scope of the application
+  string scopes = 2 [(validator.field) = {string_not_empty: true}];
+  // An unguessable random string. It is used to protect against cross-site request
+  // forgery attacks. It is passed to the provider during first login.
+  string state = 3 [(validator.field) = {string_not_empty: true}];
+  // The URL in the application where users will be sent after authorization,
+  // generally provided during the registration of the application.
+  string redirect_url = 4 [(validator.field) = {string_not_empty: true}];
+  // The code that is received as response from the first login
+  string code = 5 [(validator.field) = {string_not_empty: true}];
+  // Third party oAuth provider
+  string provider = 6 [(validator.field) = {string_not_empty: true}];
 }
 
 message NewRelogin {
-    // Refresh token
-    string refresh_token = 1 [(validator.field) = {string_not_empty : true}];
+  // Refresh token
+  string refresh_token = 1 [(validator.field) = {string_not_empty: true}];
 }
 
 message NewToken {
-    // JSON Web Token (JWT)
-    string token = 1;
-    // Refresh token (unique ID)
-    string refresh_token = 2;
+  // JSON Web Token (JWT)
+  string token = 1;
+  // Refresh token (unique ID)
+  string refresh_token = 2;
 }
 
 message NewRefreshToken {
-    // Refresh token (unique ID)
-    string refresh_token = 1;
+  // Refresh token (unique ID)
+  string refresh_token = 1;
 }
 
 message Token {
-    // JSON Web Token (JWT)
-    string token = 1;
-    // Refresh token (unique ID)
-    string refresh_token = 2;
+  // JSON Web Token (JWT)
+  string token = 1;
+  // Refresh token (unique ID)
+  string refresh_token = 2;
 }
