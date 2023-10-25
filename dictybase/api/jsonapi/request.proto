@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package dictybase.api.jsonapi;
+
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 
 option cc_enable_arenas = true;
@@ -10,202 +11,200 @@ option java_outer_classname = "RequestProto";
 option java_package = "org.dictybase.api.jsonapi";
 option objc_class_prefix = "DICTYAPI";
 
-
 // A `GetRequest` defines various url and query parameters that could be passed
 // in a HTTP **GET** request to a singular resource. Majority of the request
 // parameters are identical or similar to [jsonapi](http://jsonapi.org).
 message GetRequest {
-    // An unique identifier, for example:
-    // "/users/34"
-    int64 id = 1;
-    // include query parameter to retrieve any particular or particular
-    // combination of relationships. Multiple include values are delimited by
-    // comma(,).
-    //
-    // For example, 
-    //      /{resource_name}/13?include=baz
-    //      /{resource_name}/13?include=baz,bot
-    string include = 2;
-    // fields query parameter to retrieve any particular or any particular
-    // combination of attributes. Multiple fields values are delimited by comma(,).
-    //
-    // For example 
-    //      /{resource_name}/29?fields=foo
-    //      /{resource_name}/?fields=foo,bar
-    string fields = 3;
+  // An unique identifier, for example:
+  // "/users/34"
+  int64 id = 1;
+  // include query parameter to retrieve any particular or particular
+  // combination of relationships. Multiple include values are delimited by
+  // comma(,).
+  //
+  // For example,
+  //      /{resource_name}/13?include=baz
+  //      /{resource_name}/13?include=baz,bot
+  string include = 2;
+  // fields query parameter to retrieve any particular or any particular
+  // combination of attributes. Multiple fields values are delimited by comma(,).
+  //
+  // For example
+  //      /{resource_name}/29?fields=foo
+  //      /{resource_name}/?fields=foo,bar
+  string fields = 3;
 }
-
 
 // A `GetEmailRequest` is identical to GetRequest except `email` id used as unique identifier.
 message GetEmailRequest {
-    // Email id 
-    // "/users/newman@seinfeld.org"
-    string email = 1;
-    // include query parameter to retrieve any particular or particular
-    // combination of relationships. Multiple include values are delimited by
-    // comma(,).
-    //
-    // For example,
-    //          /{resource_name}/13?include=baz
-    //          /{resource_name}/13?include=baz,bot
-    string include = 2;
-    // fields query parameter to retrieve any particular or any particular
-    // combination of attributes. Multiple fields values are delimited by comma(,).
-    //
-    // For example,
-    //          /{resource_name}/29?fields=foo
-    //          /{resource_name}/?fields=foo,bar
-    string fields = 3;
+  // Email id
+  // "/users/newman@seinfeld.org"
+  string email = 1;
+  // include query parameter to retrieve any particular or particular
+  // combination of relationships. Multiple include values are delimited by
+  // comma(,).
+  //
+  // For example,
+  //          /{resource_name}/13?include=baz
+  //          /{resource_name}/13?include=baz,bot
+  string include = 2;
+  // fields query parameter to retrieve any particular or any particular
+  // combination of attributes. Multiple fields values are delimited by comma(,).
+  //
+  // For example,
+  //          /{resource_name}/29?fields=foo
+  //          /{resource_name}/?fields=foo,bar
+  string fields = 3;
 }
 
 // A `GetRequestWithFields` is a subset of GetRequest which only allow the fields parameter.
 message GetRequestWithFields {
-    // An unique identifier, for example:
-    // "/users/34"
-    int64 id = 1;
-    // fields query parameter to retrieve any particular or any particular
-    // combination of attributes. Multiple fields values are delimited by comma(,).
-    //
-    // For example 
-    // /{resource_name}/29?fields=foo
-    // /{resource_name}/?fields=foo,bar
-    string fields = 2;
+  // An unique identifier, for example:
+  // "/users/34"
+  int64 id = 1;
+  // fields query parameter to retrieve any particular or any particular
+  // combination of attributes. Multiple fields values are delimited by comma(,).
+  //
+  // For example
+  // /{resource_name}/29?fields=foo
+  // /{resource_name}/?fields=foo,bar
+  string fields = 2;
 }
 
 // A `RelationshipRequest` defines the url parameter for relationship resources
 // that are given in the links field of relationship object
 message RelationshipRequest {
-    // An unique identifier, for example:
-    // "/users/45/roles" or "/users/45/relationships/roles"
-    int64 id = 1;
+  // An unique identifier, for example:
+  // "/users/45/roles" or "/users/45/relationships/roles"
+  int64 id = 1;
 }
 
 // A `RelationshipRequestWithPagination` is a `RelationshipRequest` with pagination
 message RelationshipRequestWithPagination {
-    int64 id = 1;
-    int64 pagenum = 4;
-    int64 pagesize = 3;
+  int64 id = 1;
+  int64 pagenum = 4;
+  int64 pagesize = 3;
 }
-
 
 // A `ListRequest` defines various url and query parameters that could be
 // passed in a HTTP **GET** request to a collection resource. All collection
 // resources are expected to support pagination. Majority of the request
 // parameters are identical or similar to [jsonapi](http://jsonapi.org).
 message ListRequest {
-    // include query parameter to retrieve any particular or particular
-    // combination of relationships. Multiple include values are delimited by
-    // comma(,).
-    //
-    // For example, 
-    // /{resource_name}/13?include=baz
-    // /{resource_name}/13?include=baz,bot
-    string include = 1;
-    // fields query parameter to retrieve any particular or any particular
-    // combination of attributes. Multiple fields values are delimited by comma(,).
-    //
-    // For example 
-    // /{resource_name}/29?fields=foo
-    // /{resource_name}/?fields=foo,bar
-    string fields = 3;
-    // The page number to fetch
-    int64 pagenum = 4;
-    // Number of records per page
-    int64 pagesize = 5;
-    // The `filter` query parameter restricts the data return by the
-    // collection. To use it, supply an attribute to filter, followed by a
-    // filter expression. It uses the following syntax...
-    //        attribute operator expression
-    // attribute - Any one of the valid attribute of the resource.
-    // operator - Defines the type of filter match to use. It could be any of
-    // the following four and all of them should be URL-encoded.
-    //
-    //              ==  Equals (URL encoding is %3D%3D)
-    //              !=  Not equals
-    //              =@  Contains substring
-    //              !@  Not contains substring
-    //
-    // expression - The value that will be included or excluded from the
-    // result. URL-reserved characters must be URL-encoded.
-    // For example, the following filter returns all users with last name `Gag`.
-    //           /users?filter=last_name%3D%3Dgag
-    //
-    // Filter can be combined using OR or AND boolean logic.
-    //   * The OR is represented using a comma(,).
-    //   * The AND is represented using a semi-colon(;).
-    //   * AND and OR operators can be combined and AND takes precedence over OR.
-    string filter = 6;
+  // include query parameter to retrieve any particular or particular
+  // combination of relationships. Multiple include values are delimited by
+  // comma(,).
+  //
+  // For example,
+  // /{resource_name}/13?include=baz
+  // /{resource_name}/13?include=baz,bot
+  string include = 1;
+  // fields query parameter to retrieve any particular or any particular
+  // combination of attributes. Multiple fields values are delimited by comma(,).
+  //
+  // For example
+  // /{resource_name}/29?fields=foo
+  // /{resource_name}/?fields=foo,bar
+  string fields = 3;
+  // The page number to fetch
+  int64 pagenum = 4;
+  // Number of records per page
+  int64 pagesize = 5;
+  // The `filter` query parameter restricts the data return by the
+  // collection. To use it, supply an attribute to filter, followed by a
+  // filter expression. It uses the following syntax...
+  //        attribute operator expression
+  // attribute - Any one of the valid attribute of the resource.
+  // operator - Defines the type of filter match to use. It could be any of
+  // the following four and all of them should be URL-encoded.
+  //
+  //              ==  Equals (URL encoding is %3D%3D)
+  //              !=  Not equals
+  //              =@  Contains substring
+  //              !@  Not contains substring
+  //
+  // expression - The value that will be included or excluded from the
+  // result. URL-reserved characters must be URL-encoded.
+  // For example, the following filter returns all users with last name `Gag`.
+  //           /users?filter=last_name%3D%3Dgag
+  //
+  // Filter can be combined using OR or AND boolean logic.
+  //   * The OR is represented using a comma(,).
+  //   * The AND is represented using a semi-colon(;).
+  //   * AND and OR operators can be combined and AND takes precedence over OR.
+  string filter = 6;
 }
-
 
 // A `SimpleListRequest` is identical to `ListRequest` except it does not support
 // pagination. The rest of the parameters are identical to `ListRequest` definition.
 message SimpleListRequest {
-    // include query parameter to retrieve any particular or particular
-    // combination of relationships. Multiple include values are delimited by
-    // comma(,).
-    //
-    // For example, 
-    // /{resource_name}/13?include=baz
-    // /{resource_name}/13?include=baz,bot
-    string include = 1;
-    // fields query parameter to retrieve any particular or any particular
-    // combination of attributes. Multiple fields values are delimited by comma(,).
-    //
-    // For example 
-    // /{resource_name}/29?fields=foo
-    // /{resource_name}/?fields=foo,bar
-    string fields = 2;
-    // The `filter` query parameter restricts the data return by the
-    // collection. To use it, supply an attribute to filter, followed by a
-    // filter expression. It uses the following syntax...
-    //        attribute operator expression
-    // attribute - Any one of the valid attribute of the resource.
-    // operator - Defines the type of filter match to use. It could be any of
-    // the following four and all of them should be URL-encoded.
-    //
-    //              ==  Equals (URL encoding is %3D%3D)
-    //              !=  Not equals
-    //              =@  Contains substring
-    //              !@  Not contains substring
-    //
-    // expression - The value that will be included or excluded from the
-    // result. URL-reserved characters must be URL-encoded.
-    // For example, the following filter returns all users with last name `Gag`.
-    //           /users?filter=last_name%3D%3Dgag
-    //
-    // Filter can be combined using OR or AND boolean logic.
-    //   * The OR is represented using a comma(,).
-    //   * The AND is represented using a semi-colon(;).
-    //   * AND and OR operators can be combined and AND takes precedence over OR.
-    string filter = 3;
+  // include query parameter to retrieve any particular or particular
+  // combination of relationships. Multiple include values are delimited by
+  // comma(,).
+  //
+  // For example,
+  // /{resource_name}/13?include=baz
+  // /{resource_name}/13?include=baz,bot
+  string include = 1;
+  // fields query parameter to retrieve any particular or any particular
+  // combination of attributes. Multiple fields values are delimited by comma(,).
+  //
+  // For example
+  // /{resource_name}/29?fields=foo
+  // /{resource_name}/?fields=foo,bar
+  string fields = 2;
+  // The `filter` query parameter restricts the data return by the
+  // collection. To use it, supply an attribute to filter, followed by a
+  // filter expression. It uses the following syntax...
+  //        attribute operator expression
+  // attribute - Any one of the valid attribute of the resource.
+  // operator - Defines the type of filter match to use. It could be any of
+  // the following four and all of them should be URL-encoded.
+  //
+  //              ==  Equals (URL encoding is %3D%3D)
+  //              !=  Not equals
+  //              =@  Contains substring
+  //              !@  Not contains substring
+  //
+  // expression - The value that will be included or excluded from the
+  // result. URL-reserved characters must be URL-encoded.
+  // For example, the following filter returns all users with last name `Gag`.
+  //           /users?filter=last_name%3D%3Dgag
+  //
+  // Filter can be combined using OR or AND boolean logic.
+  //   * The OR is represented using a comma(,).
+  //   * The AND is represented using a semi-colon(;).
+  //   * AND and OR operators can be combined and AND takes precedence over OR.
+  string filter = 3;
 }
 
-
 // A `DeleteRequest` defines the url parameter that must be passed
-// to remove a singular resource. 
+// to remove a singular resource.
 message DeleteRequest {
-    // An unique identifier, for example:
-    // "/users/34"
-    int64 id = 1;
+  // An unique identifier, for example:
+  // "/users/34"
+  int64 id = 1;
 }
 
 message IdRequest {
-    // An unique identifier
-    int64 id = 1;
+  // An unique identifier
+  int64 id = 1;
 }
 
 message IdResponse {
-    // An unique identifier
-    int64 id = 1;
+  // An unique identifier
+  int64 id = 1;
 }
 
 message HealthzIdRequest {
-    int64 id = 1 [(validator.field) = {int_gt: 0, int_lt: 2}];
+  int64 id = 1 [(validator.field) = {
+    int_gt: 0,
+    int_lt: 2
+  }];
 }
 
 // ExistResponse wraps a boolean response
 message ExistResponse {
-    // exist or non-existant
-    bool exist = 1;
+  // exist or non-existant
+  bool exist = 1;
 }
