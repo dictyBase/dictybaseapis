@@ -13,25 +13,23 @@ option objc_class_prefix = "DICTYAPI";
 // a file through protocol buffer. The file is expected to be uploaded
 // grpc client side streaming
 message FileUploadRequest {
-    // name of the file
-    string name = 1;
-    // content of the file, expected to be streamed in chunk
-    bytes content = 2;
+  // name of the file
+  string name = 1;
+  // content of the file, expected to be streamed in chunk
+  bytes content = 2;
 }
 
-
-
-// FileUploadResponse defines response received after completion of 
+// FileUploadResponse defines response received after completion of
 // file upload
 message FileUploadResponse {
-    enum Status {
-        // a new file
-        CREATED = 0;
-        // an existing file
-        UPDATED = 1;
-    }
-    // Status gives the status after file upload
-    Status status = 1;
-    // message send by the server after file upload
-    string msg = 2;
+  enum Status {
+    // a new file
+    CREATED = 0;
+    // an existing file
+    UPDATED = 1;
+  }
+  // Status gives the status after file upload
+  Status status = 1;
+  // message send by the server after file upload
+  string msg = 2;
 }

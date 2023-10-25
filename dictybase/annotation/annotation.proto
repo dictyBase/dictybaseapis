@@ -1,11 +1,11 @@
 syntax = "proto3";
 
 package dictybase.annotation;
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
-import "github.com/mwitkow/go-proto-validators/validator.proto";
-import "dictybase/api/upload/file.proto";
 
+import "dictybase/api/upload/file.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/annotation;annotation";
@@ -16,365 +16,355 @@ option objc_class_prefix = "DICTYAPI";
 
 // The tagged annotation service specification
 service TaggedAnnotationService {
-    // Retrieves the specified tagged annotation
-    rpc GetAnnotation(AnnotationId) returns (TaggedAnnotation) {}
-    // Retrieves a single tagged annotation associated with a specific entry
-    rpc GetEntryAnnotation(EntryAnnotationRequest) returns (TaggedAnnotation) {}
-    // List tagged annotations using pagination, ten entries are retrieved by default
-    rpc ListAnnotations(ListParameters) returns (TaggedAnnotationCollection) {}
-    // Create a tagged annotation
-    rpc CreateAnnotation(NewTaggedAnnotation) returns (TaggedAnnotation) {}
-    // Update an existing annotation, in this case a new annotation entry is
-    // created with a link to the previous annotation(copy on write).
-    rpc UpdateAnnotation(TaggedAnnotationUpdate) returns (TaggedAnnotation) {}
-    // Delete an existing annotation
-    rpc DeleteAnnotation(DeleteAnnotationRequest) returns (google.protobuf.Empty) {}
-    // Creates an annotation group from bunch of existing tagged annotations.
-    rpc CreateAnnotationGroup(AnnotationIdList) returns (TaggedAnnotationGroup) {}
-    // Retrieves an annotation group
-    rpc GetAnnotationGroup(GroupEntryId) returns (TaggedAnnotationGroup) {}
-    // Adds an existing annotation into an existing annotation group
-    rpc AddToAnnotationGroup(AnnotationGroupId) returns (TaggedAnnotationGroup) {}
-    // Remove an annotation group
-    rpc DeleteAnnotationGroup(GroupEntryId) returns (google.protobuf.Empty) {}
-    // List tagged annotation groups using pagination, ten entries are retrieved by default
-    rpc ListAnnotationGroups(ListGroupParameters) returns (TaggedAnnotationGroupCollection) {}
-    // Retrieves tag information
-    rpc GetAnnotationTag(TagRequest) returns (AnnotationTag) {}
-    // Upload obojson formatted file through client side streaming
-    rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest)
-                          returns (dictybase.api.upload.FileUploadResponse) {}
+  // Retrieves the specified tagged annotation
+  rpc GetAnnotation(AnnotationId) returns (TaggedAnnotation) {}
+  // Retrieves a single tagged annotation associated with a specific entry
+  rpc GetEntryAnnotation(EntryAnnotationRequest) returns (TaggedAnnotation) {}
+  // List tagged annotations using pagination, ten entries are retrieved by default
+  rpc ListAnnotations(ListParameters) returns (TaggedAnnotationCollection) {}
+  // Create a tagged annotation
+  rpc CreateAnnotation(NewTaggedAnnotation) returns (TaggedAnnotation) {}
+  // Update an existing annotation, in this case a new annotation entry is
+  // created with a link to the previous annotation(copy on write).
+  rpc UpdateAnnotation(TaggedAnnotationUpdate) returns (TaggedAnnotation) {}
+  // Delete an existing annotation
+  rpc DeleteAnnotation(DeleteAnnotationRequest) returns (google.protobuf.Empty) {}
+  // Creates an annotation group from bunch of existing tagged annotations.
+  rpc CreateAnnotationGroup(AnnotationIdList) returns (TaggedAnnotationGroup) {}
+  // Retrieves an annotation group
+  rpc GetAnnotationGroup(GroupEntryId) returns (TaggedAnnotationGroup) {}
+  // Adds an existing annotation into an existing annotation group
+  rpc AddToAnnotationGroup(AnnotationGroupId) returns (TaggedAnnotationGroup) {}
+  // Remove an annotation group
+  rpc DeleteAnnotationGroup(GroupEntryId) returns (google.protobuf.Empty) {}
+  // List tagged annotation groups using pagination, ten entries are retrieved by default
+  rpc ListAnnotationGroups(ListGroupParameters) returns (TaggedAnnotationGroupCollection) {}
+  // Retrieves tag information
+  rpc GetAnnotationTag(TagRequest) returns (AnnotationTag) {}
+  // Upload obojson formatted file through client side streaming
+  rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
 }
 
 message AnnotationGroupId {
-    // unique identifier for the annotation
-    string id = 1 [(validator.field) = {string_not_empty : true}];
-    // unique identifier of a group
-    string group_id = 2 [(validator.field) = {string_not_empty : true}];
+  // unique identifier for the annotation
+  string id = 1 [(validator.field) = {string_not_empty: true}];
+  // unique identifier of a group
+  string group_id = 2 [(validator.field) = {string_not_empty: true}];
 }
 
-
 message AnnotationId {
-    // unique identifier for the annotation
-    string id = 1 [(validator.field) = {string_not_empty : true}];
+  // unique identifier for the annotation
+  string id = 1 [(validator.field) = {string_not_empty: true}];
 }
 
 // Identifiers for grouping list of tagged annotations
 message AnnotationIdList {
-    // list of unique identifiers
-    repeated string ids = 1 [(validator.field) = {repeated_count_min : 1}];
+  // list of unique identifiers
+  repeated string ids = 1 [(validator.field) = {repeated_count_min: 1}];
 }
 
 message GroupEntryId {
-    // unique identifier of a group
-    string group_id = 1 [(validator.field) = {string_not_empty : true}];
+  // unique identifier of a group
+  string group_id = 1 [(validator.field) = {string_not_empty: true}];
 }
-
 
 // Group of tagged annotations
 message TaggedAnnotationGroup {
-    message Data {
-        // resource name, by default should be annotation
-        string type = 1;
-        // unique identifier for the annotation
-        string id = 2;
-        TaggedAnnotationAttributes attributes = 3;
-    }
-    repeated Data data = 1;
-    // unique identifier for the annotation group
-    string group_id = 2;
-    // Timestamp for creation an update
-    google.protobuf.Timestamp created_at = 3 [(validator.field) = {msg_exists : true}];
-    google.protobuf.Timestamp updated_at = 4 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // resource name, by default should be annotation
+    string type = 1;
+    // unique identifier for the annotation
+    string id = 2;
+    TaggedAnnotationAttributes attributes = 3;
+  }
+  repeated Data data = 1;
+  // unique identifier for the annotation group
+  string group_id = 2;
+  // Timestamp for creation an update
+  google.protobuf.Timestamp created_at = 3 [(validator.field) = {msg_exists: true}];
+  google.protobuf.Timestamp updated_at = 4 [(validator.field) = {msg_exists: true}];
 }
 
 // List of tagged annotation groups
 message TaggedAnnotationGroupCollection {
-    message Data {
-        // resource name, by default it should be annotation group
-        string type = 1;
-        TaggedAnnotationGroup group = 2;
-    }
-    repeated Data data = 1;
-    Meta meta = 2 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // resource name, by default it should be annotation group
+    string type = 1;
+    TaggedAnnotationGroup group = 2;
+  }
+  repeated Data data = 1;
+  Meta meta = 2 [(validator.field) = {msg_exists: true}];
 }
-
 
 // Definition for various fields that are needed for fetching annotation for an
 // entry. The tag, ontology and entry_id must be provided, version and rank are
 // optional and their default values are used.
 message EntryAnnotationRequest {
-    // An identifiable tagname for the annotation, primarily
-    // a structured tag, generally an ontology term.
-    string tag = 1 [(validator.field) = {string_not_empty : true}];
-    // unique identifier of a biological entity that is being annotated
-    string entry_id = 2 [(validator.field) = {string_not_empty : true}];
-    // Name of ontology in which the tag name is taken
-    string ontology = 3 [(validator.field) = {string_not_empty : true}];
-    // Ordering of annotation when an entry has multiple annotations with
-    // identical tag from the same ontology. By default, rank 0 is assumed.
-    int64 rank = 4;
-    // Status for active or retired annotation. Active annotation is chosen by default.
-    bool is_obsolete = 5;
+  // An identifiable tagname for the annotation, primarily
+  // a structured tag, generally an ontology term.
+  string tag = 1 [(validator.field) = {string_not_empty: true}];
+  // unique identifier of a biological entity that is being annotated
+  string entry_id = 2 [(validator.field) = {string_not_empty: true}];
+  // Name of ontology in which the tag name is taken
+  string ontology = 3 [(validator.field) = {string_not_empty: true}];
+  // Ordering of annotation when an entry has multiple annotations with
+  // identical tag from the same ontology. By default, rank 0 is assumed.
+  int64 rank = 4;
+  // Status for active or retired annotation. Active annotation is chosen by default.
+  bool is_obsolete = 5;
 }
 
 message DeleteAnnotationRequest {
-    // unique identifier for the annotation
-    string id = 1 [(validator.field) = {string_not_empty : true}];
-    // flag to indicate whether the entry will be wiped or turned obsolete(soft delete)
-    bool purge = 2;
+  // unique identifier for the annotation
+  string id = 1 [(validator.field) = {string_not_empty: true}];
+  // flag to indicate whether the entry will be wiped or turned obsolete(soft delete)
+  bool purge = 2;
 }
 
 // Definition of various fields needed to fetch a tag information
 message TagRequest {
-    // human readable name
-    string name = 1 [(validator.field) = {string_not_empty : true}];
-    // ontology to which this tag belong
-    string ontology = 2 [(validator.field) = {string_not_empty : true}];
-    // status for active or retired tag
-    bool is_obsolete = 3;
+  // human readable name
+  string name = 1 [(validator.field) = {string_not_empty: true}];
+  // ontology to which this tag belong
+  string ontology = 2 [(validator.field) = {string_not_empty: true}];
+  // status for active or retired tag
+  bool is_obsolete = 3;
 }
 
 // List of paginated tagged annotations
 message TaggedAnnotationCollection {
-    message Data {
-        // resource name, by default should be annotation
-        string type = 1;
-        // unique identifier for the annotation
-        string id = 2;
-        TaggedAnnotationAttributes attributes = 3;
-    }
-    repeated Data data = 1;
-    Meta meta = 3 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // resource name, by default should be annotation
+    string type = 1;
+    // unique identifier for the annotation
+    string id = 2;
+    TaggedAnnotationAttributes attributes = 3;
+  }
+  repeated Data data = 1;
+  Meta meta = 3 [(validator.field) = {msg_exists: true}];
 }
-
 
 // Definition of an tag value based biological annotation where the tag always
 // represents a term from ontology.
 message TaggedAnnotation {
-    message Data {
-        // resource name, by default should be annotation
-        string type = 1;
-        // unique identifier for the annotation
-        string id = 2;
-        TaggedAnnotationAttributes attributes = 3;
-    }
-    Data data = 1 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // resource name, by default should be annotation
+    string type = 1;
+    // unique identifier for the annotation
+    string id = 2;
+    TaggedAnnotationAttributes attributes = 3;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
 
 // Definition of annotation tag
 message AnnotationTag {
-    // tag identifier
-    string id = 1;
-    // human readable name
-    string name = 2;
-    // ontology to which this tag belong
-    string ontology = 3;
-    // status for active or retired tag
-    bool is_obsolete = 4;
+  // tag identifier
+  string id = 1;
+  // human readable name
+  string name = 2;
+  // ontology to which this tag belong
+  string ontology = 3;
+  // status for active or retired tag
+  bool is_obsolete = 4;
 }
 
 // Definition of various tagged annotation attributes
 message TaggedAnnotationAttributes {
-    // annotation in plain text format
-    string value = 1 [(validator.field) = {string_not_empty : true}];
-    // serialized text content in a format recognized by frontend rich text
-    // editor
-    string editable_value = 2;
-    // Unique identifier(generally email) of the user who created the annotation
-    string created_by = 3 [(validator.field) = {string_not_empty : true}];
-    // Timestamp for creation
-    google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists : true}];
-    // An identifiable tagname for the annotation, primarily
-    // a structured tag, generally an ontology term.
-    string tag = 5 [(validator.field) = {string_not_empty : true}];
-    // version refers to the current version no
-    int64 version = 6 [(validator.field) = {int_gt : 0}];
-    // unique identifier of a biological entity that is being annotated
-    string entry_id = 7 [(validator.field) = {string_not_empty : true}];
-    // Name of ontology in which the tag name is taken
-    string ontology = 8 [(validator.field) = {string_not_empty : true}];
-    // Ordering of annotation when an entry has multiple annotations with
-    // identical tag from the same ontology.
-    int64 rank = 9;
-    // Status for active or retired annotation
-    bool is_obsolete = 10;
+  // annotation in plain text format
+  string value = 1 [(validator.field) = {string_not_empty: true}];
+  // serialized text content in a format recognized by frontend rich text
+  // editor
+  string editable_value = 2;
+  // Unique identifier(generally email) of the user who created the annotation
+  string created_by = 3 [(validator.field) = {string_not_empty: true}];
+  // Timestamp for creation
+  google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
+  // An identifiable tagname for the annotation, primarily
+  // a structured tag, generally an ontology term.
+  string tag = 5 [(validator.field) = {string_not_empty: true}];
+  // version refers to the current version no
+  int64 version = 6 [(validator.field) = {int_gt: 0}];
+  // unique identifier of a biological entity that is being annotated
+  string entry_id = 7 [(validator.field) = {string_not_empty: true}];
+  // Name of ontology in which the tag name is taken
+  string ontology = 8 [(validator.field) = {string_not_empty: true}];
+  // Ordering of annotation when an entry has multiple annotations with
+  // identical tag from the same ontology.
+  int64 rank = 9;
+  // Status for active or retired annotation
+  bool is_obsolete = 10;
 }
-
 
 // Definition for creating a new tagged annotation
 message NewTaggedAnnotation {
-    message Data {
-        // resource name, by default should be annotation
-        string type = 1;
-        NewTaggedAnnotationAttributes attributes = 2;
-    }
-    Data data = 1 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // resource name, by default should be annotation
+    string type = 1;
+    NewTaggedAnnotationAttributes attributes = 2;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
 
 // NewTaggedAnnotation defines attributes for creating a new annotation
 message NewTaggedAnnotationAttributes {
-    // annotation in plain text format
-    string value = 1 [(validator.field) = {string_not_empty : true}];
-    // serialized text content in a format recognized by frontend rich text
-    // editor
-    string editable_value = 2 ;
-    // Unique identifier(generally email) of the user who created the annotation
-    string created_by = 3 [(validator.field) = {string_not_empty : true}];
-    // An identifiable tagname for the annotation, primarily
-    // a structured tag, generally an ontology term.
-    string tag = 4 [(validator.field) = {string_not_empty : true}];
-    // unique identifier of a biological entity that is being annotated
-    string entry_id = 5 [(validator.field) = {string_not_empty : true}];
-    // Name of ontology from which the tag name is taken
-    string ontology = 6 [(validator.field) = {string_not_empty : true}];
-    // Ordering of annotation when an entry has multiple annotations with
-    // identical tag from the same ontology. By default, rank 0 is used.
-    int64 rank = 7;
+  // annotation in plain text format
+  string value = 1 [(validator.field) = {string_not_empty: true}];
+  // serialized text content in a format recognized by frontend rich text
+  // editor
+  string editable_value = 2;
+  // Unique identifier(generally email) of the user who created the annotation
+  string created_by = 3 [(validator.field) = {string_not_empty: true}];
+  // An identifiable tagname for the annotation, primarily
+  // a structured tag, generally an ontology term.
+  string tag = 4 [(validator.field) = {string_not_empty: true}];
+  // unique identifier of a biological entity that is being annotated
+  string entry_id = 5 [(validator.field) = {string_not_empty: true}];
+  // Name of ontology from which the tag name is taken
+  string ontology = 6 [(validator.field) = {string_not_empty: true}];
+  // Ordering of annotation when an entry has multiple annotations with
+  // identical tag from the same ontology. By default, rank 0 is used.
+  int64 rank = 7;
 }
-
 
 // Definition for updating an existing annotation
 message TaggedAnnotationUpdate {
-    message Data {
-        // resource name, by default should be annotation
-        string type = 1;
-        // unique identifier for the annotation
-        string id = 2 [(validator.field) = {string_not_empty : true}];
-        TaggedAnnotationUpdateAttributes attributes = 3;
-    }
-    Data data = 1 [(validator.field) = {msg_exists : true}];
+  message Data {
+    // resource name, by default should be annotation
+    string type = 1;
+    // unique identifier for the annotation
+    string id = 2 [(validator.field) = {string_not_empty: true}];
+    TaggedAnnotationUpdateAttributes attributes = 3;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
-
 
 // TaggedUpdateAnnotation defines attributes for updating an existing annotation
 message TaggedAnnotationUpdateAttributes {
-    // annotation in plain text format
-    string value = 1 [(validator.field) = {string_not_empty : true}];
-    // serialized text content in a format recognized by frontend rich text
-    // editor
-    string editable_value = 2 [(validator.field) = {string_not_empty : true}];
-    // Unique identifier(generally email) of the user who created the annotation
-    string created_by = 3 [(validator.field) = {string_not_empty : true}];
+  // annotation in plain text format
+  string value = 1 [(validator.field) = {string_not_empty: true}];
+  // serialized text content in a format recognized by frontend rich text
+  // editor
+  string editable_value = 2 [(validator.field) = {string_not_empty: true}];
+  // Unique identifier(generally email) of the user who created the annotation
+  string created_by = 3 [(validator.field) = {string_not_empty: true}];
 }
-
 
 // ListParameters defines fields for manipulating output of TaggedAnnotation collection
 message ListParameters {
-    // A unique pointer to the next set of result in the list
-    int64 cursor = 1;
-    // Maximum number of records that can be fetch per request
-    int64 limit = 2;
-    // The `filter` field restricts the data return by the collection. To use
-    // it, supply one or multiple allowed fields to filter followed
-    // by a filter expression. It uses the following syntax...
-    //        field_name operator expression
-    //
-    // The following fields of `AnnotationAttributes` definition are allowed to
-    // be used for filtering
-    //   * entry_id    - The entry that is being annotated (string)
-    //   * value       - The annotation in plain text format (string) 
-    //   * created_by  - Email id of the user (string)
-    //   * tag         - Tag name, a term from an ontology (string).
-    //   * ontology    - Ontology that provides the tag names (string).
-    //   * version     - Version no (number).
-    //   * value       - annotation in plain text format (number).
-    //
-    // operator - Defines the type of filter match to use. It could be any of
-    // the following four and all of them should be URL-encoded for http request.
-    //
-    //        Operators for strings
-    //              =~    Contains substring
-    //              !~   Not contains substring
-    //              ===  Equals
-    //              !==  Not equals
-    //
-    //        Operators for numbers
-    //              ==  Equals
-    //              !=  Not equals
-    //              >   Greater than
-    //              <   Less than
-    //              =<  Less than equal to
-    //              >=  Greater than equal to
-    //
-    // expression - The value that will be included or excluded from the
-    // result. URL-reserved characters must be URL-encoded for http request.
-    //
-    //           filter: "created_by==caboose@abc.com"
-    //           filter: "entry_id==DDB_G4839483"
-    //           filter: "value~actin"
-    //
-    // Filter can be combined using OR or AND boolean logic.
-    //   * The OR is represented using a comma(,).
-    //   * The AND is represented using a semi-colon(;).
-    //   * AND and OR operators can be combined and AND takes precedence over OR.
-    //
-    //           filter: "value~cytoskeletion;tag==cell membrane;ontology==cellular"
-    //
-    string filter = 3;
+  // A unique pointer to the next set of result in the list
+  int64 cursor = 1;
+  // Maximum number of records that can be fetch per request
+  int64 limit = 2;
+  // The `filter` field restricts the data return by the collection. To use
+  // it, supply one or multiple allowed fields to filter followed
+  // by a filter expression. It uses the following syntax...
+  //        field_name operator expression
+  //
+  // The following fields of `AnnotationAttributes` definition are allowed to
+  // be used for filtering
+  //   * entry_id    - The entry that is being annotated (string)
+  //   * value       - The annotation in plain text format (string)
+  //   * created_by  - Email id of the user (string)
+  //   * tag         - Tag name, a term from an ontology (string).
+  //   * ontology    - Ontology that provides the tag names (string).
+  //   * version     - Version no (number).
+  //   * value       - annotation in plain text format (number).
+  //
+  // operator - Defines the type of filter match to use. It could be any of
+  // the following four and all of them should be URL-encoded for http request.
+  //
+  //        Operators for strings
+  //              =~    Contains substring
+  //              !~   Not contains substring
+  //              ===  Equals
+  //              !==  Not equals
+  //
+  //        Operators for numbers
+  //              ==  Equals
+  //              !=  Not equals
+  //              >   Greater than
+  //              <   Less than
+  //              =<  Less than equal to
+  //              >=  Greater than equal to
+  //
+  // expression - The value that will be included or excluded from the
+  // result. URL-reserved characters must be URL-encoded for http request.
+  //
+  //           filter: "created_by==caboose@abc.com"
+  //           filter: "entry_id==DDB_G4839483"
+  //           filter: "value~actin"
+  //
+  // Filter can be combined using OR or AND boolean logic.
+  //   * The OR is represented using a comma(,).
+  //   * The AND is represented using a semi-colon(;).
+  //   * AND and OR operators can be combined and AND takes precedence over OR.
+  //
+  //           filter: "value~cytoskeletion;tag==cell membrane;ontology==cellular"
+  //
+  string filter = 3;
 }
-
 
 // ListGroupParameters defines fields for manipulating output of TaggedAnnotationGroupCollection collection
 message ListGroupParameters {
-    // A unique pointer to the next set of result in the list
-    int64 cursor = 1;
-    // Maximum number of records that can be fetch per request
-    int64 limit = 2;
-    // The `filter` field restricts the data return by the collection. To use
-    // it, supply one or multiple allowed fields to filter followed
-    // by a filter expression. It uses the following syntax...
-    //        field_name operator expression
-    //
-    // The following fields of `AnnotationAttributes` definition are allowed to
-    // be used for filtering
-    //   * entry_id    - The entry that is being annotated (string)
-    //   * created_by  - Email id of the user (string)
-    //   * tag         - Tag name, a term from an ontology (string).
-    //   * ontology    - Ontology that provides the tag names (string).
-    //   * rank        - Ordering of annotation (number).
-    //
-    // operator - Defines the type of filter match to use. It could be any of
-    // the following four and all of them should be URL-encoded for http request.
-    //
-    //        Operators for strings
-    //              =~    Contains substring
-    //              !~   Not contains substring
-    //              ===  Equals
-    //              !==  Not equals
-    //
-    //        Operators for numbers
-    //              ==  Equals
-    //              !=  Not equals
-    //              >   Greater than
-    //              <   Less than
-    //              =<  Less than equal to
-    //              >=  Greater than equal to
-    //
-    // expression - The value that will be included or excluded from the
-    // result. URL-reserved characters must be URL-encoded for http request.
-    //
-    //           filter: "created_by==caboose@abc.com"
-    //           filter: "entry_id==DDB_G4839483"
-    //           filter: "tag==growth"
-    //
-    // Filter can be combined using OR or AND boolean logic.
-    //   * The OR is represented using a comma(,).
-    //   * The AND is represented using a semi-colon(;).
-    //   * AND and OR operators can be combined and AND takes precedence over OR.
-    //
-    //           filter: "tag~cytoskeletion;entry_id==DDB_G4839783;ontology==cellular"
-    //           filter: "tag~membrane;entry_id==DDB_G4839783;ontology==cellular;rank=0"
-    //
-    string filter = 3;
+  // A unique pointer to the next set of result in the list
+  int64 cursor = 1;
+  // Maximum number of records that can be fetch per request
+  int64 limit = 2;
+  // The `filter` field restricts the data return by the collection. To use
+  // it, supply one or multiple allowed fields to filter followed
+  // by a filter expression. It uses the following syntax...
+  //        field_name operator expression
+  //
+  // The following fields of `AnnotationAttributes` definition are allowed to
+  // be used for filtering
+  //   * entry_id    - The entry that is being annotated (string)
+  //   * created_by  - Email id of the user (string)
+  //   * tag         - Tag name, a term from an ontology (string).
+  //   * ontology    - Ontology that provides the tag names (string).
+  //   * rank        - Ordering of annotation (number).
+  //
+  // operator - Defines the type of filter match to use. It could be any of
+  // the following four and all of them should be URL-encoded for http request.
+  //
+  //        Operators for strings
+  //              =~    Contains substring
+  //              !~   Not contains substring
+  //              ===  Equals
+  //              !==  Not equals
+  //
+  //        Operators for numbers
+  //              ==  Equals
+  //              !=  Not equals
+  //              >   Greater than
+  //              <   Less than
+  //              =<  Less than equal to
+  //              >=  Greater than equal to
+  //
+  // expression - The value that will be included or excluded from the
+  // result. URL-reserved characters must be URL-encoded for http request.
+  //
+  //           filter: "created_by==caboose@abc.com"
+  //           filter: "entry_id==DDB_G4839483"
+  //           filter: "tag==growth"
+  //
+  // Filter can be combined using OR or AND boolean logic.
+  //   * The OR is represented using a comma(,).
+  //   * The AND is represented using a semi-colon(;).
+  //   * AND and OR operators can be combined and AND takes precedence over OR.
+  //
+  //           filter: "tag~cytoskeletion;entry_id==DDB_G4839783;ontology==cellular"
+  //           filter: "tag~membrane;entry_id==DDB_G4839783;ontology==cellular;rank=0"
+  //
+  string filter = 3;
 }
 
 // Metadata definition for traversing the collection
 message Meta {
-    // A unique pointer to the next set of result in the collection. Set the
-    // cursor value parameter to the value of next_cursor to retrieve the next
-    // set of collection using the same method
-    int64 next_cursor = 1;
-    // Maximum number of records that can be fetch per request
-    int64 limit = 2;
+  // A unique pointer to the next set of result in the collection. Set the
+  // cursor value parameter to the value of next_cursor to retrieve the next
+  // set of collection using the same method
+  int64 next_cursor = 1;
+  // Maximum number of records that can be fetch per request
+  int64 limit = 2;
 }
