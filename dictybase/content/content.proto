@@ -87,6 +87,8 @@ message NewContentAttributes {
   // namespace for the page, it is prepended to the
   // name to generate an unique slug.
   string namespace = 4 [(validator.field) = {string_not_empty: true}];
+  // page slug. Look here https://en.wikipedia.org/wiki/Semantic_URL#Slug to know about slug
+  string slug = 5 [(validator.field) = {string_not_empty: true}];
 }
 
 // Definition for storing new content
