@@ -41,10 +41,11 @@ In general, every API has its own directory with matching proto packages. The
 
 ## Development
 
-This project has been designed to be automated by GitHub Actions. To make changes,
-create a new branch and push your changes. This will automatically create a pull
-request then run `buf lint` to verify your changes. If everything is fine, it will
-generate updated Go code and open a PR in the [go-genproto](https://github.com/dictyBase/go-genproto)
+This project has been designed to be automated by GitHub Actions. To make
+changes, create a new branch and push your changes. This will automatically
+create a pull request then run `buf lint` to verify your changes. If everything
+is fine, merge it to the master branch and it will generate updated Go code and
+open a PR in the [go-genproto](https://github.com/dictyBase/go-genproto)
 repository where it will need to be manually reviewed.
 
 **Note: if making any updates to the `buf.gen.yaml` file, you need to run `buf beta mod update`
