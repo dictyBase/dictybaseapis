@@ -8,3 +8,5 @@ plugins:
     out: generated
   - plugin: govalidators
     out: generated
+  - plugin: buf.build/bufbuild/es:v1.6.0
+    out: es
