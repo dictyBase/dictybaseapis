@@ -1,0 +1,9 @@
+# buf.gen.yaml
+version: v1
+plugins:
+  - plugin: buf.build/connectrpc/es:v1.3.0
+    out: es
+  - plugin: buf.build/bufbuild/es:v1.6.0
+    out: es
+  - plugin: govalidators
+    out: es
