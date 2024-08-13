@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package dictybase.content;
 
-import "dictybase/api/jsonapi/payload.proto";
-import "dictybase/api/jsonapi/request.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
@@ -27,13 +25,10 @@ service ContentService {
   rpc UpdateContent(UpdateContentRequest) returns (Content) {}
   // Delete an existing page along with its content
   rpc DeleteContent(ContentIdRequest) returns (google.protobuf.Empty) {}
-  // Basic health check that always return success
-  rpc Healthz(dictybase.api.jsonapi.HealthzIdRequest) returns (google.protobuf.Empty) {}
 }
 
 message Content {
   ContentData data = 1;
-  dictybase.api.jsonapi.Links links = 2;
 }
 
 message ContentData {
@@ -42,7 +37,6 @@ message ContentData {
   // Unique id
   int64 id = 2;
   ContentAttributes attributes = 3;
-  dictybase.api.jsonapi.Links links = 4;
 }
 
 // Definition of various content fields
