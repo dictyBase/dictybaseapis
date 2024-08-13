@@ -5,17 +5,10 @@
 ![Last commit](https://badgen.net/github/last-commit/dictyBase/dictybaseapis/master)  
 [![Funding](https://badgen.net/badge/Funding/Rex%20L%20Chisholm,dictyBase,DCR/yellow?list=|)](https://reporter.nih.gov/project-details/10024726)
 
-Cli application for importing dictybase data.The documentation is [here](docs/import.md)
-
 ## Misc Badges
 
-![Issues](https://badgen.net/github/issues/dictyBase/dictybaseapis)
 ![Open Issues](https://badgen.net/github/open-issues/dictyBase/dictybaseapis)
-![Closed Issues](https://badgen.net/github/closed-issues/dictyBase/dictybaseapis)
-![Total PRS](https://badgen.net/github/prs/dictyBase/dictybaseapis)
 ![Open PRS](https://badgen.net/github/open-prs/dictyBase/dictybaseapis)
-![Closed PRS](https://badgen.net/github/closed-prs/dictyBase/dictybaseapis)
-![Merged PRS](https://badgen.net/github/merged-prs/dictyBase/dictybaseapis)  
 ![Commits](https://badgen.net/github/commits/dictyBase/dictybaseapis/master)
 ![Branches](https://badgen.net/github/branches/dictyBase/dictybaseapis)
 ![Tags](https://badgen.net/github/tags/dictyBase/dictybaseapis)  
