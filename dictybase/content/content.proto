@@ -25,6 +25,8 @@ service ContentService {
   rpc UpdateContent(UpdateContentRequest) returns (Content) {}
   // Delete an existing page along with its content
   rpc DeleteContent(ContentIdRequest) returns (google.protobuf.Empty) {}
+  // List contents using pagination, ten entries are retrieved by default
+  rpc ListAnnotations(ListParameters) returns (ContentCollection) {}
 }
 
 message Content {
@@ -118,4 +120,70 @@ message UpdateContentRequest {
   // An optional mask specifying which fields to update.
   // Presence of this field allow partial updates.
   google.protobuf.FieldMask update_mask = 3;
+}
+
+// ListParameters defines fields for manipulating output of Content collection
+message ListParameters {
+  // A unique pointer to the next set of result in the list
+  int64 cursor = 1;
+  // Maximum number of records that can be fetch per request
+  int64 limit = 2;
+  // The `filter` field restricts the data return by the collection. To use
+  // it, supply one or multiple allowed fields to filter followed
+  // by a filter expression. It uses the following syntax...
+  //        field_name operator expression
+  //
+  // The following fields of `AnnotationAttributes` definition are allowed to
+  // be used for filtering
+  //   * name        - page name (string).
+  //   * slug        - page slug (string).
+  //   * namespace   - page namespace (string).
+  //   * created_by  - Email id of the user (string)
+  //
+  // operator - Defines the type of filter match to use. It could be any of
+  // the following four and all of them should be URL-encoded for http request.
+  //
+  //        Operators for strings
+  //              =~    Contains substring
+  //              !~   Not contains substring
+  //              ===  Equals
+  //              !==  Not equals
+  //
+  // expression - The value that will be included or excluded from the
+  // result. URL-reserved characters must be URL-encoded for http request.
+  //
+  //           filter: "name===annotation"
+  //           filter: "slug=~frontpage"
+  //           filter: "namespace===dsc"
+  //
+  // Filter can be combined using OR or AND boolean logic.
+  //   * The OR is represented using a comma(,).
+  //   * The AND is represented using a semi-colon(;).
+  //   * AND and OR operators can be combined and AND takes precedence over OR.
+  //
+  //           filter: "name~gallery;namespace===stockcenter;slug===intro"
+  //
+  string filter = 3;
+}
+
+
+// Metadata definition for traversing the collection
+message Meta {
+  // A unique pointer to the next set of result in the collection. Set the
+  // cursor value parameter to the value of next_cursor to retrieve the next
+  // set of collection using the same method
+  int64 next_cursor = 1;
+  // Maximum number of records that can be fetch per request
+  int64 limit = 2;
+}
+
+// List of paginated contentz
+message ContentCollection {
+  message Data {
+    // unique identifier for the annotation
+    string id = 1;
+    ContentAttributes attributes = 2;
+  }
+  repeated Data data = 1;
+  Meta meta = 3 [(validator.field) = {msg_exists: true}];
 }
