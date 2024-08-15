@@ -26,7 +26,7 @@ service ContentService {
   // Delete an existing page along with its content
   rpc DeleteContent(ContentIdRequest) returns (google.protobuf.Empty) {}
   // List contents using pagination, ten entries are retrieved by default
-  rpc ListAnnotations(ListParameters) returns (ContentCollection) {}
+  rpc ListContents(ListParameters) returns (ContentCollection) {}
 }
 
 message Content {
