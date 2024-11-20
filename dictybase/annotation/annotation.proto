@@ -359,6 +359,74 @@ message ListGroupParameters {
   string filter = 3;
 }
 
+// Annotations of a biological entity
+message FeatureAnnotation {
+  FeatureAnnotationData data = 1;
+}
+
+message FeatureAnnotationData {
+  // Unique id
+  string id = 1;
+  FeatureAttributes attributes = 2;
+}
+
+// Definition of various feature annotation fields
+message FeatureAnnotationAttributes {
+  // Short human readable textual name
+  string name = 1;
+  // email id of the user who created the content
+  string created_by = 2;
+  // email id of the user who updated the content
+  string updated_by = 3;
+  // Timestamp for creation and update
+  google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
+  google.protobuf.Timestamp updated_at = 5 [(validator.field) = {msg_exists: true}];
+  // Toggle the obsolete status
+  bool is_obsolete = 6;
+  // Alternate list of names
+  repeated string synonyms = 7;
+  // List of publications(doi identifiers)
+  repeated string publications = 8;
+  // List of pubmed id
+  repeated string pubmed = 9;
+  // Version of this feature, it increase by 1 for the replacement
+  int64 version = 10; 
+  repeated Dbxref dbxrefs = 14;
+}
+
+// An identifier typically from a bioinformatics database(NCBI,Uniprot,Ensembl etc.)
+message Dbxref {
+  // Identifier
+  string dbxref_id = 1;
+  int64 version = 2;
+  // Source database
+  string database = 3;
+}
+
+// Annotation update of a biological entity
+message FeatureAnnotationUpdate {
+  FeatureAnnotationUpdateData data = 1;
+}
+
+message FeatureAnnotationUpdateData {
+  // Unique id
+  string id = 1;
+  FeatureAnnotationUpdateAttributes attributes = 2;
+}
+
+// Definition of feature fields for updating a feature
+message FeatureAnnotationUpdateAttributes {
+  // Short human readable textual name
+  string name = 1;
+  // email id of the user who updated the content
+  string updated_by = 2;
+  // aLTERNATe list of names
+  repeated string synonyms = 3;
+  // List of publications(doi identifiers)
+  repeated Publication publications = 4;
+  repeated Dbxref dbxrefs = 5;
+}
+
 // Metadata definition for traversing the collection
 message Meta {
   // A unique pointer to the next set of result in the collection. Set the
