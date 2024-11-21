@@ -376,7 +376,7 @@ message FeatureAnnotation {
   message Data {
     // type of biological entry connected to sequence ontology
     string type = 1;
-    string id = 1;
+    string id = 2;
     FeatureAnnotationAttributes attributes = 2;
   }
   Data data = 1 [(validator.field) = {msg_exists: true}];
@@ -420,7 +420,7 @@ message FeatureAnnotationUpdate {
   message Data {
     // type of biological entry connected to sequence ontology
     string type = 1;
-    string id = 1;
+    string id = 2;
     FeatureAnnotationUpdateAttributes attributes = 2;
   }
   Data data = 1 [(validator.field) = {msg_exists: true}];
@@ -446,7 +446,7 @@ message NewFeatureAnnotation {
     string type = 1;
     FeatureAnnotationAttributes attributes = 2;
   }
-  Data data = 1 [(validator.field) = {msg_exists: true}];
+  Data data = 2 [(validator.field) = {msg_exists: true}];
 }
 
 // Definition for retrieving a feature annotation by ID
