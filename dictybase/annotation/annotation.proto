@@ -367,13 +367,13 @@ message ListGroupParameters {
 
 // Annotations of a biological entity
 message FeatureAnnotation {
-  FeatureAnnotationData data = 1;
-}
-
-message FeatureAnnotationData {
-  // Unique id
-  string id = 1;
-  FeatureAttributes attributes = 2;
+  message Data {
+    // resource name
+    string type = 1;
+    string id = 1;
+    FeatureAnnotationAttributes attributes = 2;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
 
 // Definition of various feature annotation fields
