@@ -411,13 +411,13 @@ message Dbxref {
 
 // Annotation update of a biological entity
 message FeatureAnnotationUpdate {
-  FeatureAnnotationUpdateData data = 1;
-}
-
-message FeatureAnnotationUpdateData {
-  // Unique id
-  string id = 1;
-  FeatureAnnotationUpdateAttributes attributes = 2;
+  message Data {
+    // resource name
+    string type = 1;
+    string id = 1;
+    FeatureAnnotationUpdateAttributes attributes = 2;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
 
 // Definition of feature fields for updating a feature
