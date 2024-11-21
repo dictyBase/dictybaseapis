@@ -45,6 +45,12 @@ service TaggedAnnotationService {
   rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
 }
 
+// The feature annotation service specification 
+service FeatureAnnotationService {
+  // Create a feature annotation
+  rpc CreateFeatureAnnotation(NewFeatureAnnotation) returns (FeatureAnnotation) {}
+}
+
 message AnnotationGroupId {
   // unique identifier for the annotation
   string id = 1 [(validator.field) = {string_not_empty: true}];
@@ -425,6 +431,16 @@ message FeatureAnnotationUpdateAttributes {
   // List of publications(doi identifiers)
   repeated Publication publications = 4;
   repeated Dbxref dbxrefs = 5;
+}
+
+// Definition for creating a new feature annotation
+message NewFeatureAnnotation {
+  message Data {
+    // resource name
+    string type = 1;
+    FeatureAnnotationAttributes attributes = 2;
+  }
+  Data data = 1 [(validator.field) = {msg_exists: true}];
 }
 
 // Metadata definition for traversing the collection
