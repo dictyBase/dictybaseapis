@@ -377,7 +377,7 @@ message FeatureAnnotation {
     // type of biological entry connected to sequence ontology
     string type = 1;
     string id = 2;
-    FeatureAnnotationAttributes attributes = 2;
+    FeatureAnnotationAttributes attributes = 3;
   }
   Data data = 1 [(validator.field) = {msg_exists: true}];
 }
@@ -421,7 +421,7 @@ message FeatureAnnotationUpdate {
     // type of biological entry connected to sequence ontology
     string type = 1;
     string id = 2;
-    FeatureAnnotationUpdateAttributes attributes = 2;
+    FeatureAnnotationUpdateAttributes attributes = 3;
   }
   Data data = 1 [(validator.field) = {msg_exists: true}];
 }
