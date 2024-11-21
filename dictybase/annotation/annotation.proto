@@ -368,7 +368,7 @@ message ListGroupParameters {
 // Annotations of a biological entity
 message FeatureAnnotation {
   message Data {
-    // resource name
+    // type of biological entry connected to sequence ontology
     string type = 1;
     string id = 1;
     FeatureAnnotationAttributes attributes = 2;
@@ -412,7 +412,7 @@ message Dbxref {
 // Annotation update of a biological entity
 message FeatureAnnotationUpdate {
   message Data {
-    // resource name
+    // type of biological entry connected to sequence ontology
     string type = 1;
     string id = 1;
     FeatureAnnotationUpdateAttributes attributes = 2;
@@ -436,7 +436,7 @@ message FeatureAnnotationUpdateAttributes {
 // Definition for creating a new feature annotation
 message NewFeatureAnnotation {
   message Data {
-    // resource name
+    // type of biological entry connected to sequence ontology
     string type = 1;
     FeatureAnnotationAttributes attributes = 2;
   }
