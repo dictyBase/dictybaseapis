@@ -435,7 +435,7 @@ message FeatureAnnotationUpdateAttributes {
   // aLTERNATe list of names
   repeated string synonyms = 3;
   // List of publications(doi identifiers)
-  repeated Publication publications = 4;
+  repeated string publications = 4;
   repeated Dbxref dbxrefs = 5;
 }
 
