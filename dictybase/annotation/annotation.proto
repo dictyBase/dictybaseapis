@@ -409,17 +409,6 @@ message Dbxref {
 
 // Annotation update of a biological entity
 message FeatureAnnotationUpdate {
-  message Data {
-    // type of biological entry connected to sequence ontology
-    string type = 1;
-    string id = 2;
-    FeatureAnnotationUpdateAttributes attributes = 3;
-  }
-  Data data = 1 [(validator.field) = {msg_exists: true}];
-}
-
-// Definition of feature fields for updating a feature
-message FeatureAnnotationUpdateAttributes {
   // Short human readable textual name
   string name = 1;
   // email id of the user who updated the content
@@ -429,16 +418,34 @@ message FeatureAnnotationUpdateAttributes {
   // List of publications(doi identifiers)
   repeated string publications = 4;
   repeated Dbxref dbxrefs = 5;
+  string type = 6;
+  string id = 7;
 }
 
 // Definition for creating a new feature annotation
 message NewFeatureAnnotation {
-  message Data {
-    // type of biological entry connected to sequence ontology
-    string type = 1;
-    FeatureAnnotationAttributes attributes = 2;
-  }
-  Data data = 2 [(validator.field) = {msg_exists: true}];
+  // type of biological entry connected to sequence ontology
+  string type = 1;
+  // Short human readable textual name
+  string name = 2;
+  // email id of the user who created the content
+  string created_by = 3;
+  // email id of the user who updated the content
+  string updated_by = 4;
+  // Timestamp for creation and update
+  google.protobuf.Timestamp created_at = 5 [(validator.field) = {msg_exists: true}];
+  google.protobuf.Timestamp updated_at = 6 [(validator.field) = {msg_exists: true}];
+  // Toggle the obsolete status
+  bool is_obsolete = 7;
+  // Alternate list of names
+  repeated string synonyms = 8;
+  // List of publications(doi identifiers)
+  repeated string publications = 9;
+  // List of pubmed id
+  repeated string pubmed = 10;
+  // Version of this feature, it increase by 1 for the replacement
+  int64 version = 11; 
+  repeated Dbxref dbxrefs = 12;
 }
 
 // Definition for retrieving a feature annotation by ID
