@@ -373,11 +373,9 @@ message ListGroupParameters {
 
 // Annotations of a biological entity
 message FeatureAnnotation {
-  // type of biological entry connected to sequence ontology
   string type = 1;
   string id = 2;
-  // Short human readable textual name
-  string name = 3;
+  FeatureAnnotationAttributes attributes = 3;
   // email id of the user who created the content
   string created_by = 4;
   // email id of the user who updated the content
@@ -387,15 +385,8 @@ message FeatureAnnotation {
   google.protobuf.Timestamp updated_at = 7 [(validator.field) = {msg_exists: true}];
   // Toggle the obsolete status
   bool is_obsolete = 8;
-  // Alternate list of names
-  repeated string synonyms = 9;
-  // List of publications(doi identifiers)
-  repeated string publications = 10;
-  // List of pubmed id
-  repeated string pubmed = 11;
   // Version of this feature, it increase by 1 for the replacement
-  int64 version = 12; 
-  repeated Dbxref dbxrefs = 13;
+  int64 version = 9;
 }
 
 // An identifier typically from a bioinformatics database(NCBI,Uniprot,Ensembl etc.)
@@ -409,25 +400,17 @@ message Dbxref {
 
 // Annotation update of a biological entity
 message FeatureAnnotationUpdate {
-  // Short human readable textual name
-  string name = 1;
+  string type = 1;
+  string id = 2;
+  FeatureAnnotationAttributes attributes = 3;
   // email id of the user who updated the content
-  string updated_by = 2;
-  // aLTERNATe list of names
-  repeated string synonyms = 3;
-  // List of publications(doi identifiers)
-  repeated string publications = 4;
-  repeated Dbxref dbxrefs = 5;
-  string type = 6;
-  string id = 7;
+  string updated_by = 4;
 }
 
 // Definition for creating a new feature annotation
 message NewFeatureAnnotation {
-  // type of biological entry connected to sequence ontology
   string type = 1;
-  // Short human readable textual name
-  string name = 2;
+  FeatureAnnotationAttributes attributes = 2;
   // email id of the user who created the content
   string created_by = 3;
   // email id of the user who updated the content
@@ -437,15 +420,8 @@ message NewFeatureAnnotation {
   google.protobuf.Timestamp updated_at = 6 [(validator.field) = {msg_exists: true}];
   // Toggle the obsolete status
   bool is_obsolete = 7;
-  // Alternate list of names
-  repeated string synonyms = 8;
-  // List of publications(doi identifiers)
-  repeated string publications = 9;
-  // List of pubmed id
-  repeated string pubmed = 10;
   // Version of this feature, it increase by 1 for the replacement
-  int64 version = 11; 
-  repeated Dbxref dbxrefs = 12;
+  int64 version = 8;
 }
 
 // Definition for retrieving a feature annotation by ID
@@ -461,6 +437,20 @@ message DeleteFeatureAnnotationRequest {
   string id = 1 [(validator.field) = {string_not_empty: true}];
   // flag to indicate whether the entry will be wiped or turned obsolete(soft delete)
   bool purge = 2;
+}
+
+// Common attributes for feature annotations
+message FeatureAnnotationAttributes {
+  // Short human readable textual name
+  string name = 1;
+  // Alternate list of names
+  repeated string synonyms = 2;
+  // List of publications(doi identifiers)
+  repeated string publications = 3;
+  // List of pubmed id
+  repeated string pubmed = 4;
+  // Cross references to other databases
+  repeated Dbxref dbxrefs = 5;
 }
 
 message Meta {
