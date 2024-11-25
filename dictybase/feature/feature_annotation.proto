@@ -33,6 +33,14 @@ service FeatureAnnotationService {
   rpc DeleteOrganism(DeleteOrganismRequest) returns (google.protobuf.Empty) {}
   // List all organisms
   rpc ListOrganisms(google.protobuf.Empty) returns (OrganismCollection) {}
+  // Link a feature annotation to an organism
+  rpc LinkFeatureToOrganism(OrganismFeatureLink) returns (google.protobuf.Empty) {}
+  // Get organism for a feature
+  rpc GetFeatureOrganism(FeatureAnnotationId) returns (Organism) {}
+  // Update feature's organism link
+  rpc UpdateFeatureOrganism(OrganismFeatureUpdate) returns (google.protobuf.Empty) {}
+  // Remove feature's organism link 
+  rpc RemoveFeatureOrganism(FeatureAnnotationId) returns (google.protobuf.Empty) {}
 }
 
 // Collection of organisms
@@ -172,4 +180,16 @@ message OrganismId {
 message DeleteOrganismRequest {
     // unique identifier for the organism
     string id = 1 [(validator.field) = {string_not_empty: true}];
+}
+
+// Message for linking feature to organism
+message OrganismFeatureLink {
+    string organism_id = 1 [(validator.field) = {string_not_empty: true}];
+    string feature_id = 2 [(validator.field) = {string_not_empty: true}];
+}
+
+// Message for updating organism-feature relationship
+message OrganismFeatureUpdate {
+    string feature_id = 1 [(validator.field) = {string_not_empty: true}];
+    string new_organism_id = 2 [(validator.field) = {string_not_empty: true}];
 }
