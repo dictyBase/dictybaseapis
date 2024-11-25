@@ -23,24 +23,6 @@ service FeatureAnnotationService {
   rpc UpdateFeatureAnnotation(FeatureAnnotationUpdate) returns (FeatureAnnotation) {}
   // Delete an existing feature annotation
   rpc DeleteFeatureAnnotation(DeleteFeatureAnnotationRequest) returns (google.protobuf.Empty) {}
-  // Create a new organism
-  rpc CreateOrganism(NewOrganism) returns (Organism) {}
-  // Retrieve an organism by ID
-  rpc GetOrganism(OrganismId) returns (Organism) {}
-  // Update an existing organism
-  rpc UpdateOrganism(OrganismUpdate) returns (Organism) {}
-  // Delete an organism
-  rpc DeleteOrganism(DeleteOrganismRequest) returns (google.protobuf.Empty) {}
-  // List all organisms
-  rpc ListOrganisms(google.protobuf.Empty) returns (OrganismCollection) {}
-  // Link a feature annotation to an organism
-  rpc LinkFeatureToOrganism(OrganismFeatureLink) returns (google.protobuf.Empty) {}
-  // Get organism for a feature
-  rpc GetFeatureOrganism(FeatureAnnotationId) returns (Organism) {}
-  // Update feature's organism link
-  rpc UpdateFeatureOrganism(OrganismFeatureUpdate) returns (google.protobuf.Empty) {}
-  // Remove feature's organism link 
-  rpc RemoveFeatureOrganism(FeatureAnnotationId) returns (google.protobuf.Empty) {}
 }
 
 // Collection of organisms

@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package dictybase.feature;
+
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option cc_enable_arenas = true;
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/feature;feature";
+option java_multiple_files = true;
+option java_outer_classname = "OrganismProto";
+option java_package = "org.dictybase.feature";
+option objc_class_prefix = "DICTYAPI";
+
+// The organism service specification
+service OrganismService {
+  // Create a new organism
+  rpc CreateOrganism(NewOrganism) returns (Organism) {}
+  // Retrieve an organism by ID
+  rpc GetOrganism(OrganismId) returns (Organism) {}
+  // Update an existing organism
+  rpc UpdateOrganism(OrganismUpdate) returns (Organism) {}
+  // Delete an organism
+  rpc DeleteOrganism(DeleteOrganismRequest) returns (google.protobuf.Empty) {}
+  // List all organisms
+  rpc ListOrganisms(google.protobuf.Empty) returns (OrganismCollection) {}
+}
+
+message Organism {
+    OrganismAttributes attributes = 1;
+    // email id of the user who created the content
+    string created_by = 2;
+    // email id of the user who updated the content
+    string updated_by = 3;
+    google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
+    google.protobuf.Timestamp updated_at = 5 [(validator.field) = {msg_exists: true}];
+}
+
+message OrganismAttributes {
+    // Abbreviated name of the organism
+    string abbreviation = 1;
+    // Common name of the organism
+    string common_name = 2;
+    // Genus name
+    string genus = 3;
+    // Species name
+    string species = 4;
+    // Unique identifier for the organism
+    string organism_id = 5;
+}
+
+message OrganismCollection {
+    // Collection of organisms
+    repeated Organism data = 1;
+}
+
+message NewOrganism {
+    OrganismAttributes attributes = 2;
+    // email id of the user who created the content
+    string created_by = 3;
+    // email id of the user who updated the content
+    string updated_by = 4;
+    google.protobuf.Timestamp created_at = 5 [(validator.field) = {msg_exists: true}];
+    google.protobuf.Timestamp updated_at = 6 [(validator.field) = {msg_exists: true}];
+}
+
+message OrganismUpdate {
+    // unique identifier for the organism
+    string id = 1 [(validator.field) = {string_not_empty: true}];
+    OrganismAttributes attributes = 2;
+    // email id of the user who updated the content
+    string updated_by = 3;
+}
+
+message OrganismId {
+    // unique identifier for the organism
+    string id = 1 [(validator.field) = {string_not_empty: true}];
+}
+
+message DeleteOrganismRequest {
+    // unique identifier for the organism
+    string id = 1 [(validator.field) = {string_not_empty: true}];
+}
