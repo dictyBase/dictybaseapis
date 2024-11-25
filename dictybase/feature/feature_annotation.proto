@@ -31,6 +31,14 @@ service FeatureAnnotationService {
   rpc UpdateOrganism(OrganismUpdate) returns (Organism) {}
   // Delete an organism
   rpc DeleteOrganism(DeleteOrganismRequest) returns (google.protobuf.Empty) {}
+  // List all organisms
+  rpc ListOrganisms(google.protobuf.Empty) returns (OrganismCollection) {}
+}
+
+// Collection of organisms
+message OrganismCollection {
+    // Collection of organisms
+    repeated Organism data = 1;
 }
 
 message FeatureAnnotation {
@@ -107,6 +115,16 @@ message Dbxref {
   int64 version = 2;
   // Source database
   string database = 3 [(validator.field) = {string_not_empty: true}];
+}
+
+message Organism {
+    OrganismAttributes attributes = 1;
+    // email id of the user who created the content
+    string created_by = 2;
+    // email id of the user who updated the content
+    string updated_by = 3;
+    google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
+    google.protobuf.Timestamp updated_at = 5 [(validator.field) = {msg_exists: true}];
 }
 
 message OrganismAttributes {
