@@ -100,3 +100,17 @@ message Dbxref {
   // Source database
   string database = 3 [(validator.field) = {string_not_empty: true}];
 }
+
+// Attributes for organism information
+message OrganismAttributes {
+    // Abbreviated name of the organism
+    string abbreviation = 1;
+    // Common name of the organism
+    string common_name = 2;
+    // Genus name
+    string genus = 3;
+    // Species name
+    string species = 4;
+    // Unique identifier for the organism
+    string organism_id = 5;
+}
