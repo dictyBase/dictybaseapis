@@ -54,7 +54,7 @@ message FeatureAnnotation {
   google.protobuf.Timestamp updated_at = 7 [(validator.field) = {msg_exists: true}];
   // Toggle the obsolete status
   bool is_obsolete = 8;
-  // Version of this feature, it increase by 1 for the replacement
+  // Version of this feature
   int64 version = 9;
 }
 
@@ -78,6 +78,8 @@ message FeatureAnnotationUpdate {
   FeatureAnnotationAttributes attributes = 3;
   // email id of the user who updated the content
   string updated_by = 4;
+  // Toggle the obsolete status
+  bool is_obsolete = 5;
 }
 
 message NewFeatureAnnotation {
@@ -92,7 +94,7 @@ message NewFeatureAnnotation {
   google.protobuf.Timestamp updated_at = 6 [(validator.field) = {msg_exists: true}];
   // Toggle the obsolete status
   bool is_obsolete = 7;
-  // Version of this feature, it increase by 1 for the replacement
+  // Version of this feature
   int64 version = 8;
 }
 
