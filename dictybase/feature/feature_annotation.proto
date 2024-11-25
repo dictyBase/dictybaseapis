@@ -25,12 +25,6 @@ service FeatureAnnotationService {
   rpc DeleteFeatureAnnotation(DeleteFeatureAnnotationRequest) returns (google.protobuf.Empty) {}
 }
 
-// Collection of organisms
-message OrganismCollection {
-    // Collection of organisms
-    repeated Organism data = 1;
-}
-
 message FeatureAnnotation {
   string type = 1;
   string id = 2;
@@ -107,71 +101,4 @@ message Dbxref {
   int64 version = 2;
   // Source database
   string database = 3 [(validator.field) = {string_not_empty: true}];
-}
-
-message Organism {
-    OrganismAttributes attributes = 1;
-    // email id of the user who created the content
-    string created_by = 2;
-    // email id of the user who updated the content
-    string updated_by = 3;
-    google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
-    google.protobuf.Timestamp updated_at = 5 [(validator.field) = {msg_exists: true}];
-}
-
-message OrganismAttributes {
-    // Abbreviated name of the organism
-    string abbreviation = 1;
-    // Common name of the organism
-    string common_name = 2;
-    // Genus name
-    string genus = 3;
-    // Species name
-    string species = 4;
-    // Unique identifier for the organism
-    string organism_id = 5;
-}
-
-// Message for creating a new organism
-message NewOrganism {
-    OrganismAttributes attributes = 2;
-    // email id of the user who created the content
-    string created_by = 3;
-    // email id of the user who updated the content
-    string updated_by = 4;
-    google.protobuf.Timestamp created_at = 5 [(validator.field) = {msg_exists: true}];
-    google.protobuf.Timestamp updated_at = 6 [(validator.field) = {msg_exists: true}];
-}
-
-// Message for updating an organism
-message OrganismUpdate {
-    // unique identifier for the organism
-    string id = 1 [(validator.field) = {string_not_empty: true}];
-    OrganismAttributes attributes = 2;
-    // email id of the user who updated the content
-    string updated_by = 3;
-}
-
-// Message for organism ID requests
-message OrganismId {
-    // unique identifier for the organism
-    string id = 1 [(validator.field) = {string_not_empty: true}];
-}
-
-// Message for delete requests
-message DeleteOrganismRequest {
-    // unique identifier for the organism
-    string id = 1 [(validator.field) = {string_not_empty: true}];
-}
-
-// Message for linking feature to organism
-message OrganismFeatureLink {
-    string organism_id = 1 [(validator.field) = {string_not_empty: true}];
-    string feature_id = 2 [(validator.field) = {string_not_empty: true}];
-}
-
-// Message for updating organism-feature relationship
-message OrganismFeatureUpdate {
-    string feature_id = 1 [(validator.field) = {string_not_empty: true}];
-    string new_organism_id = 2 [(validator.field) = {string_not_empty: true}];
 }
