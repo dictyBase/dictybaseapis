@@ -85,7 +85,7 @@ message NewFeatureAnnotation {
   string type = 1;
   FeatureAnnotationAttributes attributes = 2;
   // email id of the user who created the content
-  string created_by = 4 [(buf.validate.field).cel = {
+  string created_by = 3 [(buf.validate.field).cel = {
 	    id: "valid_email"
 	    message: "email must be a valid email"
 	    expression: "this.isEmail()"
