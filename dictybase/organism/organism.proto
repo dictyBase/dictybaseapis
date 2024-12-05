@@ -1,13 +1,13 @@
 syntax = "proto3";
 
-package dictybase.feature;
+package dictybase.organism;
 
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 option cc_enable_arenas = true;
-option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/feature;feature";
+option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/organism;organism";
 option java_multiple_files = true;
 option java_outer_classname = "OrganismProto";
 option java_package = "org.dictybase.feature";
