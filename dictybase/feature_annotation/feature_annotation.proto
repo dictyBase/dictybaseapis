@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package dictybase.feature_annotation;
 
-import "github.com/mwitkow/go-proto-validators/validator.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "buf/validate/validate.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/feature_annotation;feature_annotation";
@@ -30,12 +30,22 @@ message FeatureAnnotation {
   string id = 2;
   FeatureAnnotationAttributes attributes = 3;
   // email id of the user who created the content
-  string created_by = 4;
+  string created_by = 4 [(buf.validate.field).cel = {
+	    id: "valid_email"
+	    message: "email must be a valid email"
+	    expression: "this.isEmail()"
+    }];
   // email id of the user who updated the content
-  string updated_by = 5;
+  string updated_by = 5 [
+	(buf.validate.field).ignore_empty = true,
+	(buf.validate.field).cel = {
+	    id: "valid_email"
+	    message: "email must be a valid email"
+	    expression: "this.isEmail()"
+    }];
   // Timestamp for creation and update
-  google.protobuf.Timestamp created_at = 6 [(validator.field) = {msg_exists: true}];
-  google.protobuf.Timestamp updated_at = 7 [(validator.field) = {msg_exists: true}];
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
   // Toggle the obsolete status
   bool is_obsolete = 8;
   // Version of this feature
@@ -61,7 +71,12 @@ message FeatureAnnotationUpdate {
   string id = 2;
   FeatureAnnotationAttributes attributes = 3;
   // email id of the user who updated the content
-  string updated_by = 4;
+  string updated_by = 4 [
+	(buf.validate.field).cel = {
+	    id: "valid_email"
+	    message: "email must be a valid email"
+	    expression: "this.isEmail()"
+  }];
   // Toggle the obsolete status
   bool is_obsolete = 5;
 }
@@ -70,26 +85,28 @@ message NewFeatureAnnotation {
   string type = 1;
   FeatureAnnotationAttributes attributes = 2;
   // email id of the user who created the content
-  string created_by = 3;
-  // email id of the user who updated the content
-  string updated_by = 4;
+  string created_by = 4 [(buf.validate.field).cel = {
+	    id: "valid_email"
+	    message: "email must be a valid email"
+	    expression: "this.isEmail()"
+  }];
   // Timestamp for creation and update
-  google.protobuf.Timestamp created_at = 5 [(validator.field) = {msg_exists: true}];
-  google.protobuf.Timestamp updated_at = 6 [(validator.field) = {msg_exists: true}];
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
   // Toggle the obsolete status
-  bool is_obsolete = 7;
+  bool is_obsolete = 6;
   // Version of this feature
-  int64 version = 8;
+  int64 version = 7;
 }
 
 message FeatureAnnotationId {
   // unique identifier for the feature annotation
-  string id = 1 [(validator.field) = {string_not_empty: true}];
+  string id = 1 [(buf.validate.field).required = true];
 }
 
 message DeleteFeatureAnnotationRequest {
   // unique identifier for the feature annotation
-  string id = 1 [(validator.field) = {string_not_empty: true}];
+  string id = 1 [(buf.validate.field).required = true];
   // flag to indicate whether the entry will be wiped or turned obsolete(soft delete)
   bool purge = 2;
 }
@@ -97,8 +114,8 @@ message DeleteFeatureAnnotationRequest {
 // An identifier typically from a bioinformatics database(NCBI,Uniprot,Ensembl etc.)
 message Dbxref {
   // Identifier
-  string dbxref_id = 1 [(validator.field) = {string_not_empty: true}];
+  string dbxref_id = 1 [(buf.validate.field).required = true];
   int64 version = 2;
   // Source database
-  string database = 3 [(validator.field) = {string_not_empty: true}];
+  string database = 3 [(buf.validate.field).required = true];
 }
