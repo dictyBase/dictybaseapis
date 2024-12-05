@@ -19,7 +19,7 @@ service OrganismFeatureService {
   // Link a feature annotation to an organism
   rpc LinkFeatureToOrganism(OrganismFeatureLink) returns (google.protobuf.Empty) {}
   // Get organism for a feature
-  rpc GetFeatureOrganism(FeatureAnnotationId) returns (Organism) {}
+  rpc GetFeatureOrganism(FeatureAnnotationId) returns (dictybase.organism.Organism) {}
   // Update feature's organism link
   rpc UpdateFeatureOrganism(OrganismFeatureUpdate) returns (google.protobuf.Empty) {}
   // Remove feature's organism link 
