@@ -3,8 +3,8 @@ syntax = "proto3";
 package dictybase.annotation;
 
 import "dictybase/api/upload/file.proto";
-import "dictybase/feature/feature_annotation.proto";
-import "dictybase/feature/organism.proto";
+import "dictybase/feature_annotation/feature_annotation.proto";
+import "dictybase/organism/organism.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
