@@ -62,7 +62,7 @@ service FeatureService {
   // append it to the list.
   rpc AddDbxref(FeatureDbxref) returns (Feature) {}
   // Create a new organism entry
-  rpc CreateOrganism(Organism) returns (Organism) {}
+  rpc CreateOrganism(OrganismR) returns (OrganismR) {}
 
   // Delete an existing feature
   rpc DeleteFeature(FeatureId) returns (google.protobuf.Empty) {}
@@ -160,7 +160,7 @@ message NewFeatureAttributes {
   // Identifier of the user who updated the feature
   int64 updated_by = 3 [(validator.field) = {int_gt: 0}];
   repeated DbxrefR dbxrefs = 4;
-  Organism organism = 5;
+  OrganismR organism = 5;
   // Toggle the obsolete status
   bool is_obsolete = 6;
   // List of biological parent features
@@ -213,7 +213,7 @@ message FeatureAttributes {
   // Timestamp for creation and update
   google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
   google.protobuf.Timestamp updated_at = 5 [(validator.field) = {msg_exists: true}];
-  Organism organism = 6;
+  OrganismR organism = 6;
   // Toggle the obsolete status
   bool is_obsolete = 7;
   // List of biological parent features
@@ -255,7 +255,7 @@ message FeatureUpdateAttributes {
   // Identifier of the user who updated the feature
   int64 updated_by = 2 [(validator.field) = {int_gt: 0}];
   repeated DbxrefR dbxrefs = 3;
-  Organism organism = 4;
+  OrganismR organism = 4;
   // List of biological parent features
   repeated FeatureRelationship parents = 5;
   // List of biological children feature
@@ -362,7 +362,7 @@ message FeatureLocation {
 }
 
 // Defintion of an organism entry
-message Organism {
+message OrganismR {
   // Taxon identifier
   string taxon_id = 1;
   // Organism genus
