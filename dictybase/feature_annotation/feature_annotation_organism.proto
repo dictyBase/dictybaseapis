@@ -36,6 +36,6 @@ message OrganismFeatureLink {
 
 // Message for updating organism-feature relationship
 message OrganismFeatureUpdate {
-    string feature_id = 2 [(buf.validate.field).required = true];
+    string feature_id = 1 [(buf.validate.field).required = true];
     int64 new_organism_id = 2 [(buf.validate.field).required = true];
 }
