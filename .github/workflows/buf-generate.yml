@@ -12,6 +12,8 @@ jobs:
         uses: actions/checkout@v4
       - name: setup buf
         uses: bufbuild/buf-action@v1
+      - name: generate code
+        run: buf generate
       - name: configure git
         run: |
             git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
