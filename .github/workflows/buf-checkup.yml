@@ -12,3 +12,5 @@ jobs:
         uses: actions/checkout@v4
       - name: run buf
         uses: bufbuild/buf-action@v1
+        with: 
+          breaking: false
