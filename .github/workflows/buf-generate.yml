@@ -31,6 +31,13 @@ jobs:
         with: 
           version: 1.47.2
           setup_only: true
+      - name: set up golang
+        uses: actions/setup-go@v4
+        with:
+            go-version: 1.23
+      - name: download go binaries
+        run: |
+          go install github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v0.3.2
       - name: generate code
         run: |
             buf generate
