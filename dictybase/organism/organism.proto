@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package dictybase.organism;
 
+import "buf/validate/validate.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "buf/validate/validate.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/organism;organism";
@@ -28,68 +28,69 @@ service OrganismService {
 }
 
 message Organism {
-    OrganismAttributes attributes = 1;
-    // email id of the user who created the content
-    string created_by = 2 [(buf.validate.field).cel = {
-	    id: "valid_email"
-	    message: "email must be a valid email"
-	    expression: "this.isEmail()"
-    }];
-    // email id of the user who updated the content
-    string updated_by = 3 [
-	(buf.validate.field).ignore_empty = true,
-	(buf.validate.field).cel = {
-	    id: "valid_email"
-	    message: "email must be a valid email"
-	    expression: "this.isEmail()"
-    }];
-    google.protobuf.Timestamp created_at = 4 ;
-    google.protobuf.Timestamp updated_at = 5 ;
-    // Unique identifier for the organism
-    int64 organism_id = 6;
+  OrganismAttributes attributes = 1;
+  // email id of the user who created the content
+  string created_by = 2 [(buf.validate.field).cel = {
+    id: "valid_email"
+    message: "email must be a valid email"
+    expression: "this.isEmail()"
+  }];
+  // email id of the user who updated the content
+  string updated_by = 3 [
+    (buf.validate.field).ignore_empty = true,
+    (buf.validate.field).cel = {
+      id: "valid_email"
+      message: "email must be a valid email"
+      expression: "this.isEmail()"
+    }
+  ];
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+  // Unique identifier for the organism
+  int64 organism_id = 6;
 }
 
 message OrganismAttributes {
-    // Abbreviated name of the organism
-    string abbreviation = 1;
-    // Common name of the organism
-    string common_name = 2;
-    // Genus name
-    string genus = 3 [(buf.validate.field).required = true];
-    // Species name
-    string species = 4 [(buf.validate.field).required = true];
+  // Abbreviated name of the organism
+  string abbreviation = 1;
+  // Common name of the organism
+  string common_name = 2;
+  // Genus name
+  string genus = 3 [(buf.validate.field).required = true];
+  // Species name
+  string species = 4 [(buf.validate.field).required = true];
 }
 
 message OrganismCollection {
-    // Collection of organisms
-    repeated Organism data = 1;
+  // Collection of organisms
+  repeated Organism data = 1;
 }
 
 message NewOrganism {
-    OrganismAttributes attributes = 1;
-    // email id of the user who created the content
-    string created_by = 2 [(buf.validate.field).cel = {
-	    id: "valid_email"
-	    message: "email must be a valid email"
-	    expression: "this.isEmail()"
-    }];
-    google.protobuf.Timestamp created_at = 3 ;
+  OrganismAttributes attributes = 1;
+  // email id of the user who created the content
+  string created_by = 2 [(buf.validate.field).cel = {
+    id: "valid_email"
+    message: "email must be a valid email"
+    expression: "this.isEmail()"
+  }];
+  google.protobuf.Timestamp created_at = 3;
 }
 
 message OrganismUpdate {
-    // unique identifier for the organism
-    string id = 1 [(buf.validate.field).required = true];
-    OrganismAttributes attributes = 2;
-    // email id of the user who updated the content
-    string updated_by = 3;
+  // unique identifier for the organism
+  string id = 1 [(buf.validate.field).required = true];
+  OrganismAttributes attributes = 2;
+  // email id of the user who updated the content
+  string updated_by = 3;
 }
 
 message OrganismId {
-    // unique identifier for the organism
-    int64 id = 1 [(buf.validate.field).required = true];
+  // unique identifier for the organism
+  int64 id = 1 [(buf.validate.field).required = true];
 }
 
 message DeleteOrganismRequest {
-    // unique identifier for the organism
-    int64 id = 1 [(buf.validate.field).required = true];
+  // unique identifier for the organism
+  int64 id = 1 [(buf.validate.field).required = true];
 }

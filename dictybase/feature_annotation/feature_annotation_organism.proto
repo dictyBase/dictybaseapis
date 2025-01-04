@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package dictybase.feature_annotation;
 
-import "google/protobuf/empty.proto";
-import "dictybase/organism/organism.proto";
-import "dictybase/feature_annotation/feature_annotation.proto";
 import "buf/validate/validate.proto";
+import "dictybase/feature_annotation/feature_annotation.proto";
+import "dictybase/organism/organism.proto";
+import "google/protobuf/empty.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/feature_annotation;feature_annotation";
@@ -22,20 +22,18 @@ service OrganismFeatureService {
   rpc GetFeatureOrganism(FeatureAnnotationId) returns (dictybase.organism.Organism) {}
   // Update feature's organism link
   rpc UpdateFeatureOrganism(OrganismFeatureUpdate) returns (google.protobuf.Empty) {}
-  // Remove feature's organism link 
+  // Remove feature's organism link
   rpc RemoveFeatureOrganism(FeatureAnnotationId) returns (google.protobuf.Empty) {}
 }
 
-
 // Message for linking feature to organism
 message OrganismFeatureLink {
-    int64 organism_id = 1 [(buf.validate.field).required = true];
-    string feature_id = 2 [(buf.validate.field).required = true];
+  int64 organism_id = 1 [(buf.validate.field).required = true];
+  string feature_id = 2 [(buf.validate.field).required = true];
 }
-
 
 // Message for updating organism-feature relationship
 message OrganismFeatureUpdate {
-    string feature_id = 1 [(buf.validate.field).required = true];
-    int64 new_organism_id = 2 [(buf.validate.field).required = true];
+  string feature_id = 1 [(buf.validate.field).required = true];
+  int64 new_organism_id = 2 [(buf.validate.field).required = true];
 }
