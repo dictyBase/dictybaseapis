@@ -45,7 +45,6 @@ service TaggedAnnotationService {
   rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
 }
 
-
 message AnnotationGroupId {
   // unique identifier for the annotation
   string id = 1 [(validator.field) = {string_not_empty: true}];
@@ -359,7 +358,6 @@ message ListGroupParameters {
   //
   string filter = 3;
 }
-
 
 message Meta {
   // A unique pointer to the next set of result in the collection. Set the

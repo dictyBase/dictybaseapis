@@ -198,7 +198,7 @@ message IdResponse {
 
 message HealthzIdRequest {
   int64 id = 1 [(validator.field) = {
-    int_gt: 0,
+    int_gt: 0
     int_lt: 2
   }];
 }

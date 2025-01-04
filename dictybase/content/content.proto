@@ -166,7 +166,6 @@ message ListParameters {
   string filter = 3;
 }
 
-
 // Metadata definition for traversing the collection
 message Meta {
   // A unique pointer to the next set of result in the collection. Set the

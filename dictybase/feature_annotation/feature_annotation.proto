@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package dictybase.feature_annotation;
 
+import "buf/validate/validate.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "buf/validate/validate.proto";
 
 option cc_enable_arenas = true;
 option go_package = "github.com/dictyBase/go-genproto/dictybaseapis/feature_annotation;feature_annotation";
@@ -13,7 +13,7 @@ option java_outer_classname = "FeatureAnnotationProto";
 option java_package = "org.dictybase.feature";
 option objc_class_prefix = "DICTYAPI";
 
-// The feature annotation service specification 
+// The feature annotation service specification
 service FeatureAnnotationService {
   // Create a feature annotation
   rpc CreateFeatureAnnotation(NewFeatureAnnotation) returns (FeatureAnnotation) {}
@@ -31,18 +31,19 @@ message FeatureAnnotation {
   FeatureAnnotationAttributes attributes = 3;
   // email id of the user who created the content
   string created_by = 4 [(buf.validate.field).cel = {
-	    id: "valid_email"
-	    message: "email must be a valid email"
-	    expression: "this.isEmail()"
-    }];
+    id: "valid_email"
+    message: "email must be a valid email"
+    expression: "this.isEmail()"
+  }];
   // email id of the user who updated the content
   string updated_by = 5 [
-	(buf.validate.field).ignore_empty = true,
-	(buf.validate.field).cel = {
-	    id: "valid_email"
-	    message: "email must be a valid email"
-	    expression: "this.isEmail()"
-    }];
+    (buf.validate.field).ignore_empty = true,
+    (buf.validate.field).cel = {
+      id: "valid_email"
+      message: "email must be a valid email"
+      expression: "this.isEmail()"
+    }
+  ];
   // Timestamp for creation and update
   google.protobuf.Timestamp created_at = 6;
   google.protobuf.Timestamp updated_at = 7;
@@ -71,11 +72,10 @@ message FeatureAnnotationUpdate {
   string id = 2;
   FeatureAnnotationAttributes attributes = 3;
   // email id of the user who updated the content
-  string updated_by = 4 [
-	(buf.validate.field).cel = {
-	    id: "valid_email"
-	    message: "email must be a valid email"
-	    expression: "this.isEmail()"
+  string updated_by = 4 [(buf.validate.field).cel = {
+    id: "valid_email"
+    message: "email must be a valid email"
+    expression: "this.isEmail()"
   }];
   // Toggle the obsolete status
   bool is_obsolete = 5;
@@ -86,9 +86,9 @@ message NewFeatureAnnotation {
   FeatureAnnotationAttributes attributes = 2;
   // email id of the user who created the content
   string created_by = 3 [(buf.validate.field).cel = {
-	    id: "valid_email"
-	    message: "email must be a valid email"
-	    expression: "this.isEmail()"
+    id: "valid_email"
+    message: "email must be a valid email"
+    expression: "this.isEmail()"
   }];
   // Timestamp for creation and update
   google.protobuf.Timestamp created_at = 4;
