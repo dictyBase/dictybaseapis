@@ -32,7 +32,8 @@ jobs:
           version: 1.47.2
           setup_only: true
       - name: generate code
-        run: buf generate
+        run: |
+            buf generate
       - name: configure git
         run: |
             git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
