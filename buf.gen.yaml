@@ -9,4 +9,4 @@ plugins:
   - plugin: govalidators
     out: generated
   - plugin: buf.build/community/pseudomuto-doc
-    out: "."
+    out: docs
