@@ -1,5 +1,10 @@
 name: Buf checkup
-on: pull_request
+on: 
+  pull_request:
+    paths:
+      - 'dictybase/**/*.proto'
+      - 'buf.gen.yaml'
+      - 'buf.yaml'
 permissions:
   contents: read
   pull-requests: write

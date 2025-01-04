@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'dictybase/**/*.proto'
+      - 'buf.gen.yaml'
+      - 'buf.yaml'
 jobs:
   generate:
     name: generate
