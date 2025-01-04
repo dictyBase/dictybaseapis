@@ -7,6 +7,14 @@ on:
       - 'dictybase/**/*.proto'
       - 'buf.gen.yaml'
       - 'buf.yaml'
+permissions: 
+  contents: read
+  pages: write
+  id-token: write
+concurrency: 
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   generate:
     name: generate
