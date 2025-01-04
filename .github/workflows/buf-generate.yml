@@ -29,6 +29,7 @@ jobs:
         uses: bufbuild/buf-action@v1
         with: 
           version: 1.47.2
+          setup_only: true
       - name: generate code
         run: buf generate
       - name: configure git
