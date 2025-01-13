@@ -122,3 +122,8 @@ message Dbxref {
   // Source database
   string database = 3 [(buf.validate.field).required = true];
 }
+
+message Tag {
+  string tag = 1 [(buf.validate.field).required = true];
+  string value = 2 [(buf.validate.field).required = true];
+}
