@@ -27,6 +27,7 @@ service FeatureAnnotationService {
 
 message FeatureAnnotation {
   string type = 1;
+  // unique identifier for the feature annotation
   string id = 2;
   FeatureAnnotationAttributes attributes = 3;
   // email id of the user who created the content
@@ -97,6 +98,8 @@ message NewFeatureAnnotation {
   bool is_obsolete = 6;
   // Version of this feature
   int64 version = 7;
+  // unique identifier for the feature annotation
+  string id = 8 [(buf.validate.field).required = true];
 }
 
 message FeatureAnnotationId {
