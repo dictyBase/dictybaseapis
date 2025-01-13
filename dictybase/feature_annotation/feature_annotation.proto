@@ -66,6 +66,8 @@ message FeatureAnnotationAttributes {
   repeated string pubmed = 4;
   // Cross references to other databases
   repeated Dbxref dbxrefs = 5;
+  // Bucket of key value pair data
+  repeated Tag tags = 6;
 }
 
 message FeatureAnnotationUpdate {
