@@ -143,3 +143,12 @@ message TagProperty {
   string tag = 1 [(buf.validate.field).required = true];
   string value = 2 [(buf.validate.field).required = true];
 }
+
+// deprecated
+message Dbxref {
+  // Identifier
+  string dbxref_id = 1 [(buf.validate.field).required = true];
+  int64 version = 2;
+  // Source database
+  string database = 3 [(buf.validate.field).required = true];
+}
