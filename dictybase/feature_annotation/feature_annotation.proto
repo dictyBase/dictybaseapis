@@ -57,7 +57,7 @@ message FeatureAnnotation {
 // Common attributes for feature annotations
 message FeatureAnnotationAttributes {
   // Short human readable textual name
-  string name = 1;
+  string name = 1 [(buf.validate.field).required = true];
   // Alternate list of names
   repeated string synonyms = 2;
   // List of publications(doi identifiers)
@@ -65,14 +65,14 @@ message FeatureAnnotationAttributes {
   // List of pubmed id
   repeated string pubmed = 4;
   // Cross references to other databases
-  repeated Dbxref dbxrefs = 5;
+  repeated DbLink dblinks = 5;
   // Bucket of key value pair data
   repeated TagProperty properties = 6;
 }
 
 message FeatureAnnotationUpdate {
   string type = 1;
-  string id = 2;
+  string id = 2 [(buf.validate.field).required = true];
   FeatureAnnotationAttributes attributes = 3;
   // email id of the user who updated the content
   string updated_by = 4 [(buf.validate.field).cel = {
@@ -86,7 +86,7 @@ message FeatureAnnotationUpdate {
 
 message NewFeatureAnnotation {
   string type = 1;
-  FeatureAnnotationAttributes attributes = 2;
+  FeatureAnnotationAttributes attributes = 2 [(buf.validate.field).required = true];
   // email id of the user who created the content
   string created_by = 3 [(buf.validate.field).cel = {
     id: "valid_email"
@@ -116,13 +116,24 @@ message DeleteFeatureAnnotationRequest {
   bool purge = 2;
 }
 
-// An identifier typically from a bioinformatics database(NCBI,Uniprot,Ensembl etc.)
-message Dbxref {
-  // Identifier
-  string dbxref_id = 1 [(buf.validate.field).required = true];
+// Link to an identifier typically from a bioinformatics
+// database(NCBI,Uniprot,Ensembl etc.)
+message DbLink {
+  // Identifier of the linked database
+  string primary_id = 1 [(buf.validate.field).required = true];
+  // a number which differentiates between versions of
+  // the same object. Higher numbers are considered to be
+  // later and more relevant
   int64 version = 2;
   // Source database
   string database = 3 [(buf.validate.field).required = true];
+  // Type of this dblink, for example 'protein'
+  string linktype = 4;
+  // URL that is associated with this link
+  string url = 5 [(buf.validate.field).string.uri = true];
+  // A short name that is a possible alternative to the database name which
+  // could be used for display.
+  string label = 6;
 }
 
 // Suggest few names for the following definition. AI?
