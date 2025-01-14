@@ -64,10 +64,11 @@ message FeatureAnnotationAttributes {
   repeated string publications = 3;
   // List of pubmed id
   repeated string pubmed = 4;
+  repeated Dbxref dbxrefs = 5 [deprecated = true];
   // Cross references to other databases
-  repeated DbLink dblinks = 5;
+  repeated DbLink dblinks = 6;
   // Bucket of key value pair data
-  repeated TagProperty properties = 6;
+  repeated TagProperty properties = 7;
 }
 
 message FeatureAnnotationUpdate {
