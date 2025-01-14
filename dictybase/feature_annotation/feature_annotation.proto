@@ -67,7 +67,7 @@ message FeatureAnnotationAttributes {
   // Cross references to other databases
   repeated Dbxref dbxrefs = 5;
   // Bucket of key value pair data
-  repeated Tag tags = 6;
+  repeated TagProperty properties = 6;
 }
 
 message FeatureAnnotationUpdate {
@@ -125,7 +125,8 @@ message Dbxref {
   string database = 3 [(buf.validate.field).required = true];
 }
 
-message Tag {
+// Suggest few names for the following definition. AI?
+message TagProperty {
   string tag = 1 [(buf.validate.field).required = true];
   string value = 2 [(buf.validate.field).required = true];
 }
