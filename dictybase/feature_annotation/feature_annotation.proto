@@ -136,7 +136,8 @@ message DbLink {
   string label = 6;
 }
 
-// Suggest few names for the following definition. AI?
+// TagProperty represents a key-value pair structure used for storing
+// custom attributes or metadata.
 message TagProperty {
   string tag = 1 [(buf.validate.field).required = true];
   string value = 2 [(buf.validate.field).required = true];
