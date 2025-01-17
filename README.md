@@ -41,5 +41,8 @@ is fine, merge it to the master branch and it will generate updated Go code and
 open a PR in the [go-genproto](https://github.com/dictyBase/go-genproto)
 repository where it will need to be manually reviewed.
 
+Additionally, when changes are merged to master, API documentation will be
+automatically generated using the protobuf documentation generator plugin.
+
 **Note: if making any updates to the `buf.gen.yaml` file, you need to run `buf beta mod update`
 to update the lock file.**
