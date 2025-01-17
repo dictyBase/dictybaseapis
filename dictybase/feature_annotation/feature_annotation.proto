@@ -50,6 +50,7 @@ message FeatureAnnotation {
   google.protobuf.Timestamp updated_at = 7;
   // Toggle the obsolete status
   bool is_obsolete = 8;
+  int64 version = 9 [deprecated = true];
 }
 
 // Common attributes for feature annotations
@@ -97,8 +98,9 @@ message NewFeatureAnnotation {
   google.protobuf.Timestamp updated_at = 5;
   // Toggle the obsolete status
   bool is_obsolete = 6;
+  int64 version = 7 [deprecated = true];
   // unique identifier for the feature annotation
-  string id = 7 [(buf.validate.field).required = true];
+  string id = 8 [(buf.validate.field).required = true];
 }
 
 message FeatureAnnotationId {
