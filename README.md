@@ -1,36 +1,28 @@
 # dictyBase APIs
 
-[![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](LICENSE)  
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)](LICENSE)
 ![Buf](https://github.com/dictyBase/dictybaseapis/workflows/Buf/badge.svg)
-![Last commit](https://badgen.net/github/last-commit/dictyBase/dictybaseapis/master)  
-[![Funding](https://badgen.net/badge/Funding/Rex%20L%20Chisholm,dictyBase,DCR/yellow?list=|)](https://reporter.nih.gov/project-details/10024726)
+[![Funding](https://badgen.net/badge/Funding/NIH%2C%20Rex%20L%20Chisholm%20Lab/yellow)](https://reporter.nih.gov/project-details/10024726)
 
-## Misc Badges
-
-![Open Issues](https://badgen.net/github/open-issues/dictyBase/dictybaseapis)
-![Open PRS](https://badgen.net/github/open-prs/dictyBase/dictybaseapis)
-![Commits](https://badgen.net/github/commits/dictyBase/dictybaseapis/master)
-![Branches](https://badgen.net/github/branches/dictyBase/dictybaseapis)
-![Tags](https://badgen.net/github/tags/dictyBase/dictybaseapis)  
-![GitHub repo size](https://img.shields.io/github/repo-size/dictyBase/dictybaseapis?style=plastic)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/dictyBase/dictybaseapis?style=plastic)
-
-This repository contains interface definitions of public
-[dictyBase](http://dictybase.org) API that supports gRPC protocols. These definitions
-can be used with open source tools generate client libraries, documentation and
-other artifacts.
+Protocol Buffer definitions for dictyBase's gRPC APIs. Used to generate client libraries, 
+server stubs, and documentation.
 
 ## Overview
 
-dictyBase APIs are typically deployed as API services that are hosted under different DNS names.
-It uses Protocol Buffers version 3 (proto3) as their Interface
-Definition Language (IDL) to define the API interface and the structure of the
-payload messages. It can be accessed through [gRPC](https://grpc.io).
+This repository contains:
+
+- .proto definitions for dictyBase's public APIs
+- Shared message types and service definitions in the `dictybase` namespace
+- Generated code via [Buf](https://buf.build/) (managed through GitHub Actions)
 
 ## Repository structure
 
-In general, every API has its own directory with matching proto packages. The
-`dictybase` folder contains reusable definitions.
+/dictybase
+  /api          # Common API patterns and utilities
+  /content      # Content management API definitions
+  /user         # User service definitions
+  /stock        # Stock management interfaces
+  ...           # Other domain-specific APIs
 
 ## Development
 
