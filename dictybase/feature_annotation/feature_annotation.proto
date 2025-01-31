@@ -95,7 +95,7 @@ message NewFeatureAnnotation {
   }];
   // Timestamp for creation and update
   google.protobuf.Timestamp created_at = 4;
-  google.protobuf.Timestamp updated_at = 5 [deprecated = true];
+  google.protobuf.Timestamp updated_at = 5;
   // Toggle the obsolete status
   bool is_obsolete = 6;
   int64 version = 7 [deprecated = true];
@@ -154,6 +154,9 @@ message TagProperty {
       expression: "this.isEmail()"
     }
   ];
+  // Timestamp for creation and update
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
 }
 
 
