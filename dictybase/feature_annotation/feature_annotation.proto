@@ -107,6 +107,11 @@ message NewFeatureAnnotation {
   int64 version = 7 [deprecated = true];
   // unique identifier for the feature annotation
   string id = 8 [(buf.validate.field).required = true];
+  string updated_by = 9 [(buf.validate.field).cel = {
+    id: "valid_email"
+    message: "email must be a valid email"
+    expression: "this.isEmail()"
+  }];
 }
 
 message FeatureAnnotationId {
