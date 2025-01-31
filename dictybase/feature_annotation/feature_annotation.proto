@@ -95,7 +95,7 @@ message NewFeatureAnnotation {
   }];
   // Timestamp for creation and update
   google.protobuf.Timestamp created_at = 4;
-  google.protobuf.Timestamp updated_at = 5;
+  google.protobuf.Timestamp updated_at = 5 [deprecated = true];
   // Toggle the obsolete status
   bool is_obsolete = 6;
   int64 version = 7 [deprecated = true];
@@ -154,9 +154,29 @@ message TagProperty {
       expression: "this.isEmail()"
     }
   ];
-  // Timestamp for creation and update
-  google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp updated_at = 6;
+}
+
+
+message TagPropertyCreate {
+  string tag = 1 [(buf.validate.field).required = true];
+  string value = 2 [(buf.validate.field).required = true];
+  // email id of the user who created the tag
+  string created_by = 3 [(buf.validate.field).cel = {
+    id: "valid_email",
+    message: "email must be a valid email",
+    expression: "this.isEmail()"
+  }];
+}
+
+message TagPropertyUpdate {
+  string tag = 1 [(buf.validate.field).required = true];
+  string value = 2 [(buf.validate.field).required = true];
+  // email id of the user who created the tag
+  string updated_by = 3 [(buf.validate.field).cel = {
+    id: "valid_email",
+    message: "email must be a valid email",
+    expression: "this.isEmail()"
+  }];
 }
 
 // deprecated
