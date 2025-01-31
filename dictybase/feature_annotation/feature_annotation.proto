@@ -190,3 +190,25 @@ message Dbxref {
   // Source database
   string database = 3 [(buf.validate.field).required = true];
 }
+
+// Request messages for tag operations
+message AddTagRequest {
+  // ID of feature annotation to modify
+  string id = 1 [(buf.validate.field).required = true];
+  // Tag to be added
+  TagPropertyCreate tag = 2 [(buf.validate.field).required = true];
+}
+
+message UpdateTagRequest {
+  // ID of feature annotation to modify
+  string id = 1 [(buf.validate.field).required = true];
+  // Updated tag values
+  TagPropertyUpdate tag = 2 [(buf.validate.field).required = true];
+}
+
+message RemoveTagRequest {
+  // ID of feature annotation to modify
+  string id = 1 [(buf.validate.field).required = true];
+  // Tag to remove
+  string tag = 2 [(buf.validate.field).required = true];
+}
