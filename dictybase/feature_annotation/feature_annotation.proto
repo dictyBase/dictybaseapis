@@ -19,10 +19,16 @@ service FeatureAnnotationService {
   rpc CreateFeatureAnnotation(NewFeatureAnnotation) returns (FeatureAnnotation) {}
   // Retrieves the specified feature annotation
   rpc GetFeatureAnnotation(FeatureAnnotationId) returns (FeatureAnnotation) {}
-  // Update an existing feature annotation
+  // Update an existing feature annotation. Any given tag will be appended to the existing tags
   rpc UpdateFeatureAnnotation(FeatureAnnotationUpdate) returns (FeatureAnnotation) {}
   // Delete an existing feature annotation
   rpc DeleteFeatureAnnotation(DeleteFeatureAnnotationRequest) returns (google.protobuf.Empty) {}
+  // Add tag to an existing feature annotation
+  rpc AddTag(AddTagRequest) returns (FeatureAnnotation) {}
+  // Update an existing tag in a feature annotation
+  rpc UpdateTag(UpdateTagRequest) returns (FeatureAnnotation) {}
+  // Remove a tag from a feature annotation
+  rpc RemoveTag(RemoveTagRequest) returns (FeatureAnnotation) {}
 }
 
 message FeatureAnnotation {
