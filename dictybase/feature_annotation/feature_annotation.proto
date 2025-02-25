@@ -161,11 +161,14 @@ message TagProperty {
     expression: "this.isEmail()"
   }];
   // email id of the user who updated the tag
-  string updated_by = 4 [(buf.validate.field).cel = {
-    id: "valid_email"
-    message: "email must be a valid email"
-    expression: "this.isEmail()"
-  }];
+  string updated_by = 4 [
+    (buf.validate.field).cel = {
+      id: "valid_email"
+      message: "email must be a valid email"
+      expression: "this.isEmail()"
+    },
+    (buf.validate.field).ignore = IGNORE_IF_UNPOPULATED
+  ];
   // Timestamp for creation and update
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
