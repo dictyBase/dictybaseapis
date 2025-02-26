@@ -31,6 +31,8 @@ service FeatureAnnotationService {
   rpc RemoveTag(RemoveTagRequest) returns (FeatureAnnotation) {}
 }
 
+// FeatureAnnotation represents a complete feature annotation record with all
+// its metadata.
 message FeatureAnnotation {
   string type = 1;
   // unique identifier for the feature annotation
@@ -59,7 +61,8 @@ message FeatureAnnotation {
   int64 version = 9 [deprecated = true];
 }
 
-// Common attributes for feature annotations
+// FeatureAnnotationAttributes defines the core properties and metadata of a
+// feature annotation.
 message FeatureAnnotationAttributes {
   // Short human readable textual name
   string name = 1 [(buf.validate.field).required = true];
@@ -76,6 +79,8 @@ message FeatureAnnotationAttributes {
   repeated TagProperty properties = 7;
 }
 
+// FeatureAnnotationUpdate contains the fields needed to update an existing
+// feature annotation.
 message FeatureAnnotationUpdate {
   string type = 1;
   string id = 2 [(buf.validate.field).required = true];
@@ -90,6 +95,8 @@ message FeatureAnnotationUpdate {
   bool is_obsolete = 5;
 }
 
+// NewFeatureAnnotation contains all the information needed to create a new
+// feature annotation.
 message NewFeatureAnnotation {
   string type = 1;
   FeatureAnnotationAttributes attributes = 2 [(buf.validate.field).required = true];
@@ -117,11 +124,14 @@ message NewFeatureAnnotation {
   ];
 }
 
+// FeatureAnnotationId is used to uniquely identify a feature annotation.
 message FeatureAnnotationId {
   // unique identifier for the feature annotation
   string id = 1 [(buf.validate.field).required = true];
 }
 
+// DeleteFeatureAnnotationRequest specifies a feature annotation to delete and
+// how to delete it.
 message DeleteFeatureAnnotationRequest {
   // unique identifier for the feature annotation
   string id = 1 [(buf.validate.field).required = true];
@@ -129,8 +139,7 @@ message DeleteFeatureAnnotationRequest {
   bool purge = 2;
 }
 
-// Link to an identifier typically from a bioinformatics
-// database(NCBI,Uniprot,Ensembl etc.)
+// DbLink represents a reference to an external bioinformatics database entry.
 message DbLink {
   // Identifier of the linked database
   string primary_id = 1 [(buf.validate.field).required = true];
@@ -149,8 +158,8 @@ message DbLink {
   string label = 6;
 }
 
-// TagProperty represents a key-value pair structure used for storing
-// custom attributes or metadata.
+// TagProperty represents a key-value pair structure with metadata for storing
+// custom attributes.
 message TagProperty {
   string tag = 1 [(buf.validate.field).required = true];
   string value = 2 [(buf.validate.field).required = true];
@@ -174,6 +183,8 @@ message TagProperty {
   google.protobuf.Timestamp updated_at = 6;
 }
 
+// TagPropertyCreate contains the minimal information needed to create a new tag
+// property.
 message TagPropertyCreate {
   string tag = 1 [(buf.validate.field).required = true];
   string value = 2 [(buf.validate.field).required = true];
@@ -185,6 +196,8 @@ message TagPropertyCreate {
   }];
 }
 
+// TagPropertyUpdate contains the information needed to update an existing tag
+// property.
 message TagPropertyUpdate {
   string tag = 1 [(buf.validate.field).required = true];
   string value = 2 [(buf.validate.field).required = true];
@@ -196,7 +209,7 @@ message TagPropertyUpdate {
   }];
 }
 
-// deprecated
+// Dbxref represents a deprecated cross-reference to an external database.
 message Dbxref {
   // Identifier
   string dbxref_id = 1 [(buf.validate.field).required = true];
@@ -205,7 +218,7 @@ message Dbxref {
   string database = 3 [(buf.validate.field).required = true];
 }
 
-// Request messages for tag operations
+// AddTagRequest specifies a feature annotation and a tag to add to it.
 message AddTagRequest {
   // ID of feature annotation to modify
   string id = 1 [(buf.validate.field).required = true];
@@ -213,6 +226,7 @@ message AddTagRequest {
   TagPropertyCreate tag = 2 [(buf.validate.field).required = true];
 }
 
+// UpdateTagRequest specifies a feature annotation and updated tag values.
 message UpdateTagRequest {
   // ID of feature annotation to modify
   string id = 1 [(buf.validate.field).required = true];
@@ -220,6 +234,7 @@ message UpdateTagRequest {
   TagPropertyUpdate tag = 2 [(buf.validate.field).required = true];
 }
 
+// RemoveTagRequest specifies a feature annotation and a tag to remove from it.
 message RemoveTagRequest {
   // ID of feature annotation to modify
   string id = 1 [(buf.validate.field).required = true];
