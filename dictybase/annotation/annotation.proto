@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package dictybase.annotation;
 
-import "dictybase/api/upload/file.proto";
 import "buf/validate/validate.proto";
+import "dictybase/api/upload/file.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -177,7 +177,10 @@ message TaggedAnnotationAttributes {
   // editor
   string editable_value = 2;
   // Unique identifier(generally email) of the user who created the annotation
-  string created_by = 3 [(buf.validate.field).required = true, string = {email: true}];
+  string created_by = 3 [
+    (buf.validate.field).required = true,
+    string = {email: true}
+  ];
   // Timestamp for creation
   google.protobuf.Timestamp created_at = 4 [(buf.validate.field).required = true];
   // An identifiable tagname for the annotation, primarily
@@ -264,7 +267,7 @@ message ListParameters {
   int64 cursor = 1;
   // Maximum number of records that can be fetch per request
   int64 limit = 2;
- 
+
   // The `filter` field restricts the data returned by the collection. It
   // accepts one or more filtering conditions using the syntax:
   //     field_name operator expression
