@@ -264,53 +264,66 @@ message ListParameters {
   int64 cursor = 1;
   // Maximum number of records that can be fetch per request
   int64 limit = 2;
-  // The `filter` field restricts the data return by the collection. To use
-  // it, supply one or multiple allowed fields to filter followed
-  // by a filter expression. It uses the following syntax...
-  //        field_name operator expression
+ 
+  // The `filter` field restricts the data returned by the collection. It
+  // accepts one or more filtering conditions using the syntax:
+  //     field_name operator expression
   //
-  // The following fields of `AnnotationAttributes` definition are allowed to
-  // be used for filtering
-  //   * entry_id    - The entry that is being annotated (string)
-  //   * value       - The annotation in plain text format (string)
-  //   * created_by  - Email id of the user (string)
-  //   * tag         - Tag name, a term from an ontology (string).
-  //   * ontology    - Ontology that provides the tag names (string).
-  //   * version     - Version no (number).
-  //   * value       - annotation in plain text format (number).
+  // Available fields for filtering from `AnnotationAttributes`:
+  //   * entry_id    - Identifier of the annotated entry (string)
+  //   * value       - Annotation text content (string)
+  //   * created_by  - Email of the creator (string)
+  //   * tag         - Ontology term used as tag (string)
+  //   * ontology    - Source ontology name (string)
+  //   * version     - Version number (number)
+  //   * rank        - Ordering of annotation (number)
+  //   * is_obsolete - Status of annotation (boolean)
   //
-  // operator - Defines the type of filter match to use. It could be any of
-  // the following four and all of them should be URL-encoded for http request.
+  // String operators:
+  //   * =~    Contains substring
+  //   * !~    Does not contain substring
+  //   * ===   Equals exactly
+  //   * !==   Not equals
   //
-  //        Operators for strings
-  //              =~    Contains substring
-  //              !~   Not contains substring
-  //              ===  Equals
-  //              !==  Not equals
+  // Numeric operators:
+  //   * ==    Equals
+  //   * !=    Not equals
+  //   * >     Greater than
+  //   * <     Less than
+  //   * =<    Less than or equal to
+  //   * >=    Greater than or equal to
   //
-  //        Operators for numbers
-  //              ==  Equals
-  //              !=  Not equals
-  //              >   Greater than
-  //              <   Less than
-  //              =<  Less than equal to
-  //              >=  Greater than equal to
+  // Boolean operators:
+  //   * ==    Equals
+  //   * !=    Not equals
   //
-  // expression - The value that will be included or excluded from the
-  // result. URL-reserved characters must be URL-encoded for http request.
+  // Examples:
+  //   filter: "created_by===caboose@abc.com"
+  //   filter: "entry_id===DDB_G4839483"
+  //   filter: "value=~actin"
+  //   filter: "tag===GO:0005634"
+  //   filter: "ontology===cellular_component"
+  //   filter: "version>3"
+  //   filter: "rank==0"
+  //   filter: "is_obsolete==false"
+  //   filter: "value!~pseudogene"
+  //   filter: "created_by!==anonymous@dictybase.org"
   //
-  //           filter: "created_by==caboose@abc.com"
-  //           filter: "entry_id==DDB_G4839483"
-  //           filter: "value~actin"
+  // Combine filters with boolean operators:
+  //   * OR: represented by comma (,)
+  //   * AND: represented by semicolon (;)
+  //   * AND takes precedence over OR
   //
-  // Filter can be combined using OR or AND boolean logic.
-  //   * The OR is represented using a comma(,).
-  //   * The AND is represented using a semi-colon(;).
-  //   * AND and OR operators can be combined and AND takes precedence over OR.
+  // Example of combined filters:
+  //   filter: "value=~cytoskeleton;tag===cell membrane;ontology===cellular"
+  //   filter: "entry_id===DDB_G0285418;is_obsolete==false"
+  //   filter: "created_by===curator@dictybase.org;version>2;rank==0"
+  //   filter: "tag===GO:0005634,tag===GO:0005737" (entries with nuclear OR cytoplasmic localization)
+  //   filter: "ontology===molecular_function;value=~transport" (transport-related functions)
   //
-  //           filter: "value~cytoskeletion;tag==cell membrane;ontology==cellular"
+  // Note: URL-reserved characters must be properly encoded in HTTP requests.
   //
-  string filter = 3;
+  string filter = 3 [(buf.validate.field).required = true];
 }
 
 // ListGroupParameters defines fields for manipulating output of TaggedAnnotationGroupCollection collection
