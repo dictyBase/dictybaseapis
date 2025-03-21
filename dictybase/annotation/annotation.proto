@@ -3,7 +3,7 @@ syntax = "proto3";
 package dictybase.annotation;
 
 import "dictybase/api/upload/file.proto";
-import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "buf/validate/validate.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -47,25 +47,25 @@ service TaggedAnnotationService {
 
 message AnnotationGroupId {
   // unique identifier for the annotation
-  string id = 1 [(validator.field) = {string_not_empty: true}];
+  string id = 1 [(buf.validate.field).required = true];
   // unique identifier of a group
-  string group_id = 2 [(validator.field) = {string_not_empty: true}];
+  string group_id = 2 [(buf.validate.field).required = true];
 }
 
 message AnnotationId {
   // unique identifier for the annotation
-  string id = 1 [(validator.field) = {string_not_empty: true}];
+  string id = 1 [(buf.validate.field).required = true];
 }
 
 // Identifiers for grouping list of tagged annotations
 message AnnotationIdList {
   // list of unique identifiers
-  repeated string ids = 1 [(validator.field) = {repeated_count_min: 1}];
+  repeated string ids = 1 [(buf.validate.field).repeated = {min_items: 1}];
 }
 
 message GroupEntryId {
   // unique identifier of a group
-  string group_id = 1 [(validator.field) = {string_not_empty: true}];
+  string group_id = 1 [(buf.validate.field).required = true];
 }
 
 // Group of tagged annotations
@@ -81,8 +81,8 @@ message TaggedAnnotationGroup {
   // unique identifier for the annotation group
   string group_id = 2;
   // Timestamp for creation an update
-  google.protobuf.Timestamp created_at = 3 [(validator.field) = {msg_exists: true}];
-  google.protobuf.Timestamp updated_at = 4 [(validator.field) = {msg_exists: true}];
+  google.protobuf.Timestamp created_at = 3 [(buf.validate.field).required = true];
+  google.protobuf.Timestamp updated_at = 4 [(buf.validate.field).required = true];
 }
 
 // List of tagged annotation groups
@@ -93,7 +93,7 @@ message TaggedAnnotationGroupCollection {
     TaggedAnnotationGroup group = 2;
   }
   repeated Data data = 1;
-  Meta meta = 2 [(validator.field) = {msg_exists: true}];
+  Meta meta = 2 [(buf.validate.field).required = true];
 }
 
 // Definition for various fields that are needed for fetching annotation for an
@@ -102,11 +102,11 @@ message TaggedAnnotationGroupCollection {
 message EntryAnnotationRequest {
   // An identifiable tagname for the annotation, primarily
   // a structured tag, generally an ontology term.
-  string tag = 1 [(validator.field) = {string_not_empty: true}];
+  string tag = 1 [(buf.validate.field).required = true];
   // unique identifier of a biological entity that is being annotated
-  string entry_id = 2 [(validator.field) = {string_not_empty: true}];
+  string entry_id = 2 [(buf.validate.field).required = true];
   // Name of ontology in which the tag name is taken
-  string ontology = 3 [(validator.field) = {string_not_empty: true}];
+  string ontology = 3 [(buf.validate.field).required = true];
   // Ordering of annotation when an entry has multiple annotations with
   // identical tag from the same ontology. By default, rank 0 is assumed.
   int64 rank = 4;
@@ -116,7 +116,7 @@ message EntryAnnotationRequest {
 
 message DeleteAnnotationRequest {
   // unique identifier for the annotation
-  string id = 1 [(validator.field) = {string_not_empty: true}];
+  string id = 1 [(buf.validate.field).required = 1];
   // flag to indicate whether the entry will be wiped or turned obsolete(soft delete)
   bool purge = 2;
 }
@@ -124,9 +124,9 @@ message DeleteAnnotationRequest {
 // Definition of various fields needed to fetch a tag information
 message TagRequest {
   // human readable name
-  string name = 1 [(validator.field) = {string_not_empty: true}];
+  string name = 1 [(buf.validate.field).required = true];
   // ontology to which this tag belong
-  string ontology = 2 [(validator.field) = {string_not_empty: true}];
+  string ontology = 2 [(buf.validate.field).required = true];
   // status for active or retired tag
   bool is_obsolete = 3;
 }
@@ -141,7 +141,7 @@ message TaggedAnnotationCollection {
     TaggedAnnotationAttributes attributes = 3;
   }
   repeated Data data = 1;
-  Meta meta = 3 [(validator.field) = {msg_exists: true}];
+  Meta meta = 3 [(buf.validate.field).required = true];
 }
 
 // Definition of an tag value based biological annotation where the tag always
@@ -154,7 +154,7 @@ message TaggedAnnotation {
     string id = 2;
     TaggedAnnotationAttributes attributes = 3;
   }
-  Data data = 1 [(validator.field) = {msg_exists: true}];
+  Data data = 1 [(buf.validate.field).required = true];
 }
 
 // Definition of annotation tag
@@ -172,23 +172,23 @@ message AnnotationTag {
 // Definition of various tagged annotation attributes
 message TaggedAnnotationAttributes {
   // annotation in plain text format
-  string value = 1 [(validator.field) = {string_not_empty: true}];
+  string value = 1 [(buf.validate.field).required = true];
   // serialized text content in a format recognized by frontend rich text
   // editor
   string editable_value = 2;
   // Unique identifier(generally email) of the user who created the annotation
-  string created_by = 3 [(validator.field) = {string_not_empty: true}];
+  string created_by = 3 [(buf.validate.field).required = true, string = {email: true}];
   // Timestamp for creation
-  google.protobuf.Timestamp created_at = 4 [(validator.field) = {msg_exists: true}];
+  google.protobuf.Timestamp created_at = 4 [(buf.validate.field).required = true];
   // An identifiable tagname for the annotation, primarily
   // a structured tag, generally an ontology term.
-  string tag = 5 [(validator.field) = {string_not_empty: true}];
+  string tag = 5 [(buf.validate.field).required = true];
   // version refers to the current version no
-  int64 version = 6 [(validator.field) = {int_gt: 0}];
+  int64 version = 6 [(buf.validate.field).int64 = {gt: 0}];
   // unique identifier of a biological entity that is being annotated
-  string entry_id = 7 [(validator.field) = {string_not_empty: true}];
+  string entry_id = 7 [(buf.validate.field).required = true];
   // Name of ontology in which the tag name is taken
-  string ontology = 8 [(validator.field) = {string_not_empty: true}];
+  string ontology = 8 [(buf.validate.field).required = true];
   // Ordering of annotation when an entry has multiple annotations with
   // identical tag from the same ontology.
   int64 rank = 9;
@@ -203,25 +203,29 @@ message NewTaggedAnnotation {
     string type = 1;
     NewTaggedAnnotationAttributes attributes = 2;
   }
-  Data data = 1 [(validator.field) = {msg_exists: true}];
+  Data data = 1 [(buf.validate.field).required = true];
 }
 
 // NewTaggedAnnotation defines attributes for creating a new annotation
 message NewTaggedAnnotationAttributes {
   // annotation in plain text format
-  string value = 1 [(validator.field) = {string_not_empty: true}];
+  string value = 1 [(buf.validate.field).required = true];
   // serialized text content in a format recognized by frontend rich text
   // editor
   string editable_value = 2;
   // Unique identifier(generally email) of the user who created the annotation
-  string created_by = 3 [(validator.field) = {string_not_empty: true}];
+  string created_by = 3 [(buf.validate.field).cel = {
+    id: "valid_email"
+    message: "email must be a valid email"
+    expression: "this.isEmail()"
+  }];
   // An identifiable tagname for the annotation, primarily
   // a structured tag, generally an ontology term.
-  string tag = 4 [(validator.field) = {string_not_empty: true}];
+  string tag = 4 [(buf.validate.field).required = true];
   // unique identifier of a biological entity that is being annotated
-  string entry_id = 5 [(validator.field) = {string_not_empty: true}];
+  string entry_id = 5 [(buf.validate.field).required = true];
   // Name of ontology from which the tag name is taken
-  string ontology = 6 [(validator.field) = {string_not_empty: true}];
+  string ontology = 6 [(buf.validate.field).required = true];
   // Ordering of annotation when an entry has multiple annotations with
   // identical tag from the same ontology. By default, rank 0 is used.
   int64 rank = 7;
@@ -233,21 +237,25 @@ message TaggedAnnotationUpdate {
     // resource name, by default should be annotation
     string type = 1;
     // unique identifier for the annotation
-    string id = 2 [(validator.field) = {string_not_empty: true}];
+    string id = 2 [(buf.validate.field).required = true];
     TaggedAnnotationUpdateAttributes attributes = 3;
   }
-  Data data = 1 [(validator.field) = {msg_exists: true}];
+  Data data = 1 [(buf.validate.field).required = true];
 }
 
 // TaggedUpdateAnnotation defines attributes for updating an existing annotation
 message TaggedAnnotationUpdateAttributes {
   // annotation in plain text format
-  string value = 1 [(validator.field) = {string_not_empty: true}];
+  string value = 1 [(buf.validate.field).required = true];
   // serialized text content in a format recognized by frontend rich text
   // editor
-  string editable_value = 2 [(validator.field) = {string_not_empty: true}];
+  string editable_value = 2 [(buf.validate.field).required = true];
   // Unique identifier(generally email) of the user who created the annotation
-  string created_by = 3 [(validator.field) = {string_not_empty: true}];
+  string created_by = 3 [(buf.validate.field).cel = {
+    id: "valid_email"
+    message: "email must be a valid email"
+    expression: "this.isEmail()"
+  }];
 }
 
 // ListParameters defines fields for manipulating output of TaggedAnnotation collection
