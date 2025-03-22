@@ -116,7 +116,7 @@ message EntryAnnotationRequest {
 
 message DeleteAnnotationRequest {
   // unique identifier for the annotation
-  string id = 1 [(buf.validate.field).required = 1];
+  string id = 1 [(buf.validate.field).required = true];
   // flag to indicate whether the entry will be wiped or turned obsolete(soft delete)
   bool purge = 2;
 }
