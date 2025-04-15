@@ -17,7 +17,8 @@ This repository contains:
 
 ## Repository structure
 
-/dictybase
+```
+/dictybase  
   /api          # Common API patterns and utilities
   /content      # Content management API definitions
   /user         # User service definitions
@@ -25,6 +26,7 @@ This repository contains:
   /feature_annotation # Feature annotation service definitions
   /annotation   # Annotation service definitions
   ...           # Other domain-specific APIs
+```
 
 ## Service APIs
 
