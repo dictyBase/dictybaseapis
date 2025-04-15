@@ -22,7 +22,72 @@ This repository contains:
   /content      # Content management API definitions
   /user         # User service definitions
   /stock        # Stock management interfaces
+  /feature_annotation # Feature annotation service definitions
+  /annotation   # Annotation service definitions
   ...           # Other domain-specific APIs
+
+## Service APIs
+
+### Annotation Service
+
+#### Overview
+The Annotation service provides management of ontology-based annotations for biological entities, supporting operations to create, retrieve, update, and delete annotations with robust filtering capabilities.
+
+#### Services
+
+1. **TaggedAnnotationService**
+   - `GetAnnotation`: Retrieves a specific annotation by ID
+   - `GetEntryAnnotation`: Retrieves a single annotation for a specific biological entry
+   - `ListAnnotations`: Returns paginated annotations with filtering options
+   - `CreateAnnotation`: Creates a new tagged annotation
+   - `UpdateAnnotation`: Updates an existing annotation (creates new version with link to previous)
+   - `DeleteAnnotation`: Deletes an annotation
+   - `CreateAnnotationGroup`: Creates a group from existing annotations
+   - `GetAnnotationGroup`: Retrieves an annotation group
+   - `AddToAnnotationGroup`: Adds an annotation to a group
+   - `DeleteAnnotationGroup`: Removes an annotation group
+   - `ListAnnotationGroups`: Returns paginated annotation groups
+   - `GetAnnotationTag`: Retrieves tag information
+   - `OboJSONFileUpload`: Uploads OBO JSON formatted files via streaming
+
+#### Key Data Structures
+
+- **TaggedAnnotation**: Annotation based on ontology terms with text value
+- **TaggedAnnotationAttributes**: Core annotation properties including value, entry_id, ontology tag
+- **TaggedAnnotationGroup**: Collection of related annotations grouped together
+- **EntryAnnotationRequest**: Request parameters for retrieving annotation for specific entries
+- **ListParameters**: Advanced filtering for annotation queries
+- **AnnotationTag**: Ontology term information used as tags
+
+### Feature Annotation Service
+
+#### Overview
+The Feature Annotation service manages biological feature annotations, providing functionality to create, update, retrieve, and delete annotations for genomic features.
+
+#### Services
+
+1. **FeatureAnnotationService**
+   - `CreateFeatureAnnotation`: Creates a new feature annotation
+   - `GetFeatureAnnotation`: Retrieves a feature annotation by ID
+   - `UpdateFeatureAnnotation`: Updates an existing feature annotation
+   - `DeleteFeatureAnnotation`: Deletes a feature annotation
+   - `AddTag`: Adds a tag property to a feature annotation
+   - `UpdateTag`: Updates an existing tag property
+   - `RemoveTag`: Removes a tag property from a feature annotation
+
+2. **OrganismFeatureService**
+   - `LinkFeatureToOrganism`: Links a feature annotation to an organism
+   - `GetFeatureOrganism`: Retrieves organism data for a feature
+   - `UpdateFeatureOrganism`: Updates a feature's organism association
+   - `RemoveFeatureOrganism`: Removes a feature's organism association
+
+#### Key Data Structures
+
+- **FeatureAnnotation**: Complete feature annotation record with metadata
+- **FeatureAnnotationAttributes**: Core annotation properties including name, synonyms, publications
+- **TagProperty**: Key-value pairs for custom annotation attributes
+- **DbLink**: References to external bioinformatics database entries
+- **OrganismFeatureLink**: Links feature annotations to specific organisms
 
 ## Development
 
