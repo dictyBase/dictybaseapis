@@ -38,7 +38,7 @@ The Annotation service provides management of ontology-based annotations for bio
 1. **TaggedAnnotationService**
    - `GetAnnotation`: Retrieves a specific annotation by ID
    - `GetEntryAnnotation`: Retrieves a single annotation for a specific biological entry
-   - `ListAnnotations`: Returns paginated annotations with filtering options
+   - `ListAnnotations`: Returns paginated annotations with filtering options (see details below)
    - `CreateAnnotation`: Creates a new tagged annotation
    - `UpdateAnnotation`: Updates an existing annotation (creates new version with link to previous)
    - `DeleteAnnotation`: Deletes an annotation
@@ -46,9 +46,90 @@ The Annotation service provides management of ontology-based annotations for bio
    - `GetAnnotationGroup`: Retrieves an annotation group
    - `AddToAnnotationGroup`: Adds an annotation to a group
    - `DeleteAnnotationGroup`: Removes an annotation group
-   - `ListAnnotationGroups`: Returns paginated annotation groups
+   - `ListAnnotationGroups`: Returns paginated annotation groups with filtering (see details below)
    - `GetAnnotationTag`: Retrieves tag information
    - `OboJSONFileUpload`: Uploads OBO JSON formatted files via streaming
+
+#### ListAnnotations Filtering
+
+The `ListAnnotations` API provides a powerful filtering system to query
+annotations based on various criteria:
+
+**Filterable Fields:**
+- `entry_id`: Identifier of the annotated entry
+- `value`: Annotation text content
+- `created_by`: Email of the creator
+- `tag`: Ontology term used as tag
+- `ontology`: Source ontology name
+- `version`: Version number
+- `rank`: Ordering of annotation
+- `is_obsolete`: Status of annotation
+
+**Filter Operators:**
+- String operators:
+  - `=~` Contains substring
+  - `!~` Does not contain substring
+  - `===` Equals exactly
+  - `!==` Not equals
+
+- Numeric operators:
+  - `==` Equals
+  - `!=` Not equals
+  - `>` Greater than
+  - `<` Less than
+  - `=<` Less than or equal to
+  - `>=` Greater than or equal to
+
+- Boolean operators:
+  - `==` Equals
+  - `!=` Not equals
+
+**Combining Filters:**
+- `OR` using comma (,)
+- `AND` using semicolon (;)
+- AND takes precedence over OR
+
+**Examples:**
+- `filter: "value=~cytoskeleton;tag===cell membrane;ontology===cellular"`
+- `filter: "entry_id===DDB_G0285418;is_obsolete==false"`
+- `filter: "created_by===curator@dictybase.org;version>2;rank==0"`
+- `filter: "tag===GO:0005634,tag===GO:0005737"` (entries with nuclear OR cytoplasmic localization)
+
+#### ListAnnotationGroups Filtering
+
+The `ListAnnotationGroups` API provides similar filtering functionality for annotation groups:
+
+**Filterable Fields:**
+- `entry_id`: The entry that is being annotated
+- `created_by`: Email id of the user
+- `tag`: Tag name, a term from an ontology
+- `ontology`: Ontology that provides the tag names
+- `rank`: Ordering of annotation
+
+**Filter Operators:**
+- String operators:
+  - `=~` Contains substring
+  - `!~` Does not contain substring
+  - `===` Equals exactly
+  - `!==` Not equals
+
+- Numeric operators:
+  - `==` Equals
+  - `!=` Not equals
+  - `>` Greater than
+  - `<` Less than
+  - `=<` Less than or equal to
+  - `>=` Greater than or equal to
+
+**Combining Filters:**
+- `OR` using comma (,)
+- `AND` using semicolon (;)
+- AND takes precedence over OR
+
+**Examples:**
+- `filter: "tag~cytoskeletion;entry_id==DDB_G4839783;ontology==cellular"`
+- `filter: "tag~membrane;entry_id==DDB_G4839783;ontology==cellular;rank=0"`
+- `filter: "created_by==curator@dictybase.org,created_by==another@dictybase.org"`
 
 #### Key Data Structures
 
