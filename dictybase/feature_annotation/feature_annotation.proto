@@ -29,6 +29,10 @@ service FeatureAnnotationService {
   rpc UpdateTag(UpdateTagRequest) returns (FeatureAnnotation) {}
   // Remove a tag from a feature annotation
   rpc RemoveTag(RemoveTagRequest) returns (FeatureAnnotation) {}
+  // Retrieves a list of feature annotations by PubMed ID
+  rpc ListFeatureAnnotationsByPubmedId(PubmedId) returns (FeatureAnnotationCollection) {}
+  // Retrieves a list of feature annotations by DOI (Digital Object Identifier)
+  rpc ListFeatureAnnotationsByDOI(DOI) returns (FeatureAnnotationCollection) {}
 }
 
 // FeatureAnnotation represents a complete feature annotation record with all
@@ -240,4 +244,25 @@ message RemoveTagRequest {
   string id = 1 [(buf.validate.field).required = true];
   // Tag to remove
   string tag = 2 [(buf.validate.field).required = true];
+}
+
+// PubmedId is used to specify a PubMed ID for retrieving feature annotations.
+message PubmedId {
+  // PubMed ID to search for
+  string id = 1 [(buf.validate.field).required = true];
+}
+
+// FeatureAnnotationCollection contains multiple feature annotations.
+message FeatureAnnotationCollection {
+  // Collection of feature annotations
+  repeated FeatureAnnotation data = 1;
+}
+
+// DOI is used to specify a Digital Object Identifier for retrieving feature annotations.
+message DOI {
+  // DOI to search for (e.g. "10.1234/abcd.1234")
+  string id = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.pattern = "^10\\.[0-9]{4,}(\\.\\w+)*\\/[-._;()/:a-zA-Z0-9]+$"
+  ];
 }
