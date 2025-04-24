@@ -157,6 +157,8 @@ The Feature Annotation service manages biological feature annotations, providing
    - `AddTag`: Adds a tag property to a feature annotation
    - `UpdateTag`: Updates an existing tag property
    - `RemoveTag`: Removes a tag property from a feature annotation
+   - `ListFeatureAnnotationsByPubmedId`: Retrieves a list of feature annotations by PubMed ID
+   - `ListFeatureAnnotationsByDOI`: Retrieves a list of feature annotations by DOI (Digital Object Identifier)
 
 2. **OrganismFeatureService**
    - `LinkFeatureToOrganism`: Links a feature annotation to an organism
@@ -171,6 +173,9 @@ The Feature Annotation service manages biological feature annotations, providing
 - **TagProperty**: Key-value pairs for custom annotation attributes
 - **DbLink**: References to external bioinformatics database entries
 - **OrganismFeatureLink**: Links feature annotations to specific organisms
+- **PubmedId**: PubMed identifier for literature references
+- **DOI**: Digital Object Identifier for literature references
+- **FeatureAnnotationCollection**: Collection of multiple feature annotations
 
 ## Development
 
