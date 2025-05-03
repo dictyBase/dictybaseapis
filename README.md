@@ -152,6 +152,7 @@ The Feature Annotation service manages biological feature annotations, providing
 1. **FeatureAnnotationService**
    - `CreateFeatureAnnotation`: Creates a new feature annotation
    - `GetFeatureAnnotation`: Retrieves a feature annotation by ID
+   - `GetFeatureAnnotationByName`: Retrieves a feature annotation by its name
    - `UpdateFeatureAnnotation`: Updates an existing feature annotation
    - `DeleteFeatureAnnotation`: Deletes a feature annotation
    - `AddTag`: Adds a tag property to a feature annotation
