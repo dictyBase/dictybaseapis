@@ -19,6 +19,8 @@ service FeatureAnnotationService {
   rpc CreateFeatureAnnotation(NewFeatureAnnotation) returns (FeatureAnnotation) {}
   // Retrieves the specified feature annotation
   rpc GetFeatureAnnotation(FeatureAnnotationId) returns (FeatureAnnotation) {}
+  // Retrieves the specified feature annotation by its name
+  rpc GetFeatureAnnotationByName(FeatureName) returns (FeatureAnnotation) {}
   // Update an existing feature annotation. Any given tag will be appended to the existing tags
   rpc UpdateFeatureAnnotation(FeatureAnnotationUpdate) returns (FeatureAnnotation) {}
   // Delete an existing feature annotation
@@ -132,6 +134,12 @@ message NewFeatureAnnotation {
 message FeatureAnnotationId {
   // unique identifier for the feature annotation
   string id = 1 [(buf.validate.field).required = true];
+}
+
+// FeatureName is used to specify a feature name for retrieval.
+message FeatureName {
+  // Feature name to search for
+  string name = 1 [(buf.validate.field).required = true];
 }
 
 // DeleteFeatureAnnotationRequest specifies a feature annotation to delete and
