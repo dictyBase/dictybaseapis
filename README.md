@@ -7,6 +7,23 @@
 Protocol Buffer definitions for dictyBase's gRPC APIs. Used to generate client libraries, 
 server stubs, and documentation.
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Repository structure](#repository-structure)
+- [Service APIs](#service-apis)
+  - [Annotation Service](#annotation-service)
+    - [Overview](#overview-1)
+    - [Services](#services)
+    - [ListAnnotations Filtering](#listannotations-filtering)
+    - [ListAnnotationGroups Filtering](#listannotationgroups-filtering)
+    - [Key Data Structures](#key-data-structures)
+  - [Feature Annotation Service](#feature-annotation-service)
+    - [Overview](#overview-2)
+    - [Services](#services-1)
+    - [Key Data Structures](#key-data-structures-1)
+- [Development](#development)
+
 ## Overview
 
 This repository contains:
