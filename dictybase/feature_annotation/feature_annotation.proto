@@ -206,6 +206,8 @@ message TagPropertyCreate {
     message: "email must be a valid email"
     expression: "this.isEmail()"
   }];
+  // Timestamp for creation
+  google.protobuf.Timestamp created_at = 4;
 }
 
 // TagPropertyUpdate contains the information needed to update an existing tag
@@ -219,6 +221,7 @@ message TagPropertyUpdate {
     message: "email must be a valid email"
     expression: "this.isEmail()"
   }];
+  google.protobuf.Timestamp updated_at = 4;
 }
 
 // Dbxref represents a deprecated cross-reference to an external database.
