@@ -27,6 +27,8 @@ service FeatureAnnotationService {
   rpc DeleteFeatureAnnotation(DeleteFeatureAnnotationRequest) returns (google.protobuf.Empty) {}
   // Add tag to an existing feature annotation
   rpc AddTag(AddTagRequest) returns (FeatureAnnotation) {}
+  // Add multiple tags to an existing feature annotation
+  rpc AddTags(AddTagsRequest) returns (FeatureAnnotation) {}
   // Update an existing tag in a feature annotation
   rpc UpdateTag(UpdateTagRequest) returns (FeatureAnnotation) {}
   // Remove a tag from a feature annotation
@@ -239,6 +241,14 @@ message AddTagRequest {
   string id = 1 [(buf.validate.field).required = true];
   // Tag to be added
   TagPropertyCreate tag = 2 [(buf.validate.field).required = true];
+}
+
+// AddTagsRequest specifies a feature annotation and multiple tags to add to it.
+message AddTagsRequest {
+  // ID of feature annotation to modify
+  string id = 1 [(buf.validate.field).required = true];
+  // Tags to be added
+  repeated TagPropertyCreate tags = 2 [(buf.validate.field).required = true];
 }
 
 // UpdateTagRequest specifies a feature annotation and updated tag values.
