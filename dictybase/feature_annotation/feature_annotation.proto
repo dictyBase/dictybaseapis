@@ -32,6 +32,10 @@ service FeatureAnnotationService {
   // Update an existing tag in a feature annotation
   rpc UpdateTag(UpdateTagRequest) returns (FeatureAnnotation) {}
   // Remove a tag from a feature annotation
+  rpc RemoveTag(RemoveTagRequest) returns (FeatureAnnotation) {
+    option deprecated = true;
+  }
+  // Remove a tag from a feature annotation
   rpc RemoveTags(RemoveTagsRequest) returns (FeatureAnnotation) {}
   // Retrieves a list of feature annotations by PubMed ID
   rpc ListFeatureAnnotationsByPubmedId(PubmedId) returns (FeatureAnnotationCollection) {}
@@ -257,6 +261,11 @@ message UpdateTagRequest {
   string id = 1 [(buf.validate.field).required = true];
   // Updated tag values
   TagPropertyUpdate tag = 2 [(buf.validate.field).required = true];
+}
+
+// RemoveTagRequest specifies a feature annotation and a tag to remove from it.
+message RemoveTagRequest {
+  option deprecated = true;
 }
 
 // RemoveTagsRequest specifies a feature annotation and a tag to remove from it.
