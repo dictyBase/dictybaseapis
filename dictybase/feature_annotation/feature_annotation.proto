@@ -266,6 +266,10 @@ message UpdateTagRequest {
 // RemoveTagRequest specifies a feature annotation and a tag to remove from it.
 message RemoveTagRequest {
   option deprecated = true;
+  // ID of feature annotation to modify
+  string id = 1 [deprecated = true];
+  // Tag to remove
+  string tag = 2 [deprecated = true];
 }
 
 // RemoveTagsRequest specifies a feature annotation and a tag to remove from it.
