@@ -29,6 +29,8 @@ service FeatureAnnotationService {
   rpc AddTag(AddTagRequest) returns (FeatureAnnotation) {}
   // Add multiple tags to an existing feature annotation
   rpc AddTags(AddTagsRequest) returns (FeatureAnnotation) {}
+  // Replace all tags for a feature annotation (idempotent full-update)
+  rpc SetTags(SetTagsRequest) returns (FeatureAnnotation) {}
   // Update an existing tag in a feature annotation
   rpc UpdateTag(UpdateTagRequest) returns (FeatureAnnotation) {
     option deprecated = true;
@@ -264,6 +266,14 @@ message AddTagsRequest {
   // ID of feature annotation to modify
   string id = 1 [(buf.validate.field).required = true];
   // Tags to be added
+  repeated TagPropertyCreate tags = 2 [(buf.validate.field).required = true];
+}
+
+// SetTagsRequest specifies a feature annotation and the complete set of tags to replace all existing tags.
+message SetTagsRequest {
+  // ID of feature annotation to modify
+  string id = 1 [(buf.validate.field).required = true];
+  // Complete set of tags to replace all existing tags
   repeated TagPropertyCreate tags = 2 [(buf.validate.field).required = true];
 }
 
