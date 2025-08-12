@@ -96,12 +96,29 @@ message FeatureAnnotationAttributes {
   repeated TagProperty properties = 7;
 }
 
+// FeatureAnnotationUpdateAttributes defines the core properties and metadata of
+// a feature annotation for update operations, where all fields are optional.
+message FeatureAnnotationUpdateAttributes {
+  // Short human readable textual name
+  string name = 1;
+  // Alternate list of names
+  repeated string synonyms = 2;
+  // List of publications(doi identifiers)
+  repeated string publications = 3;
+  // List of pubmed id
+  repeated string pubmed = 4;
+  // Cross references to other databases
+  repeated DbLink dblinks = 6;
+  // Bucket of key value pair data
+  repeated TagProperty properties = 7;
+}
+
 // FeatureAnnotationUpdate contains the fields needed to update an existing
 // feature annotation.
 message FeatureAnnotationUpdate {
   string type = 1;
   string id = 2 [(buf.validate.field).required = true];
-  FeatureAnnotationAttributes attributes = 3;
+  FeatureAnnotationUpdateAttributes attributes = 3;
   // email id of the user who updated the content
   string updated_by = 4 [(buf.validate.field).cel = {
     id: "valid_email"
