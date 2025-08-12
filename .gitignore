@@ -2,3 +2,4 @@
 .env
 .mcp.json
 .claude/settings.local.json
+.gemini
