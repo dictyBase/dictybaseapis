@@ -118,15 +118,12 @@ message FeatureAnnotationUpdateAttributes {
 message FeatureAnnotationUpdate {
   string type = 1;
   string id = 2 [(buf.validate.field).required = true];
-  FeatureAnnotationUpdateAttributes attributes = 3 [(buf.validate.field).required = true];
+  FeatureAnnotationAttributes attributes = 3 [deprecated = true];
   // email id of the user who updated the content
-  string updated_by = 4 [(buf.validate.field).cel = {
-    id: "valid_email"
-    message: "email must be a valid email"
-    expression: "this.isEmail()"
-  }];
+  string updated_by = 4 [(buf.validate.field).string.email = true];
   // Toggle the obsolete status
   bool is_obsolete = 5;
+  FeatureAnnotationUpdateAttributes attributes = 6 [(buf.validate.field).required = true];
 }
 
 // NewFeatureAnnotation contains all the information needed to create a new
