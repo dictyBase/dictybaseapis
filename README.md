@@ -12,16 +12,21 @@ server stubs, and documentation.
 - [Overview](#overview)
 - [Repository structure](#repository-structure)
 - [Service APIs](#service-apis)
-  - [Annotation Service](#annotation-service)
-    - [Overview](#overview-1)
-    - [Services](#services)
-    - [ListAnnotations Filtering](#listannotations-filtering)
-    - [ListAnnotationGroups Filtering](#listannotationgroups-filtering)
-    - [Key Data Structures](#key-data-structures)
-  - [Feature Annotation Service](#feature-annotation-service)
-    - [Overview](#overview-2)
-    - [Services](#services-1)
-    - [Key Data Structures](#key-data-structures-1)
+   - [Annotation Service](#annotation-service)
+     - [Overview](#overview-1)
+     - [Services](#services)
+     - [ListAnnotations Filtering](#listannotations-filtering)
+     - [ListAnnotationGroups Filtering](#listannotationgroups-filtering)
+     - [Key Data Structures](#key-data-structures)
+   - [Feature Annotation Service](#feature-annotation-service)
+     - [Overview](#overview-2)
+     - [Services](#services-1)
+     - [Key Data Structures](#key-data-structures-1)
+   - [Stock Service](#stock-service)
+     - [Overview](#overview-3)
+     - [Services](#services-2)
+     - [StockParameters Filtering](#stockparameters-filtering)
+     - [Key Data Structures](#key-data-structures-2)
 - [Development](#development)
 
 ## Overview
@@ -194,6 +199,47 @@ The Feature Annotation service manages biological feature annotations, providing
 - **PubmedId**: PubMed identifier for literature references
 - **DOI**: Digital Object Identifier for literature references
 - **FeatureAnnotationCollection**: Collection of multiple feature annotations
+
+### Stock Service
+
+#### Overview
+The Stock Service manages biological stocks including strains and plasmids. It supports CRUD operations, filtering, pagination, and file uploads for OBO JSON data. Validation ensures required fields like IDs, timestamps, and user information are present.
+
+#### Services
+- `GetStrain(StockId) -> Strain`: Requires non-empty `StockId.id`. Returns `Strain.data` with `StrainAttributes`.
+- `GetPlasmid(StockId) -> Plasmid`: Requires non-empty `StockId.id`. Returns `Plasmid.data` with `PlasmidAttributes`.
+- `CreateStrain(NewStrain) -> Strain`: Requires `NewStrain.data.attributes` fields `created_by`, `updated_by`, `depositor`, `label`, `species`. Optional: `summary`, `editable_summary`, `genes`, `dbxrefs`, `publications`, `plasmid`, `parent`, `names`, `dicty_strain_property`.
+- `CreatePlasmid(NewPlasmid) -> Plasmid`: Requires `created_by`, `updated_by`,
+`depositor`, `name`. Optional: `summary`, `editable_summary`, `genes`,
+`dbxrefs`, `publications`, `image_map`, `sequence`, `dicty_plasmid_property`.
+- `UpdateStrain(StrainUpdate) -> Strain`: Requires non-empty `StrainUpdate.data.id` and `StrainUpdateAttributes.updated_by`. Supports partial updates for `summary`, `editable_summary`, `depositor`, `genes`, `dbxrefs`, `publications`, `label`, `species`, `plasmid`, `parent`, `names`, `dicty_strain_property`.
+- `UpdatePlasmid(PlasmidUpdate) -> Plasmid`: Requires non-empty `PlasmidUpdate.data.id` and `PlasmidUpdateAttributes.updated_by`. Supports partial updates for `summary`, `editable_summary`, `depositor`, `genes`, `dbxrefs`, `publications`, `image_map`, `sequence`, `name`, `dicty_plasmid_property`.
+- `RemoveStock(StockId) -> google.protobuf.Empty`: Removes a strain or plasmid by ID.
+- `ListStrains(StockParameters) -> StrainCollection`: Paginates with `cursor` and `limit` (default 10). Returns `meta.next_cursor`, `meta.limit`, `meta.total`. Supports `filter` as described below.
+- `ListStrainsByIds(StockIdList) -> StrainList`: Accepts IDs matching `^DB(P|S)[0-9]{5,}$`. No pagination metadata.
+- `ListPlasmids(StockParameters) -> PlasmidCollection`: Same pagination and filtering semantics as `ListStrains`.
+- `LoadStrain(ExistingStrain) -> Strain`: Inserts an existing strain record including `created_at`, `updated_at`, `created_by`, `updated_by`, and other attributes.
+- `LoadPlasmid(ExistingPlasmid) -> Plasmid`: Inserts an existing plasmid record including `created_at`, `updated_at`, `created_by`, and other attributes (in `ExistingPlasmidAttributes`, `updated_by` is not required).
+- `OboJSONFileUpload(stream FileUploadRequest) -> FileUploadResponse`: Client-side streaming upload for OBO JSON files.
+
+#### StockParameters Filtering
+The `filter` field in `StockParameters` restricts results using syntax: `field_name operator expression`. Allowed fields include `depositor`, `parent`, `plasmid`, `species`, `summary`, `name`, `descriptor`, `plasmid_name`, `created_at`, and `updated_at`. Operators vary by type (strings: `=~`, `!~`, `===`, `!=`; numbers: `==`, `>`, `<`, `<=`, `>=`; dates: `$==`, `$>`, `$<`, `$<=`, `$>=`; arrays: `@=~`, `@==`, `@!=`). Combine filters with `,` (OR) or `;` (AND), where AND has precedence.
+
+Examples:
+- `created_at$>=2018-12-01`: Strains created on or after December 1, 2018.
+- `depositor===Costanza`: Strains deposited by Costanza.
+- `species===Dictyostelium discoideum;name=~GFP`: Strains of specified species with names containing "GFP".
+- `updated_at$<2020-01-01;summary!~mutant`: Strains updated before 2020 without "mutant" in summary.
+
+#### Key Data Structures
+- `StockId`: Contains a required non-empty `id` string.
+- `StockIdList`: List of IDs matching regex `^DB(P|S)[0-9]{5,}$`.
+- `Strain` and `Plasmid`: Wrap `Data` with required `type`, `id`, and `attributes` (e.g., `StrainAttributes` includes required `created_at`, `updated_at`, `created_by`, `updated_by`, `label`, `species`).
+- `NewStrain` and `NewPlasmid`: For creation, with required fields like `created_by`, `updated_by`, `depositor`, `label`/`name`, `species`.
+- `StrainUpdate` and `PlasmidUpdate`: For updates, with required `id` and `updated_by`.
+- `StrainCollection` and `PlasmidCollection`: Lists with required `Meta` for pagination.
+- `StockParameters`: Defines `cursor` (default 0), `limit` (default 10), and `filter`.
+- `Meta`: Includes `next_cursor`, `limit`, and `total` for collection traversal.
 
 ## Development
 
