@@ -54,6 +54,32 @@ enum OrderStatus {
   SHIPPED = 3;
 }
 
+// Compact user profile embedded in an order at creation time. It carries
+// the mailing and contact fields needed to generate invoices and
+// notifications without a lookup against the user service.
+message UserInfo {
+  // First name.
+  string first_name = 1;
+  // Last name.
+  string last_name = 2;
+  // Organization in which the user belong.
+  string organization = 3;
+  // Address.
+  string first_address = 4;
+  // More address.
+  string second_address = 5;
+  // City.
+  string city = 6;
+  // State.
+  string state = 7;
+  // Zipcode.
+  string zipcode = 8;
+  // Country.
+  string country = 9;
+  // Phone no.
+  string phone = 10;
+}
+
 // Definition of various order attributes
 message OrderAttributes {
   // Timestamp for creation
@@ -81,6 +107,10 @@ message OrderAttributes {
   // List of items in the order, in this case it will be mostly biological
   // stocks such as plasmids and strains
   repeated string items = 12;
+  // Contact information of the consumer (shipper) embedded in the order
+  UserInfo consumer_info = 13;
+  // Contact information of the payer embedded in the order
+  UserInfo payer_info = 14;
 }
 
 // Definition for creating a new order
@@ -116,6 +146,10 @@ message NewOrderAttributes {
   // List of items in the order, in this case it will be mostly biological
   // stocks such as plasmids and strains
   repeated string items = 10 [(validator.field) = {repeated_count_min: 1}];
+  // Contact information of the consumer (shipper) embedded in the order
+  UserInfo consumer_info = 11;
+  // Contact information of the payer embedded in the order
+  UserInfo payer_info = 12;
 }
 
 // Definition for loading an existing order
