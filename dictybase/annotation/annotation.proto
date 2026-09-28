@@ -205,7 +205,8 @@ message NewTaggedAnnotation {
   message Data {
     // resource name, by default should be annotation
     string type = 1;
-    NewTaggedAnnotationAttributes attributes = 2;
+    NewTaggedAnnotationAttributes attributes = 2
+        [(buf.validate.field).required = true];
   }
   Data data = 1 [(buf.validate.field).required = true];
 }
@@ -242,7 +243,8 @@ message TaggedAnnotationUpdate {
     string type = 1;
     // unique identifier for the annotation
     string id = 2 [(buf.validate.field).required = true];
-    TaggedAnnotationUpdateAttributes attributes = 3;
+    TaggedAnnotationUpdateAttributes attributes = 3
+        [(buf.validate.field).required = true];
   }
   Data data = 1 [(buf.validate.field).required = true];
 }
