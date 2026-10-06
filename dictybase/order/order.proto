@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package dictybase.order;
 
+import "buf/validate/validate.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
@@ -25,6 +26,8 @@ service OrderService {
   rpc ListOrders(ListParameters) returns (OrderCollection) {}
   // Load existing order
   rpc LoadOrder(ExistingOrder) returns (Order) {}
+  // Suggest orders for autocomplete input; returns at most 5 entries
+  rpc AutocompleteOrder(AutocompleteParameters) returns (OrderSuggestionCollection) {}
   // Clear database before loading existing orders
   rpc PrepareForOrder(google.protobuf.Empty) returns (google.protobuf.Empty) {}
 }
@@ -294,4 +297,47 @@ message Meta {
   int64 limit = 2;
   // Total number of records in the collection.
   int64 total = 3;
+}
+
+// AutocompleteParameters defines the input for order autocomplete requests
+message AutocompleteParameters {
+  message Data {
+    // Resource name, by default should be order
+    string type = 1;
+    AutocompleteAttributes attributes = 2
+        [(buf.validate.field).required = true];
+  }
+  Data data = 1 [(buf.validate.field).required = true];
+}
+
+// AutocompleteAttributes defines the search text for autocomplete requests
+message AutocompleteAttributes {
+  // Search text; clients send it once at least 3 characters are typed.
+  // The matching runs against purchase_order_num, the embedded consumer
+  // info fields and the embedded payer info fields.
+  string query = 1 [(buf.validate.field).string.min_len = 3];
+  // Maximum number of suggestions to return. The server defaults to 5
+  // when this field is absent or zero.
+  int64 limit = 2;
+}
+
+// OrderSuggestion is a single autocomplete match for an order
+message OrderSuggestion {
+  // Unique identifier of the matched order
+  string id = 1;
+  // Name of the order field that matched, for example
+  // purchase_order_num or consumer_info.organization
+  string field = 2;
+  // Matched value, displayed as the suggestion text in the UI
+  string display_text = 3;
+  // Search score assigned by the ArangoSearch view
+  double score = 4;
+}
+
+// OrderSuggestionCollection returns the suggestions for an autocomplete
+// query. An empty data list is valid, because a query can match no order.
+message OrderSuggestionCollection {
+  repeated OrderSuggestion data = 1;
+  // Total number of suggestions returned
+  Meta meta = 2;
 }
