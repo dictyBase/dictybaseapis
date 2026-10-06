@@ -304,8 +304,7 @@ message AutocompleteParameters {
   message Data {
     // Resource name, by default should be order
     string type = 1;
-    AutocompleteAttributes attributes = 2
-        [(buf.validate.field).required = true];
+    AutocompleteAttributes attributes = 2 [(buf.validate.field).required = true];
   }
   Data data = 1 [(buf.validate.field).required = true];
 }
