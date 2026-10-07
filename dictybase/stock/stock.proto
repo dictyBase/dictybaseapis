@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package dictybase.stock;
 
+import "buf/validate/validate.proto";
 import "dictybase/api/upload/file.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
 import "google/protobuf/empty.proto";
@@ -40,8 +41,53 @@ service StockService {
   rpc LoadStrain(ExistingStrain) returns (Strain) {}
   // Load existing plasmid
   rpc LoadPlasmid(ExistingPlasmid) returns (Plasmid) {}
+  // AutocompleteStock returns short type-ahead suggestions for a partial
+  // search text. The default list length is 5.
+  rpc AutocompleteStock(StockAutocompleteParameters) returns (StockSuggestionCollection) {}
+  // SearchStock returns a ranked list of stocks for a search text. The
+  // default list length is 50.
+  rpc SearchStock(StockSearchParameters) returns (StockSearchResultCollection) {}
   // Upload obojson formatted file through client side streaming
   rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
+}
+
+// StockEntity selects the kind of stock that a search covers.
+enum StockEntity {
+  // Both strains and plasmids. This is the default, because an absent
+  // field carries the value 0.
+  STOCK_ENTITY_UNSPECIFIED = 0;
+  // Strains only.
+  STOCK_ENTITY_STRAIN = 1;
+  // Plasmids only.
+  STOCK_ENTITY_PLASMID = 2;
+}
+
+// StockSearchField names the stock field that produced a match.
+enum StockSearchField {
+  STOCK_SEARCH_FIELD_UNSPECIFIED = 0;
+  // Do not reuse the field number or enum name from an earlier plan draft.
+  reserved 10;
+  reserved "STOCK_SEARCH_FIELD_EDITABLE_SUMMARY";
+  // stock_id of the stock document, for example DBS0236126.
+  STOCK_SEARCH_FIELD_STOCK_ID = 1;
+  // genes array of the stock document.
+  STOCK_SEARCH_FIELD_GENES = 2;
+  // dbxrefs array of the stock document.
+  STOCK_SEARCH_FIELD_DBXREFS = 3;
+  // label of the strain property document.
+  STOCK_SEARCH_FIELD_LABEL = 4;
+  // names array of the strain property document.
+  STOCK_SEARCH_FIELD_NAMES = 5;
+  // species of the strain property document.
+  STOCK_SEARCH_FIELD_SPECIES = 6;
+  // plasmid of the strain property document.
+  STOCK_SEARCH_FIELD_PLASMID = 7;
+  // name of the plasmid property document.
+  STOCK_SEARCH_FIELD_NAME = 8;
+  // summary of the stock document.
+  STOCK_SEARCH_FIELD_SUMMARY = 9;
+  // depositor of the stock document.
+  STOCK_SEARCH_FIELD_DEPOSITOR = 11;
 }
 
 message StockId {
@@ -531,4 +577,119 @@ message Meta {
   int64 limit = 2;
   // Total number of records in the collection.
   int64 total = 3;
+}
+
+// StockAutocompleteParameters is the input of an AutocompleteStock call.
+message StockAutocompleteParameters {
+  message Data {
+    // Resource name. By default it is stock.
+    string type = 1;
+    StockAutocompleteAttributes attributes = 2 [(buf.validate.field).required = true];
+  }
+  Data data = 1 [(buf.validate.field).required = true];
+}
+
+// StockAutocompleteAttributes holds the search text of an autocomplete
+// request. The match runs against stock_id, genes, dbxrefs, the strain
+// label, the strain names, the species, the strain plasmid and the
+// plasmid name.
+message StockAutocompleteAttributes {
+  // Search text. The client sends it when at least 3 characters are
+  // typed. The server trims the text and lowercases it.
+  string query = 1 [(buf.validate.field).string.min_len = 3];
+  // Maximum number of suggestions. The server returns 5 when this field
+  // is absent or zero, and it never returns more than 50.
+  int64 limit = 2 [(buf.validate.field).int64 = {
+    gte: 0
+    lte: 50
+  }];
+  // Kind of stock to search. An absent field covers both kinds.
+  StockEntity entity = 3 [(buf.validate.field).enum.defined_only = true];
+}
+
+// StockSuggestion is one autocomplete match.
+message StockSuggestion {
+  // stock_id of the matched stock, for example DBS0236126.
+  string id = 1;
+  // Kind of the matched stock. The server never returns
+  // STOCK_ENTITY_UNSPECIFIED here.
+  StockEntity entity = 2;
+  // Field that produced the match.
+  StockSearchField field = 3;
+  // Text that the user interface shows for this suggestion.
+  string display_text = 4;
+  // Rank score. A prefix match scores above a fuzzy match.
+  double score = 5;
+}
+
+// StockSuggestionCollection returns the suggestions of an autocomplete
+// request. An empty data list is valid, because a query can match no
+// stock.
+message StockSuggestionCollection {
+  repeated StockSuggestion data = 1;
+  // next_cursor is always 0, limit is the effective limit of the
+  // request, and total is the number of rows in data.
+  Meta meta = 2;
+}
+
+// StockSearchParameters is the input of a SearchStock call.
+message StockSearchParameters {
+  message Data {
+    // Resource name. By default it is stock.
+    string type = 1;
+    StockSearchAttributes attributes = 2 [(buf.validate.field).required = true];
+  }
+  Data data = 1 [(buf.validate.field).required = true];
+}
+
+// StockSearchAttributes holds the search text of a full search request.
+// The match runs against stock_id, genes, dbxrefs, the strain label, the
+// strain names, the species, the strain plasmid, the plasmid name, the
+// summary and the depositor. The search does not use editable_summary.
+message StockSearchAttributes {
+  // Search text. The minimum length is 2 characters, because gene names
+  // such as csA are short.
+  string query = 1 [(buf.validate.field).string.min_len = 2];
+  // Maximum number of results. The server returns 50 when this field is
+  // absent or zero, and it never returns more than 100.
+  int64 limit = 2 [(buf.validate.field).int64 = {
+    gte: 0
+    lte: 100
+  }];
+  // Kind of stock to search. An absent field covers both kinds.
+  StockEntity entity = 3 [(buf.validate.field).enum.defined_only = true];
+}
+
+// StockSearchResult is one full search match.
+message StockSearchResult {
+  // stock_id of the matched stock, for example DBS0236126.
+  string id = 1;
+  // Kind of the matched stock. The server never returns
+  // STOCK_ENTITY_UNSPECIFIED here.
+  StockEntity entity = 2;
+  // Field that produced the match.
+  StockSearchField field = 3;
+  // Text that the user interface shows for the matched field.
+  string display_text = 4;
+  // Rank score. A prefix match scores above a phrase match, a phrase
+  // match scores above a token match, and a token match scores above a
+  // fuzzy match.
+  double score = 5;
+  // Complete stored summary of the stock document. It is not a snippet,
+  // and it is not highlighted. An absent stored summary gives an empty
+  // string.
+  string summary = 6;
+  // Strain label, shown as Descriptor in the stock center. Plasmid results
+  // and strains without a label return an empty string.
+  string strain_label = 7;
+}
+
+// StockSearchResultCollection returns the results of a full search
+// request. An empty data list is valid, because a query can match no
+// stock.
+message StockSearchResultCollection {
+  repeated StockSearchResult data = 1;
+  // next_cursor is always 0, limit is the effective limit of the
+  // request, and total is the number of rows in data.
+  Meta meta = 2;
 }
