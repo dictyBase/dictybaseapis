@@ -41,8 +41,20 @@ service TaggedAnnotationService {
   rpc ListAnnotationGroups(ListGroupParameters) returns (TaggedAnnotationGroupCollection) {}
   // Retrieves tag information
   rpc GetAnnotationTag(TagRequest) returns (AnnotationTag) {}
+  // AutocompleteAnnotation returns short type-ahead suggestions for a
+  // partial search text. The default list length is 5.
+  rpc AutocompleteAnnotation(AnnotationAutocompleteParameters) returns (AnnotationSuggestionCollection) {}
   // Upload obojson formatted file through client side streaming
   rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
+}
+
+// AnnotationSearchField names the annotation field that produced a match.
+enum AnnotationSearchField {
+  ANNOTATION_SEARCH_FIELD_UNSPECIFIED = 0;
+  // value of an active dicty_annotation entry tagged synonym.
+  ANNOTATION_SEARCH_FIELD_SYNONYM = 1;
+  // value of an active dicty_annotation entry tagged genotype.
+  ANNOTATION_SEARCH_FIELD_GENOTYPE = 2;
 }
 
 message AnnotationGroupId {
@@ -391,4 +403,56 @@ message Meta {
   int64 next_cursor = 1;
   // Maximum number of records that can be fetch per request
   int64 limit = 2;
+  // Total number of records in the collection.
+  int64 total = 3;
+}
+
+// AnnotationAutocompleteParameters is the input of an
+// AutocompleteAnnotation call.
+message AnnotationAutocompleteParameters {
+  message Data {
+    // Resource name. By default it is annotation.
+    string type = 1;
+    AnnotationAutocompleteAttributes attributes = 2 [(buf.validate.field).required = true];
+  }
+  Data data = 1 [(buf.validate.field).required = true];
+}
+
+// AnnotationAutocompleteAttributes holds the search text of an
+// autocomplete request. The match runs against the value of active
+// dicty_annotation entries tagged synonym or genotype for strain
+// (DBS...) entries, deduplicated by entry_id.
+message AnnotationAutocompleteAttributes {
+  // Search text. The client sends it when at least 3 characters are
+  // typed. The server trims the text and lowercases it.
+  string query = 1 [(buf.validate.field).string.min_len = 3];
+  // Maximum number of suggestions. The server returns 5 when this field
+  // is absent or zero, and it never returns more than 50.
+  int64 limit = 2 [(buf.validate.field).int64 = {
+    gte: 0
+    lte: 50
+  }];
+}
+
+// AnnotationSuggestion is one autocomplete match, deduplicated by
+// entry_id.
+message AnnotationSuggestion {
+  // entry_id of the matched strain, for example DBS0236126.
+  string entry_id = 1;
+  // Field that produced the match.
+  AnnotationSearchField field = 2;
+  // Text that the user interface shows for this suggestion.
+  string display_text = 3;
+  // Rank score. A prefix match scores above a fuzzy match.
+  double score = 4;
+}
+
+// AnnotationSuggestionCollection returns the suggestions of an
+// autocomplete request. An empty data list is valid, because a query
+// can match no annotation.
+message AnnotationSuggestionCollection {
+  repeated AnnotationSuggestion data = 1;
+  // next_cursor is always 0, limit is the effective limit of the
+  // request, and total is the number of rows in data.
+  Meta meta = 2;
 }
