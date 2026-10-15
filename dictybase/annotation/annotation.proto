@@ -44,6 +44,9 @@ service TaggedAnnotationService {
   // AutocompleteAnnotation returns short type-ahead suggestions for a
   // partial search text. The default list length is 5.
   rpc AutocompleteAnnotation(AnnotationAutocompleteParameters) returns (AnnotationSuggestionCollection) {}
+  // SearchAnnotation returns a ranked list of strain annotations for a
+  // search text, deduplicated by entry_id. The default list length is 50.
+  rpc SearchAnnotation(AnnotationSearchParameters) returns (AnnotationSearchResultCollection) {}
   // Upload obojson formatted file through client side streaming
   rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
 }
@@ -55,6 +58,22 @@ enum AnnotationSearchField {
   ANNOTATION_SEARCH_FIELD_SYNONYM = 1;
   // value of an active dicty_annotation entry tagged genotype.
   ANNOTATION_SEARCH_FIELD_GENOTYPE = 2;
+  // value of an active dicty_annotation entry tagged systematic name.
+  ANNOTATION_SEARCH_FIELD_SYSTEMATIC_NAME = 3;
+  // value of an active dicty_annotation entry tagged mutant type.
+  ANNOTATION_SEARCH_FIELD_GENETIC_MODIFICATION = 4;
+  // value of an active Dd Mutagenesis Method entry tagged mutagenesis method.
+  ANNOTATION_SEARCH_FIELD_MUTAGENESIS_METHOD = 5;
+  // cvterm label of an active Dicty Phenotypes entry.
+  ANNOTATION_SEARCH_FIELD_PHENOTYPE = 6;
+  // cvterm label of an active Dicty Environment entry.
+  ANNOTATION_SEARCH_FIELD_ENVIRONMENT = 7;
+  // cvterm label of an active Dictyostelium Assay entry.
+  ANNOTATION_SEARCH_FIELD_ASSAY = 8;
+  // cvterm label of an active dicty_strain_characteristics entry.
+  ANNOTATION_SEARCH_FIELD_CHARACTERISTIC = 9;
+  // value of an active dicty_annotation entry tagged public note.
+  ANNOTATION_SEARCH_FIELD_PUBLIC_NOTE = 10;
 }
 
 message AnnotationGroupId {
@@ -452,6 +471,60 @@ message AnnotationSuggestion {
 // can match no annotation.
 message AnnotationSuggestionCollection {
   repeated AnnotationSuggestion data = 1;
+  // next_cursor is always 0, limit is the effective limit of the
+  // request, and total is the number of rows in data.
+  Meta meta = 2;
+}
+
+// AnnotationSearchParameters is the input of a SearchAnnotation call.
+message AnnotationSearchParameters {
+  message Data {
+    // Resource name. By default it is annotation.
+    string type = 1;
+    AnnotationSearchAttributes attributes = 2 [(buf.validate.field).required = true];
+  }
+  Data data = 1 [(buf.validate.field).required = true];
+}
+
+// AnnotationSearchAttributes holds the search text of a full search
+// request. The match runs against active strain (DBS...) entries over the
+// 10 searched annotation fields: synonym, genotype, systematic name,
+// mutant type (genetic modification), mutagenesis method, public note, and
+// the cvterm labels of Dicty Phenotypes, Dicty Environment, Dictyostelium
+// Assay, and dicty_strain_characteristics, deduplicated by entry_id. The
+// search does not use editable_value.
+message AnnotationSearchAttributes {
+  // Search text. The minimum length is 2 characters, because gene and
+  // allele names such as csA are short.
+  string query = 1 [(buf.validate.field).string.min_len = 2];
+  // Maximum number of results. The server returns 50 when this field is
+  // absent or zero, and it never returns more than 50.
+  int64 limit = 2 [(buf.validate.field).int64 = {
+    gte: 0
+    lte: 50
+  }];
+}
+
+// AnnotationSearchResult is one full search match, deduplicated by
+// entry_id.
+message AnnotationSearchResult {
+  // entry_id of the matched strain, for example DBS0236126.
+  string entry_id = 1;
+  // Field that produced the match.
+  AnnotationSearchField field = 2;
+  // Text that the user interface shows for the matched field.
+  string display_text = 3;
+  // Rank score. A prefix match scores above a phrase match, a phrase
+  // match scores above a token match, and a token match scores above a
+  // fuzzy match.
+  double score = 4;
+}
+
+// AnnotationSearchResultCollection returns the results of a full search
+// request. An empty data list is valid, because a query can match no
+// annotation.
+message AnnotationSearchResultCollection {
+  repeated AnnotationSearchResult data = 1;
   // next_cursor is always 0, limit is the effective limit of the
   // request, and total is the number of rows in data.
   Meta meta = 2;
