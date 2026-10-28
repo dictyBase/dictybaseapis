@@ -47,6 +47,9 @@ service TaggedAnnotationService {
   // SearchAnnotation returns a ranked list of strain annotations for a
   // search text, deduplicated by entry_id. The default list length is 50.
   rpc SearchAnnotation(AnnotationSearchParameters) returns (AnnotationSearchResultCollection) {}
+  // SearchPhenotypes returns a ranked list of phenotype ontology terms for a
+  // search text. The default list length is 50.
+  rpc SearchPhenotypes(PhenotypeSearchParameters) returns (PhenotypeSearchResultCollection) {}
   // Upload obojson formatted file through client side streaming
   rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
 }
@@ -525,6 +528,52 @@ message AnnotationSearchResult {
 // annotation.
 message AnnotationSearchResultCollection {
   repeated AnnotationSearchResult data = 1;
+  // next_cursor is always 0, limit is the effective limit of the
+  // request, and total is the number of rows in data.
+  Meta meta = 2;
+}
+
+// PhenotypeSearchParameters is the input of a SearchPhenotypes call.
+message PhenotypeSearchParameters {
+  message Data {
+    // Resource name. By default it is phenotype.
+    string type = 1;
+    PhenotypeSearchAttributes attributes = 2 [(buf.validate.field).required = true];
+  }
+  Data data = 1 [(buf.validate.field).required = true];
+}
+
+// PhenotypeSearchAttributes holds the search text of a phenotype search
+// request. The match runs against cvterm name and definition fields for the
+// Dicty Phenotypes ontology.
+message PhenotypeSearchAttributes {
+  // Search text. The minimum length is 2 characters.
+  string query = 1 [(buf.validate.field).string.min_len = 2];
+  // Maximum number of results. The server returns 50 when this field is
+  // absent or zero, and it never returns more than 50.
+  int64 limit = 2 [(buf.validate.field).int64 = {
+    gte: 0
+    lte: 50
+  }];
+}
+
+// PhenotypeSearchResult is one full search match for a phenotype term.
+message PhenotypeSearchResult {
+  // id of the matched cvterm.
+  string id = 1;
+  // Name of the phenotype term.
+  string name = 2;
+  // Definition of the phenotype term.
+  string definition = 3;
+  // Rank score.
+  double score = 4;
+}
+
+// PhenotypeSearchResultCollection returns the results of a phenotype search
+// request. An empty data list is valid, because a query can match no
+// term.
+message PhenotypeSearchResultCollection {
+  repeated PhenotypeSearchResult data = 1;
   // next_cursor is always 0, limit is the effective limit of the
   // request, and total is the number of rows in data.
   Meta meta = 2;
