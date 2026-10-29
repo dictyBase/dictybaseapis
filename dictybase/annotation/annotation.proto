@@ -47,8 +47,8 @@ service TaggedAnnotationService {
   // SearchAnnotation returns a ranked list of strain annotations for a
   // search text, deduplicated by entry_id. The default list length is 50.
   rpc SearchAnnotation(AnnotationSearchParameters) returns (AnnotationSearchResultCollection) {}
-  // SearchPhenotypes returns a ranked list of phenotype ontology terms for a
-  // search text. The default list length is 50.
+  // SearchPhenotypes returns a ranked list of strain phenotype matches for a
+  // search text, deduplicated by entry_id. The default list length is 50.
   rpc SearchPhenotypes(PhenotypeSearchParameters) returns (PhenotypeSearchResultCollection) {}
   // Upload obojson formatted file through client side streaming
   rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
@@ -77,6 +77,20 @@ enum AnnotationSearchField {
   ANNOTATION_SEARCH_FIELD_CHARACTERISTIC = 9;
   // value of an active dicty_annotation entry tagged public note.
   ANNOTATION_SEARCH_FIELD_PUBLIC_NOTE = 10;
+}
+
+// PhenotypeSearchField names the cvterm field that produced a phenotype
+// search match.
+enum PhenotypeSearchField {
+  PHENOTYPE_SEARCH_FIELD_UNSPECIFIED = 0;
+  // label of an active cvterm in a phenotype ontology.
+  PHENOTYPE_SEARCH_FIELD_LABEL = 1;
+  // metadata.synonyms.value of an active cvterm in a phenotype ontology.
+  PHENOTYPE_SEARCH_FIELD_SYNONYM = 2;
+  // metadata.definition.value of an active cvterm in a phenotype ontology.
+  PHENOTYPE_SEARCH_FIELD_DEFINITION = 3;
+  // metadata.comments of an active cvterm in a phenotype ontology.
+  PHENOTYPE_SEARCH_FIELD_COMMENT = 4;
 }
 
 message AnnotationGroupId {
@@ -544,8 +558,10 @@ message PhenotypeSearchParameters {
 }
 
 // PhenotypeSearchAttributes holds the search text of a phenotype search
-// request. The match runs against cvterm name and definition fields for the
-// Dicty Phenotypes ontology.
+// request. The match runs against active strain (DBS...) entries over
+// cvterm label, synonyms, definition, and comments fields across the
+// Dicty Phenotypes, Dicty Environment, and Dictyostelium Assay ontologies,
+// deduplicated by entry_id.
 message PhenotypeSearchAttributes {
   // Search text. The minimum length is 2 characters.
   string query = 1 [(buf.validate.field).string.min_len = 2];
@@ -557,16 +573,19 @@ message PhenotypeSearchAttributes {
   }];
 }
 
-// PhenotypeSearchResult is one full search match for a phenotype term.
+// PhenotypeSearchResult is one phenotype full search match, deduplicated by
+// entry_id.
 message PhenotypeSearchResult {
-  // id of the matched cvterm.
-  string id = 1;
-  // Name of the phenotype term.
-  string name = 2;
-  // Definition of the phenotype term.
-  string definition = 3;
+  // entry_id of the matched strain, for example DBS0236126.
+  string entry_id = 1;
+  // Field that produced the match.
+  PhenotypeSearchField field = 2;
+  // Name of the matched phenotype ontology term (cvterm label).
+  string name = 3;
+  // Definition of the matched phenotype ontology term.
+  string definition = 4;
   // Rank score.
-  double score = 4;
+  double score = 5;
 }
 
 // PhenotypeSearchResultCollection returns the results of a phenotype search
