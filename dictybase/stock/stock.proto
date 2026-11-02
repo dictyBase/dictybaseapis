@@ -679,9 +679,10 @@ message StockSearchResult {
   // and it is not highlighted. An absent stored summary gives an empty
   // string.
   string summary = 6;
-  // Strain label, shown as Descriptor in the stock center. Plasmid results
-  // and strains without a label return an empty string.
-  string strain_label = 7;
+  // Stock label: the strain property label (shown as Descriptor in the stock
+  // center) for strains, or the plasmid name for plasmids. An absent label
+  // returns an empty string.
+  string stock_label = 7;
   // Ontology term label for the stock type (dicty_strain_property for
   // strains, dicty_plasmid_keyword for plasmids). An absent term gives an
   // empty string.
