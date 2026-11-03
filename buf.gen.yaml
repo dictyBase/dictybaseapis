@@ -6,6 +6,8 @@ plugins:
     out: generated
   - plugin: buf.build/grpc/go:v1.3.0
     out: generated
+  - plugin: buf.build/grpc-ecosystem/gateway:v2.27.2
+    out: generated
   - plugin: govalidators
     out: generated
   - plugin: buf.build/community/pseudomuto-doc
