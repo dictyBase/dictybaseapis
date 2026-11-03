@@ -47,8 +47,33 @@ service StockService {
   // SearchStock returns a ranked list of stocks for a search text. The
   // default list length is 50.
   rpc SearchStock(StockSearchParameters) returns (StockSearchResultCollection) {}
+  // CountStocks returns totals and subtype counts for strains and plasmids.
+  rpc CountStocks(google.protobuf.Empty) returns (StockCounts) {}
   // Upload obojson formatted file through client side streaming
   rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
+}
+
+// StockCounts contains counts for all strains and plasmids.
+message StockCounts {
+  StockEntityCounts strains = 1;
+  StockEntityCounts plasmids = 2;
+}
+
+// StockEntityCounts contains the total and subtype counts for one stock kind.
+message StockEntityCounts {
+  // Total number of distinct stocks, including stocks without a subtype.
+  int64 total = 1;
+  // Counts by ontology label. A stock can occur in more than one subtype.
+  // For plasmids, the GoldenBraid count combines GB vector, GB backbone,
+  // GB part, and GB assembly instead of returning those labels separately.
+  repeated StockSubtypeCount subtypes = 2;
+}
+
+// StockSubtypeCount contains the number of distinct stocks for one subtype.
+message StockSubtypeCount {
+  // Ontology label, or GoldenBraid for the combined plasmid subtype.
+  string name = 1;
+  int64 count = 2;
 }
 
 // StockEntity selects the kind of stock that a search covers.
