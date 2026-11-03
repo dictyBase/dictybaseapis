@@ -5,6 +5,7 @@ package dictybase.stock;
 import "buf/validate/validate.proto";
 import "dictybase/api/upload/file.proto";
 import "github.com/mwitkow/go-proto-validators/validator.proto";
+import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -48,7 +49,9 @@ service StockService {
   // default list length is 50.
   rpc SearchStock(StockSearchParameters) returns (StockSearchResultCollection) {}
   // CountStocks returns totals and subtype counts for strains and plasmids.
-  rpc CountStocks(google.protobuf.Empty) returns (StockCounts) {}
+  rpc CountStocks(google.protobuf.Empty) returns (StockCounts) {
+    option (google.api.http) = {get: "/v1/stocks/counts"};
+  }
   // Upload obojson formatted file through client side streaming
   rpc OboJSONFileUpload(stream dictybase.api.upload.FileUploadRequest) returns (dictybase.api.upload.FileUploadResponse) {}
 }
