@@ -4,7 +4,12 @@ on:
     paths:
       - 'dictybase/**/*.proto'
       - 'buf.gen.yaml'
+      - 'buf.openapi.gen.yaml'
       - 'buf.yaml'
+      - 'buf.lock'
+      - 'scripts/**'
+      - '.github/workflows/buf-checkup.yml'
+      - '.github/workflows/buf-generate.yml'
 permissions:
   contents: read
   pull-requests: write
@@ -19,3 +24,37 @@ jobs:
         uses: bufbuild/buf-action@v1
         with: 
           version: 1.47.2
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.8'
+      - name: Install the validator generator
+        run: go install github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v0.3.2
+      - name: Check protobuf format and build
+        run: |
+          buf format --diff --exit-code
+          buf lint
+          buf build
+      - name: Test the stock API contract checker
+        run: python3 scripts/test_stock_api_contract.py
+      - name: Generate and check the stock API
+        run: sh scripts/generate-stock-api.sh "$RUNNER_TEMP/stock-api"
+      - name: Check out the Go module
+        uses: actions/checkout@v4
+        with:
+          repository: dictybase/go-genproto
+          path: go-genproto
+      - name: Check the generated Go module
+        run: |
+          rm -rf go-genproto/dictybaseapis
+          cp -r "$RUNNER_TEMP/stock-api/generated/github.com/dictyBase/go-genproto/dictybaseapis" go-genproto
+          cd go-genproto
+          go get github.com/grpc-ecosystem/grpc-gateway/v2@v2.27.2
+          go mod tidy
+          go test -mod=readonly ./...
+      - name: Upload the OpenAPI specification
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-openapi
+          path: ${{ runner.temp }}/stock-api/pages/openapi/stock.openapi.json
+          if-no-files-found: error

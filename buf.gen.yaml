@@ -10,5 +10,3 @@ plugins:
     out: generated
   - plugin: govalidators
     out: generated
-  - plugin: buf.build/community/pseudomuto-doc
-    out: docs

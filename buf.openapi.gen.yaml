@@ -1,0 +1,4 @@
+version: v1
+plugins:
+  - plugin: buf.build/grpc-ecosystem/openapiv3:v2.33.0
+    out: openapi

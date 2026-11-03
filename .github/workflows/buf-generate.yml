@@ -6,7 +6,10 @@ on:
     paths:
       - 'dictybase/**/*.proto'
       - 'buf.gen.yaml'
+      - 'buf.openapi.gen.yaml'
       - 'buf.yaml'
+      - 'buf.lock'
+      - 'scripts/**'
       - '.github/workflows/*.yml'
 permissions: 
   contents: read
@@ -32,15 +35,16 @@ jobs:
           version: 1.47.2
           setup_only: true
       - name: set up golang
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-            go-version: 1.23
+            go-version: '1.26.8'
       - name: download go binaries
         run: |
           go install github.com/mwitkow/go-proto-validators/protoc-gen-govalidators@v0.3.2
-      - name: generate code
-        run: |
-            buf generate
+      - name: Test the stock API contract checker
+        run: python3 scripts/test_stock_api_contract.py
+      - name: Generate and check the stock API
+        run: sh scripts/generate-stock-api.sh "$RUNNER_TEMP/stock-api"
       - name: configure git
         run: |
             git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
@@ -60,15 +64,18 @@ jobs:
       - name: copy generated files
         run: |
           rm -rf target/dictybaseapis
-          cp -r generated/github.com/dictyBase/go-genproto/dictybaseapis target
+          cp -r "$RUNNER_TEMP/stock-api/generated/github.com/dictyBase/go-genproto/dictybaseapis" target
           cd target
+          go get github.com/grpc-ecosystem/grpc-gateway/v2@v2.27.2
+          go mod tidy
+          go test -mod=readonly ./...
           git add .
           git diff-index --quiet HEAD || git commit -m "update on `date +"%m-%d-%Y:%H:%M:%S"`"
       - name: get short sha
         id: vars
         run: |
           sha=$(git rev-parse --short HEAD)
-          echo ::set-output name=id::${sha}
+          echo "id=${sha}" >> "$GITHUB_OUTPUT"
       - name: push changes
         uses: ad-m/github-push-action@master
         with:
@@ -81,8 +88,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: docs/
+          path: ${{ runner.temp }}/stock-api/pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
