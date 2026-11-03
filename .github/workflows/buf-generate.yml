@@ -10,6 +10,7 @@ on:
       - 'buf.yaml'
       - 'buf.lock'
       - 'scripts/**'
+      - 'docs/index.html'
       - '.github/workflows/*.yml'
 permissions: 
   contents: read

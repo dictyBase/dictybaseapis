@@ -8,6 +8,7 @@ on:
       - 'buf.yaml'
       - 'buf.lock'
       - 'scripts/**'
+      - 'docs/index.html'
       - '.github/workflows/buf-checkup.yml'
       - '.github/workflows/buf-generate.yml'
 permissions:
@@ -56,5 +57,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: stock-openapi
-          path: ${{ runner.temp }}/stock-api/pages/openapi/stock.openapi.json
+          path: ${{ runner.temp }}/stock-api/pages
           if-no-files-found: error

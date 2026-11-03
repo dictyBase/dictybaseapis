@@ -24,3 +24,5 @@ python3 scripts/check_stock_api.py "$spec" "$gateway"
 
 mkdir -p "$output/pages/openapi"
 cp "$spec" "$output/pages/openapi/stock.openapi.json"
+cp docs/index.html "$output/pages/index.html"
+python3 scripts/test_swagger_page.py "$output/pages"
